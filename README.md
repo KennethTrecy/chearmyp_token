@@ -41,3 +41,25 @@ have unstable syntax.
 	?|	# A simplex can be anything as long it does not start a pound sign
 	example city|	# And they may contain spaces too!
 	```
+
+3. *Complexes*. These tokens are counterpart of *simplexes*. These are concepts that can contain
+   *simplexes* and *complexes*. For example `word`, it can contain the `letter|`. To express the
+   containment of other *simplexes* and/or *complexes*, those tokens must be indented using a tab.
+	```
+	# `word`, `punctuation`, and `binary` are examples of complex
+	word
+		letters
+			letter|
+			letter|
+		part_of_speech|
+		definition|
+
+	punctuation
+		.|
+		?|
+		!|
+
+	binary
+		0|
+		1|
+	```
