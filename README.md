@@ -7,15 +7,15 @@ There are five general kinds of tokens that exist in Churmyprea. Take note that 
 have unstable syntax.
 1. *Comment*. These tokens is used for documentation purposes. It has two subkinds: *line* comments
 	and *block* comments.
-    - *Line* comment. These are comments that only exist in one line. They are denoted using a pound
-      sign (`#`).
+	 - *Line* comment. These are comments that only exist in one line. They are denoted using a pound
+		sign (`#`).
 		```
 		# This is a line comment.
 		```
-    - *Block* comment. These comments may have one or more lines. It must have three pound signs
-      (`###`) before and after the comment content. If the starting three pound signs (`###`) have
-      indention before them, the ending three pound signs (`###`) must also have the matching
-      indention.
+	 - *Block* comment. These comments may have one or more lines. It must have three pound signs
+		(`###`) before and after the comment content. If the starting three pound signs (`###`) have
+		indention before them, the ending three pound signs (`###`) must also have the matching
+		indention.
 		```
 		###
 		This is a block comment
@@ -42,9 +42,9 @@ have unstable syntax.
 	example city|	# And they may contain spaces too!
 	```
 
-3. *Complex*. These tokens are counterpart of *simplexes*. These are concepts that can contain
-   *simplexes* and *complexes*. For example `word`, it can contain the `letter|`. To express the
-   containment of other *simplexes* and/or *complexes*, those tokens must be indented using a tab.
+3. *Complex*. These tokens are counterpart of *simplexes*. These are concepts that can contain other
+	*simplexes* and *complexes*. For example `word`, it can contain the `letter|`. To express the
+	containment of other tokens, those tokens must be indented using a tab.
 	```
 	# `word`, `punctuation`, and `binary` are examples of complex
 	word
