@@ -5,7 +5,7 @@ be used as a markup, programming, command, and more.
 ## Syntax
 There are five general kinds of tokens that exist in Churmyprea. Take note that Churmyprea still
 have unstable syntax.
-1. *Comments*. These tokens is used for documentation purposes. It has two subkinds: *line* comments
+1. *Comment*. These tokens is used for documentation purposes. It has two subkinds: *line* comments
 	and *block* comments.
     - *Line* comment. These are comments that only exist in one line. They are denoted using a pound
       sign (`#`).
@@ -30,7 +30,7 @@ have unstable syntax.
 			###
 		```
 
-2. *Simplexes*. These tokens can be thought of as basic concepts where other concepts can use. For
+2. *Simplex*. These tokens can be thought of as basic concepts where other concepts can use. For
    example, `letter`. Since these are simple, they cannot contain other concepts. Simplexes must end
    using a vertical line (`|`). It means that a concept ends there. After the vertical line(`|`),
    they must be followed by new line(s) or tab(s). Using tab(s) after the vertical allows you to
@@ -42,7 +42,7 @@ have unstable syntax.
 	example city|	# And they may contain spaces too!
 	```
 
-3. *Complexes*. These tokens are counterpart of *simplexes*. These are concepts that can contain
+3. *Complex*. These tokens are counterpart of *simplexes*. These are concepts that can contain
    *simplexes* and *complexes*. For example `word`, it can contain the `letter|`. To express the
    containment of other *simplexes* and/or *complexes*, those tokens must be indented using a tab.
 	```
