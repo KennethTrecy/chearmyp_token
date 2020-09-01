@@ -86,3 +86,45 @@ have unstable syntax.
 		price: $3	title: Title C	author: Author C
 	name: Book set A	# Attaches book set's name
 	```
+
+5. *Othertongue*. These tokens contain a different language from the rest of the document. Their
+	syntax is similar to *comments*. Due to the variety of languages, there are concepts that have no
+	direct translation to the current concept. However, they must be contained to a *complex*.
+	 - *Line* othertongue. These othertoungues are similar to *line* comments. Their containment must
+		be expressed by indention using tab(s) or in one line after the *complex*. If a line
+		othertongue has been expressed by indention, it must have an equal sign(`=`) and a space
+		before it. If it has been inlined, they must have an equal sign(`=`) surrounded by spaces
+		before it.
+		```
+		spelled_out_numbers
+			= zero
+			= one
+			= two
+			= ...
+
+		# Kilig is a Filipino word with no direct translation to English
+		excited butterflies = Kilig
+		```
+	- *Block* othertongue. These othertongues are similar to *block* comments. Instead of pound
+		signs, they are identified using three equal signs(`===`). Their containment to a *complex*
+		must be expressed by indention using tab(s).
+		```
+		languages
+			natural
+				English
+					===
+					Good morning!
+					===
+				Filipino
+					===
+					Magandang umaga!
+					===
+				Kapampangan
+					===
+					Mayap na abak!
+					===
+			programming
+				===
+				print "Good morning!"
+				===
+		```
