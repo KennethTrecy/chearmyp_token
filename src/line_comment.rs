@@ -8,14 +8,14 @@ use crate::special_characters::POUND_SIGN;
 /// for the pound sign as the second argument (known as the offset). The token will not have a line
 /// ending but it counted as the last index.
 ///
-/// ## Note
+/// ## Notes
 /// If the source has no pound sign found at the offset, it will return an empty token variant
 /// with the offset.
 ///
-/// ## Panic
+/// ## Panics
 /// It cannot lex empty source.
 ///
-/// ## Example
+/// ## Examples
 /// ```
 /// use chearmyp::comment::line_comment;
 /// use chearmyp::token::{Token, TokenInfo};
