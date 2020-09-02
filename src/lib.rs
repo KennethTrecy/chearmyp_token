@@ -13,4 +13,7 @@ mod find_line_ending;
 /// Contains `line_comment()` lexer.
 pub mod line_comment;
 
+/// Contains `block_comment()` lexer.
+pub mod block_comment;
+
 pub use find_line_ending::find_line_ending;
