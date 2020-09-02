@@ -49,16 +49,8 @@ pub fn line_comment(src: &[u8], mut i: usize) -> TokenInfo {
 	i += 1;
 
 	let limit = src.len();
-	let mut size = find_line_ending(src, i, limit);
-	let end = if size == limit {
-		limit
-	} else {
-		let new_line_index = size;
-		size += 1;
-		new_line_index
-	};
-
-	TokenInfo(Token::LineComment(&src[i..end]), size)
+	let end = find_line_ending(src, i, limit);
+	TokenInfo(Token::LineComment(&src[i..end]), end)
 }
 
 #[cfg(test)]
@@ -78,8 +70,8 @@ fn can_lex() {
 		};
 	}
 	test_line_comment!(b"\n" 0);
-	test_line_comment!(b"#\n" 2 b"");
+	test_line_comment!(b"#\n" 1 b"");
 	test_line_comment!(b"#" 1 b"");
 	test_line_comment!(b"# hello" 7 b" hello");
-	test_line_comment!(b"# hi\n" 5 b" hi");
+	test_line_comment!(b"# hi\n" 4 b" hi");
 }
