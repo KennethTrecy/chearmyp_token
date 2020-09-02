@@ -9,7 +9,7 @@ pub mod special_characters;
 /// Contains `find_line_ending()`.
 mod find_line_ending;
 
-/// Contains functions to lex comments.
-pub mod comment;
+/// Contains `line_comment()` lexer.
+pub mod line_comment;
 
 pub use find_line_ending::find_line_ending;
