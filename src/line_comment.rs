@@ -17,7 +17,7 @@ use crate::special_characters::POUND_SIGN;
 ///
 /// ## Examples
 /// ```
-/// use chearmyp::comment::line_comment;
+/// use chearmyp::line_comment::line_comment;
 /// use chearmyp::token::{Token, TokenInfo};
 ///
 /// let non_terminated = b"# hello world";
