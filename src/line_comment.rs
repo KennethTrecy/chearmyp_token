@@ -6,7 +6,7 @@ use crate::special_characters::POUND_SIGN;
 ///
 /// It needs an array of bytes as the first argument (known as source) and where to start looking
 /// for the pound sign as the second argument (known as the offset). The token will not have a line
-/// ending but it counted as the last index.
+/// ending but it will be counted as the last index.
 ///
 /// ## Notes
 /// If the source has no pound sign found at the offset, it will return an empty token variant
