@@ -1,4 +1,5 @@
 #![no_std]
+extern crate alloc;
 
 /// Contains the data structures used and/or returned by different lexers.
 pub mod token;
