@@ -12,6 +12,9 @@ use crate::special_characters::POUND_SIGN;
 /// If the source has no pound sign found at the offset, it will return an empty token variant
 /// with the offset.
 ///
+/// ## Panic
+/// It cannot lex empty source.
+///
 /// ## Example
 /// ```
 /// use chearmyp::comment::line_comment;
@@ -54,24 +57,34 @@ pub fn line_comment(src: &[u8], mut i: usize) -> TokenInfo {
 }
 
 #[cfg(test)]
-#[test]
-fn can_lex() {
-	macro_rules! test_line_comment {
-		($sample:literal 0) => {
-			let TokenInfo(token, line_comment_size) = line_comment($sample, 0);
-			assert_eq!(line_comment_size, 0);
-			assert_eq!(token, Token::Empty);
-		};
-		($sample:literal $expected_size:literal $expected_token:expr) => {
-			let TokenInfo(token, line_comment_size) = line_comment($sample, 0);
-			assert_eq!(token, Token::LineComment(&$expected_token[..]),
-				"Expected token of {:?}", $sample);
-			assert_eq!(line_comment_size, $expected_size, "Expected length of {:?}", $sample);
-		};
+mod tests {
+	use super::{Token, TokenInfo, line_comment};
+
+	#[test]
+	fn can_lex() {
+		macro_rules! test_line_comment {
+			($sample:literal 0) => {
+				let TokenInfo(token, line_comment_size) = line_comment($sample, 0);
+				assert_eq!(line_comment_size, 0);
+				assert_eq!(token, Token::Empty);
+			};
+			($sample:literal $expected_size:literal $expected_token:expr) => {
+				let TokenInfo(token, line_comment_size) = line_comment($sample, 0);
+				assert_eq!(token, Token::LineComment(&$expected_token[..]),
+					"Expected token of {:?}", $sample);
+				assert_eq!(line_comment_size, $expected_size, "Expected length of {:?}", $sample);
+			};
+		}
+		test_line_comment!(b"\n" 0);
+		test_line_comment!(b"#\n" 1 b"");
+		test_line_comment!(b"#" 1 b"");
+		test_line_comment!(b"# hello" 7 b" hello");
+		test_line_comment!(b"# hi\n" 4 b" hi");
 	}
-	test_line_comment!(b"\n" 0);
-	test_line_comment!(b"#\n" 1 b"");
-	test_line_comment!(b"#" 1 b"");
-	test_line_comment!(b"# hello" 7 b" hello");
-	test_line_comment!(b"# hi\n" 4 b" hi");
+
+	#[test]
+	#[should_panic]
+	fn cannot_lex() {
+		line_comment(&b""[..], 0);
+	}
 }
