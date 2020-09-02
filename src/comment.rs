@@ -2,6 +2,48 @@ use crate::find_line_ending;
 use crate::token::{Token, TokenInfo};
 use crate::special_characters::POUND_SIGN;
 
+/// Returns the info of recognized line comment and its last index occupied in the source.
+///
+/// It needs an array of bytes as the first argument (known as source) and where to start looking
+/// for the pound sign as the second argument (known as the offset). The token will not have a line
+/// ending but it counted as the last index.
+///
+/// ## Note
+/// If the source has no pound sign found at the offset, it will return an empty token variant
+/// with the offset.
+///
+/// ## Example
+/// ```
+/// use chearmyp::comment::line_comment;
+/// use chearmyp::token::{Token, TokenInfo};
+///
+/// let non_terminated = b"# hello world";
+/// let TokenInfo(comment, last_index) = line_comment(&non_terminated[..], 0);
+/// if let Token::LineComment(comment) = comment {
+/// 	assert_eq!(comment, &non_terminated[1..]);
+/// } else {
+/// 	panic!("The returned token is not line comment.");
+/// }
+/// assert_eq!(last_index, 13);
+///
+/// let terminated = b"# hello world\n ";
+/// let TokenInfo(comment, last_index) = line_comment(&terminated[..], 0);
+/// if let Token::LineComment(comment) = comment {
+/// 	assert_eq!(comment, &terminated[1..13]);
+/// } else {
+/// 	panic!("The returned token is not line comment.");
+/// }
+/// assert_eq!(last_index, 13);
+///
+/// let non_comment = b"hello world";
+/// let TokenInfo(comment, last_index) = line_comment(&non_comment[..], 0);
+/// if let Token::Empty = comment {
+/// 	assert!(true);
+/// } else {
+/// 	panic!("The returned token is not empty.");
+/// }
+/// assert_eq!(last_index, 0);
+/// ```
 pub fn line_comment(src: &[u8], mut i: usize) -> TokenInfo {
 	if src[i] != POUND_SIGN { return TokenInfo(Token::Empty, i); }
 	i += 1;

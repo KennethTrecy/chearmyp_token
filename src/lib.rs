@@ -1,10 +1,15 @@
 #![no_std]
 
-mod token;
-mod special_characters;
-mod find_line_ending;
-mod comment;
+/// Contains the data structures used and/or returned by different lexers.
+pub mod token;
 
-pub use token::{Token, TokenInfo};
+/// Contains different characters needed to be recognized by the different lexers.
+pub mod special_characters;
+
+/// Contains `find_line_ending()`.
+mod find_line_ending;
+
+/// Contains functions to lex comments.
+pub mod comment;
+
 pub use find_line_ending::find_line_ending;
-pub use comment::line_comment;
