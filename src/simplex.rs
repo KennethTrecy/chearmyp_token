@@ -22,7 +22,7 @@ enum SimplexEnding {
 /// use chearmyp::token::Token;
 ///
 /// let terminated = b"hello world|";
-/// let (token, last_index) = simplex(&terminated[0..11], 0);
+/// let (token, last_index) = simplex(&terminated[..], 0);
 /// if let Token::Simplex(token) = token {
 /// 	assert_eq!(token, &b"hello world"[..]);
 /// } else {
