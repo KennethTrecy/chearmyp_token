@@ -41,9 +41,9 @@ enum SimplexEnding {
 /// ```
 pub fn simplex(src: &[u8], mut i: usize) -> TokenInfo {
 	let limit = src.len();
-	let mut size = 0;
+	let size;
 
-	while i < limit {
+	loop {
 		let ending = determine_ending(src, i, limit);
 		match ending {
 			SimplexEnding::None => i += 1,
