@@ -41,3 +41,27 @@ fn determine_ending(src: &[u8], offset: usize, limit: usize)-> SimplexEnding {
 		SimplexEnding::None
 	}
 }
+
+#[cfg(test)]
+mod tests {
+	use super::{Token, simplex};
+
+	#[test]
+	fn can_lex() {
+		macro_rules! test_simplex {
+			(
+				$sample:literal,
+				$expected_token:expr,
+				$expected_consumption:literal
+			) => {
+				let (token, consumed_size) = simplex($sample, 0);
+				assert_eq!(token, $expected_token);
+				assert_eq!(consumed_size, $expected_consumption);
+			};
+		}
+
+		test_simplex!(b"a|	", Token::Simplex(&b"a"[..]), 2);
+		test_simplex!(b"bc|	#", Token::Simplex(&b"bc"[..]), 3);
+		test_simplex!(b"def|\n#", Token::Simplex(&b"def"[..]), 4);
+	}
+}
