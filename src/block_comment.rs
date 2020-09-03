@@ -19,10 +19,10 @@ use crate::special_characters::{NEW_LINE, POUND_SIGN, TAB};
 /// ## Examples
 /// ```
 /// use chearmyp::block_comment::block_comment;
-/// use chearmyp::token::{Token, TokenInfo};
+/// use chearmyp::token::Token;
 ///
 /// let terminated = b"###\n\thello world\n###";
-/// let TokenInfo(comment, last_index) = block_comment(&terminated[..], 0, 0);
+/// let (comment, last_index) = block_comment(&terminated[..], 0, 0);
 /// if let Token::BlockComment(comment) = comment {
 /// 	assert_eq!(comment, vec![&b"\thello world"[..]]);
 /// } else {
@@ -31,7 +31,7 @@ use crate::special_characters::{NEW_LINE, POUND_SIGN, TAB};
 /// assert_eq!(last_index, 20);
 ///
 /// let non_comment = b"hello world";
-/// let TokenInfo(comment, last_index) = block_comment(&non_comment[..], 0, 0);
+/// let (comment, last_index) = block_comment(&non_comment[..], 0, 0);
 /// if let Token::Empty = comment {
 /// 	assert!(true);
 /// } else {
@@ -40,7 +40,7 @@ use crate::special_characters::{NEW_LINE, POUND_SIGN, TAB};
 /// assert_eq!(last_index, 0);
 /// ```
 pub fn block_comment(src: &[u8], i: usize, tab_count: usize) -> TokenInfo {
-	if !has_3_pound_signs(src, i) { return TokenInfo(Token::Empty, i); }
+	if !has_3_pound_signs(src, i) { return (Token::Empty, i); }
 
 	let mut lines = Vec::new();
 	let limit = src.len();
@@ -68,7 +68,7 @@ pub fn block_comment(src: &[u8], i: usize, tab_count: usize) -> TokenInfo {
 		lines.push(line);
 	}
 
-	TokenInfo(Token::BlockComment(lines), i)
+	(Token::BlockComment(lines), i)
 }
 
 fn has_3_pound_signs(src: &[u8], i: usize) -> bool {
@@ -79,7 +79,7 @@ fn has_3_pound_signs(src: &[u8], i: usize) -> bool {
 
 #[cfg(test)]
 mod tests {
-	use super::{Vec, Token, TokenInfo, block_comment};
+	use super::{Vec, Token, block_comment};
 
 	#[test]
 	fn can_lex() {
@@ -102,7 +102,7 @@ mod tests {
 				consumed_size: $expected_consumed_size:literal,
 				token: $expected_token:ident
 			) => {
-				let TokenInfo(token, block_comment_size) = block_comment(
+				let (token, block_comment_size) = block_comment(
 					$sample,
 					0,
 					$tab_count

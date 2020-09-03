@@ -10,4 +10,4 @@ pub enum Token<'a> {
 
 /// Contains the extracted token and its last index occupied in the source.
 /// This token is used as return value for lexers.
-pub struct TokenInfo<'a>(pub Token<'a>, pub usize);
+pub type TokenInfo<'a> = (Token<'a>, usize);

@@ -1,7 +1,7 @@
 #![no_std]
 extern crate alloc;
 
-/// Contains the data structures used and/or returned by different lexers.
+/// Contains the data structures and type aliases used and/or returned by different lexers.
 pub mod token;
 
 /// Contains different characters needed to be recognized by the different lexers.
