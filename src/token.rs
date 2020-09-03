@@ -7,7 +7,8 @@ pub enum Token<'a> {
 	Invalid,
 	LineComment(&'a [u8]),
 	BlockComment(Vec<&'a [u8]>),
-	Simplex(&'a [u8])
+	Simplex(&'a [u8]),
+	Complex(&'a [u8]),
 }
 
 /// Contains the extracted token and its last index occupied in the source.
