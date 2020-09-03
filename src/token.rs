@@ -4,6 +4,7 @@ use alloc::vec::Vec;
 #[cfg_attr(test, derive(Debug, PartialEq))]
 pub enum Token<'a> {
 	Empty,
+	Invalid,
 	LineComment(&'a [u8]),
 	BlockComment(Vec<&'a [u8]>),
 	Simplex(&'a [u8])
