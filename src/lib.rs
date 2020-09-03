@@ -19,4 +19,7 @@ pub mod block_comment;
 /// Contains `simplex()` lexer.
 pub mod simplex;
 
+/// Contains `complex()` lexer.
+pub mod complex;
+
 pub use find_line_ending::find_line_ending;
