@@ -8,6 +8,37 @@ enum SimplexEnding {
 	Limit
 }
 
+/// Returns the info of recognized simplex and its last index seen in the source.
+///
+/// It needs an array of bytes as the first argument (known as source) and where to start looking
+/// for the pound signs as the second argument (known as the offset).
+///
+/// ## Notes
+/// It will invalid token if there is no valid simplex from the specified offset in source.
+///
+/// ## Examples
+/// ```
+/// use chearmyp::simplex::simplex;
+/// use chearmyp::token::Token;
+///
+/// let terminated = b"hello world|";
+/// let (token, last_index) = simplex(&terminated[0..11], 0);
+/// if let Token::Simplex(token) = token {
+/// 	assert_eq!(token, &b"hello world"[..]);
+/// } else {
+/// 	panic!("The returned token is not simplex.");
+/// }
+/// assert_eq!(last_index, 11);
+///
+/// let non_simplex = b"hello world";
+/// let (non_simplex, last_index) = simplex(&non_simplex[..], 0);
+/// if let Token::Invalid = non_simplex {
+/// 	assert!(true);
+/// } else {
+/// 	panic!("The returned token is not invalid.");
+/// }
+/// assert_eq!(last_index, 10);
+/// ```
 pub fn simplex(src: &[u8], mut i: usize) -> TokenInfo {
 	let limit = src.len();
 	let mut size = 0;
