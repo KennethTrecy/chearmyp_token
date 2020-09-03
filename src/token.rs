@@ -5,7 +5,8 @@ use alloc::vec::Vec;
 pub enum Token<'a> {
 	Empty,
 	LineComment(&'a [u8]),
-	BlockComment(Vec<&'a [u8]>)
+	BlockComment(Vec<&'a [u8]>),
+	Simplex(&'a [u8])
 }
 
 /// Contains the extracted token and its last index occupied in the source.
