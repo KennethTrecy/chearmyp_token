@@ -9,6 +9,7 @@ pub enum Token<'a> {
 	BlockComment(Vec<&'a [u8]>),
 	Simplex(&'a [u8]),
 	Complex(&'a [u8]),
+	Attacher(&'a [u8], &'a [u8]),
 }
 
 /// Contains the extracted token and its last index occupied in the source.
