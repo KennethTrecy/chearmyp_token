@@ -25,6 +25,9 @@ pub mod complex;
 /// Contains `attacher()` lexer.
 pub mod attacher;
 
+/// Contains `line_othertongue()` lexer.
+pub mod line_othertongue;
+
 /// Contains types of delimeter that lexers search for.
 mod delimeter;
 
