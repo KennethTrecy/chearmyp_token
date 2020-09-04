@@ -17,11 +17,10 @@ pub fn complex(src: &[u8], slice_offset: usize, mut search_offset: usize) -> Tok
 			ComplexEnding::None => search_offset += 1,
 			ComplexEnding::Pad => {
 				size = search_offset;
-				search_offset += 1;
 				break;
 			},
 			ComplexEnding::Limit => {
-				size = search_offset;
+				size = search_offset + 1;
 				break;
 			}
 		}
