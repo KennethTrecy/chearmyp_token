@@ -22,4 +22,7 @@ pub mod simplex;
 /// Contains `complex()` lexer.
 pub mod complex;
 
+/// Contains types of delimeter that lexers search for.
+mod delimeter;
+
 pub use find_line_ending::find_line_ending;

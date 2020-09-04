@@ -1,12 +1,6 @@
 use crate::token::{Token, TokenInfo};
 use crate::special_characters::{NEW_LINE, TAB, VERTICAL_LINE};
-
-enum SimplexEnding {
-	None,
-	Invalid,
-	Pad,
-	Limit
-}
+use crate::delimeter::Delimeter;
 
 /// Returns the info of recognized simplex and its last index seen in the source.
 ///
@@ -46,14 +40,14 @@ pub fn simplex(src: &[u8], mut i: usize) -> TokenInfo {
 	loop {
 		let ending = determine_ending(src, i, limit);
 		match ending {
-			SimplexEnding::None => i += 1,
-			SimplexEnding::Invalid => { return (Token::Invalid, i); },
-			SimplexEnding::Pad => {
+			Delimeter::Incorrect => i += 1,
+			Delimeter::Invalid => { return (Token::Invalid, i); },
+			Delimeter::Pad => {
 				size = i;
 				i += 1;
 				break;
 			},
-			SimplexEnding::Limit => {
+			Delimeter::Limit => {
 				size = i;
 				break;
 			}
@@ -63,26 +57,26 @@ pub fn simplex(src: &[u8], mut i: usize) -> TokenInfo {
 	(Token::Simplex(&src[0..size]), i)
 }
 
-fn determine_ending(src: &[u8], offset: usize, limit: usize)-> SimplexEnding {
+fn determine_ending(src: &[u8], offset: usize, limit: usize) -> Delimeter {
 	match src[offset] {
 		VERTICAL_LINE => {
 			if offset + 1 == limit {
-				SimplexEnding::Limit
+				Delimeter::Limit
 			} else {
 				let ending = src[offset + 1];
 				if ending == NEW_LINE || ending == TAB {
-					SimplexEnding::Pad
+					Delimeter::Pad
 				} else {
-					SimplexEnding::None
+					Delimeter::Incorrect
 				}
 			}
 		},
-		NEW_LINE | TAB => SimplexEnding::Invalid,
+		NEW_LINE | TAB => Delimeter::Invalid,
 		_ => {
 			if offset + 1 == limit {
-				SimplexEnding::Invalid
+				Delimeter::Invalid
 			} else {
-				SimplexEnding::None
+				Delimeter::Incorrect
 			}
 		}
 	}
