@@ -28,6 +28,9 @@ pub mod attacher;
 /// Contains `line_othertongue()` lexer.
 pub mod line_othertongue;
 
+/// Contains `block()` lexer.
+pub mod block;
+
 /// Contains types of delimeter that lexers search for.
 mod delimeter;
 

@@ -1,7 +1,6 @@
-use alloc::vec::Vec;
-use crate::find_line_ending;
+use crate::block::block;
 use crate::token::{Token, TokenInfo};
-use crate::special_characters::{NEW_LINE, POUND_SIGN, TAB};
+use crate::special_characters::POUND_SIGN;
 
 /// Returns the info of recognized block comment and its last index occupied in the source.
 ///
@@ -40,46 +39,18 @@ use crate::special_characters::{NEW_LINE, POUND_SIGN, TAB};
 /// assert_eq!(last_index, 0);
 /// ```
 pub fn block_comment(src: &[u8], i: usize, tab_count: usize) -> TokenInfo {
-	if !has_3_pound_signs(src, i) { return (Token::Empty, i); }
-
-	let mut lines = Vec::new();
-	let limit = src.len();
-	let mut i = if src[i + 3] == NEW_LINE { 4 } else { 3 };
-
-	while i < limit {
-		let start = i;
-		let end = find_line_ending(src, start, limit);
-		let line = &src[start..end];
-
-		let mut indent_size = tab_count;
-		while indent_size > 0 {
-			indent_size -= 1;
-			if line[indent_size] != TAB { break; }
-		}
-
-		i = end;
-
-		if indent_size == 0 && has_3_pound_signs(line, tab_count) {
-			if i + 1 < limit && src[i] == NEW_LINE { i += 1; }
-			break;
-		}
-
-		i += 1;
-		lines.push(line);
+	let block = block(src, i, tab_count, POUND_SIGN);
+	if let (Token::Block(lines), last_seen_index) = block {
+		(Token::BlockComment(lines), last_seen_index)
+	} else {
+		block
 	}
-
-	(Token::BlockComment(lines), i)
-}
-
-fn has_3_pound_signs(src: &[u8], i: usize) -> bool {
-	return src[i] == POUND_SIGN
-		&& src[i + 1] == POUND_SIGN
-		&& src[i + 2] == POUND_SIGN;
 }
 
 #[cfg(test)]
 mod tests {
-	use super::{Vec, Token, block_comment};
+	use alloc::vec::Vec;
+	use super::{Token, block_comment};
 
 	#[test]
 	fn can_lex() {
