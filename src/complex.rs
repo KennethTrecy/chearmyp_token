@@ -25,7 +25,7 @@ pub fn complex(src: &[u8], slice_offset: usize, mut search_offset: usize) -> Tok
 	(Token::Complex(&src[slice_offset..size]), search_offset)
 }
 
-fn determine_ending(src: &[u8], offset: usize, limit: usize) -> Delimeter {
+pub(crate) fn determine_ending(src: &[u8], offset: usize, limit: usize) -> Delimeter {
 	match src[offset] {
 		NEW_LINE | TAB => Delimeter::Pad,
 		_ => {
