@@ -22,6 +22,9 @@ pub mod simplex;
 /// Contains `complex()` lexer.
 pub mod complex;
 
+/// Contains `attacher()` lexer.
+pub mod attacher;
+
 /// Contains types of delimeter that lexers search for.
 mod delimeter;
 
