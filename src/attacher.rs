@@ -71,3 +71,34 @@ fn determine_separator(src: &[u8], offset: usize, limit: usize) -> Delimeter {
 		_ => Delimeter::Incorrect
 	}
 }
+
+#[cfg(test)]
+mod tests {
+	use super::{Token, attacher};
+
+	#[test]
+	fn can_lex_attacher() {
+		macro_rules! test_attacher {
+			(
+				$sample:literal,
+				$expected_token:expr,
+				$expected_consumption:literal
+			) => {
+				let (token, consumed_size) = attacher($sample, 0, 0);
+				assert_eq!(token, $expected_token);
+				assert_eq!(consumed_size, $expected_consumption);
+			};
+		}
+
+		macro_rules! Attacher {
+			($label:literal : $content:literal) => {
+				Token::Attacher(&$label[..], &$content[..])
+			};
+		}
+
+		test_attacher!(b"a:	b", Attacher!(b"a": b"b"), 3);
+		test_attacher!(b"cd:		e", Attacher!(b"cd": b"e"), 5);
+		test_attacher!(b"f:		g\n", Attacher!(b"f": b"g"), 5);
+		test_attacher!(b"h:	i	j:	k", Attacher!(b"h": b"i"), 4);
+	}
+}
