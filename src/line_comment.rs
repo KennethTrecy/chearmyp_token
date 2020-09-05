@@ -12,16 +12,13 @@ use crate::special_characters::POUND_SIGN;
 /// If the source has no pound sign found at the offset, it will return an empty token variant
 /// with the offset.
 ///
-/// ## Panics
-/// It cannot lex empty source.
-///
 /// ## Examples
 /// ```
 /// use chearmyp::line_comment::line_comment;
 /// use chearmyp::token::Token;
 ///
 /// let non_terminated = b"# hello world";
-/// let (comment, last_index) = line_comment(&non_terminated[..], 0);
+/// let (comment, last_index) = line_comment(&non_terminated[..], 0, non_terminated.len());
 /// if let Token::LineComment(comment) = comment {
 /// 	assert_eq!(comment, &non_terminated[1..]);
 /// } else {
@@ -30,7 +27,7 @@ use crate::special_characters::POUND_SIGN;
 /// assert_eq!(last_index, 13);
 ///
 /// let terminated = b"# hello world\n ";
-/// let (comment, last_index) = line_comment(&terminated[..], 0);
+/// let (comment, last_index) = line_comment(&terminated[..], 0, terminated.len());
 /// if let Token::LineComment(comment) = comment {
 /// 	assert_eq!(comment, &terminated[1..13]);
 /// } else {
@@ -39,21 +36,25 @@ use crate::special_characters::POUND_SIGN;
 /// assert_eq!(last_index, 13);
 ///
 /// let non_comment = b"hello world";
-/// let (comment, last_index) = line_comment(&non_comment[..], 0);
-/// if let Token::Empty = comment {
+/// let (non_comment, last_index) = line_comment(&non_comment[..], 0, non_comment.len());
+/// if let Token::Invalid = non_comment {
 /// 	assert!(true);
 /// } else {
-/// 	panic!("The returned token is not empty.");
+/// 	panic!("The returned token is not invalid.");
 /// }
 /// assert_eq!(last_index, 0);
 /// ```
-pub fn line_comment(src: &[u8], mut i: usize) -> TokenInfo {
-	if src[i] != POUND_SIGN { return (Token::Empty, i); }
-	i += 1;
-
-	let limit = src.len();
-	let end = find_line_ending(src, i, limit);
-	(Token::LineComment(&src[i..end]), end)
+pub fn line_comment(src: &[u8], mut i: usize, limit: usize) -> TokenInfo {
+	let first_character = src.get(i);
+	if let Some(&POUND_SIGN) = first_character {
+		i += 1;
+		let end = find_line_ending(src, i, limit);
+		(Token::LineComment(&src[i..end]), end)
+	} else if let Some(_) = first_character {
+		(Token::Invalid, i)
+	} else {
+		(Token::Empty, i)
+	}
 }
 
 #[cfg(test)]
@@ -64,17 +65,18 @@ mod tests {
 	fn can_lex() {
 		macro_rules! test_line_comment {
 			($sample:literal 0) => {
-				let (token, line_comment_size) = line_comment($sample, 0);
+				let (token, line_comment_size) = line_comment($sample, 0, $sample.len());
 				assert_eq!(line_comment_size, 0);
-				assert_eq!(token, Token::Empty);
+				assert_eq!(token, Token::Invalid);
 			};
 			($sample:literal $expected_size:literal $expected_token:expr) => {
-				let (token, line_comment_size) = line_comment($sample, 0);
+				let (token, line_comment_size) = line_comment($sample, 0, $sample.len());
 				assert_eq!(token, Token::LineComment(&$expected_token[..]),
 					"Expected token of {:?}", $sample);
 				assert_eq!(line_comment_size, $expected_size, "Expected length of {:?}", $sample);
 			};
 		}
+
 		test_line_comment!(b"\n" 0);
 		test_line_comment!(b"#\n" 1 b"");
 		test_line_comment!(b"#" 1 b"");
@@ -83,8 +85,7 @@ mod tests {
 	}
 
 	#[test]
-	#[should_panic]
 	fn cannot_lex() {
-		line_comment(&b""[..], 0);
+		assert_eq!(line_comment(&b""[..], 0, 0), (Token::Empty, 0));
 	}
 }
