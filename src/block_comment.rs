@@ -110,8 +110,9 @@ mod tests {
 	}
 
 	#[test]
-	#[should_panic]
 	fn cannot_lex() {
-		block_comment(&b""[..], 0, 0);
+		assert_eq!(block_comment(&b""[..], 0, 0).0, Token::Empty);
+		assert_eq!(block_comment(&b"#"[..], 0, 0).0, Token::Invalid);
+		assert_eq!(block_comment(&b"##"[..], 0, 0).0, Token::Invalid);
 	}
 }
