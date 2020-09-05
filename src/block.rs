@@ -3,6 +3,30 @@ use crate::find_line_ending;
 use crate::token::{Token, TokenInfo};
 use crate::special_characters::{NEW_LINE, TAB};
 
+/// Returns the recognized block and the last seen index.
+///
+/// This is a generalization of blocks in cheamyp. It will return a vector of lines that are in the
+/// block.
+///
+/// ## Example
+/// ```
+/// use chearmyp::token::Token;
+/// use chearmyp::block;
+///
+/// let special_character = '@' as u8;
+/// let sample_block = b"
+/// @@@
+/// hello world
+/// @@@";
+/// let (block, last_seen_index) = block(sample_block, 1, 0, special_character);
+/// if let Token::Block(lines) = block {
+/// 	assert_eq!(lines.len(), 1, "Expected lines of {:?}", &sample_block[..]);
+///	assert_eq!(vec![&b"hello world"[..]], lines);
+/// } else {
+/// 	panic!("The source does not contain a block");
+/// }
+/// assert_eq!(last_seen_index, 20);
+/// ```
 pub fn block(src: &[u8], offset: usize, tab_count: usize, special_character: u8) -> TokenInfo {
 	if has_3_special_characters(src, offset, special_character) {
 		let mut lines = Vec::new();
