@@ -11,22 +11,22 @@ pub mod special_characters;
 mod find_line_ending;
 
 /// Contains `line_comment()` lexer.
-pub mod line_comment;
+mod line_comment;
 
 /// Contains `block_comment()` lexer.
-pub mod block_comment;
+mod block_comment;
 
 /// Contains `simplex()` lexer.
-pub mod simplex;
+mod simplex;
 
-/// Contains `complex()` lexer.
-pub mod complex;
+/// Contains `complex()` lexer and `determine_ending()`.
+mod complex;
 
 /// Contains `attacher()` lexer.
-pub mod attacher;
+mod attacher;
 
 /// Contains `line_othertongue()` lexer.
-pub mod line_othertongue;
+mod line_othertongue;
 
 /// Contains `block()` lexer.
 pub mod block;
@@ -38,3 +38,10 @@ mod block_othertongue;
 mod delimeter;
 
 pub use find_line_ending::find_line_ending;
+pub use line_comment::line_comment;
+pub use block_comment::block_comment;
+pub use simplex::simplex;
+pub use complex::complex;
+pub use attacher::attacher;
+pub use line_othertongue::line_othertongue;
+pub use block_othertongue::block_othertongue;
