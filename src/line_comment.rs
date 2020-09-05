@@ -1,6 +1,6 @@
-use crate::find_line_ending;
 use crate::token::{Token, TokenInfo};
 use crate::special_characters::POUND_SIGN;
+use crate::find_line_ending;
 
 /// Returns the info of recognized line comment and its last index occupied in the source.
 ///
