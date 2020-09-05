@@ -4,11 +4,10 @@ use crate::delimeter::Delimeter;
 use crate::line_othertongue::determine_othertongue_prefix;
 
 pub fn complex(src: &[u8], slice_offset: usize, mut search_offset: usize) -> TokenInfo {
-	let limit = src.len();
 	let size;
 
 	loop {
-		let ending = determine_ending(src, search_offset, limit);
+		let ending = determine_ending(src, search_offset);
 		match ending {
 			Delimeter::Incorrect => search_offset += 1,
 			Delimeter::Pad => {
@@ -26,23 +25,18 @@ pub fn complex(src: &[u8], slice_offset: usize, mut search_offset: usize) -> Tok
 	(Token::Complex(&src[slice_offset..size]), search_offset)
 }
 
-pub(crate) fn determine_ending(src: &[u8], offset: usize, limit: usize) -> Delimeter {
-	match src[offset] {
-		NEW_LINE | TAB => Delimeter::Pad,
-		SPACE => {
+pub(crate) fn determine_ending(src: &[u8], offset: usize) -> Delimeter {
+	match src.get(offset) {
+		Some(&NEW_LINE) | Some(&TAB) => Delimeter::Pad,
+		Some(&SPACE) => {
 			if let Delimeter::Pad = determine_othertongue_prefix(src, offset) {
 				Delimeter::Pad
 			} else {
 				Delimeter::Incorrect
 			}
 		},
-		_ => {
-			if offset + 1 == limit {
-				Delimeter::Limit
-			} else {
-				Delimeter::Incorrect
-			}
-		}
+		Some(_) => Delimeter::Incorrect,
+		None => Delimeter::Limit
 	}
 }
 
