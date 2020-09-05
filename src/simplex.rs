@@ -12,7 +12,7 @@ use crate::delimeter::Delimeter;
 ///
 /// ## Examples
 /// ```
-/// use chearmyp::simplex::simplex;
+/// use chearmyp::simplex;
 /// use chearmyp::token::Token;
 ///
 /// let terminated = b"hello world|";

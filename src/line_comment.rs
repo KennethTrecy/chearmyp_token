@@ -15,7 +15,7 @@ use crate::find_line_ending;
 ///
 /// ## Examples
 /// ```
-/// use chearmyp::line_comment::line_comment;
+/// use chearmyp::line_comment;
 /// use chearmyp::token::Token;
 ///
 /// let non_terminated = b"# hello world";
