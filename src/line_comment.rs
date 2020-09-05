@@ -9,7 +9,8 @@ use crate::special_characters::POUND_SIGN;
 /// ending but it will be counted as the last index.
 ///
 /// ## Notes
-/// If the source has no pound sign found at the offset, it will return an empty token variant
+/// If there is no character at the offset from the source, it will return an empty token variant.
+/// If the source has no pound sign found at the offset, it will return an invalid token variant
 /// with the offset.
 ///
 /// ## Examples
