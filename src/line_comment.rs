@@ -58,26 +58,25 @@ pub fn line_comment(src: &[u8], mut i: usize, limit: usize) -> TokenInfo {
 }
 
 #[cfg(test)]
-mod tests {
+mod t {
 	use super::{Token, line_comment};
+
+	macro_rules! test_line_comment {
+		($sample:literal 0 $variant:ident) => {
+			let (token, line_comment_size) = line_comment($sample, 0, $sample.len());
+			assert_eq!(line_comment_size, 0);
+			assert_eq!(token, Token::$variant);
+		};
+		($sample:literal $expected_size:literal $expected_token:expr) => {
+			let (token, line_comment_size) = line_comment($sample, 0, $sample.len());
+			assert_eq!(token, Token::LineComment(&$expected_token[..]),
+				"Expected token of {:?}", $sample);
+			assert_eq!(line_comment_size, $expected_size, "Expected length of {:?}", $sample);
+		};
+	}
 
 	#[test]
 	fn can_lex() {
-		macro_rules! test_line_comment {
-			($sample:literal 0) => {
-				let (token, line_comment_size) = line_comment($sample, 0, $sample.len());
-				assert_eq!(line_comment_size, 0);
-				assert_eq!(token, Token::Invalid);
-			};
-			($sample:literal $expected_size:literal $expected_token:expr) => {
-				let (token, line_comment_size) = line_comment($sample, 0, $sample.len());
-				assert_eq!(token, Token::LineComment(&$expected_token[..]),
-					"Expected token of {:?}", $sample);
-				assert_eq!(line_comment_size, $expected_size, "Expected length of {:?}", $sample);
-			};
-		}
-
-		test_line_comment!(b"\n" 0);
 		test_line_comment!(b"#\n" 1 b"");
 		test_line_comment!(b"#" 1 b"");
 		test_line_comment!(b"# hello" 7 b" hello");
@@ -86,6 +85,7 @@ mod tests {
 
 	#[test]
 	fn cannot_lex() {
-		assert_eq!(line_comment(&b""[..], 0, 0), (Token::Empty, 0));
+		test_line_comment!(b"" 0 Empty);
+		test_line_comment!(b"\n" 0 Invalid);
 	}
 }
