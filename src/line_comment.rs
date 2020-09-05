@@ -19,7 +19,7 @@ use crate::special_characters::POUND_SIGN;
 /// use chearmyp::token::Token;
 ///
 /// let non_terminated = b"# hello world";
-/// let (comment, last_index) = line_comment(&non_terminated[..], 0, non_terminated.len());
+/// let (comment, last_index) = line_comment(&non_terminated[..], 0);
 /// if let Token::LineComment(comment) = comment {
 /// 	assert_eq!(comment, &non_terminated[1..]);
 /// } else {
@@ -28,7 +28,7 @@ use crate::special_characters::POUND_SIGN;
 /// assert_eq!(last_index, 13);
 ///
 /// let terminated = b"# hello world\n ";
-/// let (comment, last_index) = line_comment(&terminated[..], 0, terminated.len());
+/// let (comment, last_index) = line_comment(&terminated[..], 0);
 /// if let Token::LineComment(comment) = comment {
 /// 	assert_eq!(comment, &terminated[1..13]);
 /// } else {
@@ -37,7 +37,7 @@ use crate::special_characters::POUND_SIGN;
 /// assert_eq!(last_index, 13);
 ///
 /// let non_comment = b"hello world";
-/// let (non_comment, last_index) = line_comment(&non_comment[..], 0, non_comment.len());
+/// let (non_comment, last_index) = line_comment(&non_comment[..], 0);
 /// if let Token::Invalid = non_comment {
 /// 	assert!(true);
 /// } else {
@@ -45,11 +45,11 @@ use crate::special_characters::POUND_SIGN;
 /// }
 /// assert_eq!(last_index, 0);
 /// ```
-pub fn line_comment(src: &[u8], mut i: usize, limit: usize) -> TokenInfo {
+pub fn line_comment(src: &[u8], mut i: usize) -> TokenInfo {
 	let first_character = src.get(i);
 	if let Some(&POUND_SIGN) = first_character {
 		i += 1;
-		let end = find_line_ending(src, i, limit);
+		let end = find_line_ending(src, i);
 		(Token::LineComment(&src[i..end]), end)
 	} else if let Some(_) = first_character {
 		(Token::Invalid, i)
@@ -64,12 +64,12 @@ mod t {
 
 	macro_rules! test_line_comment {
 		($sample:literal 0 $variant:ident) => {
-			let (token, line_comment_size) = line_comment($sample, 0, $sample.len());
+			let (token, line_comment_size) = line_comment($sample, 0);
 			assert_eq!(line_comment_size, 0);
 			assert_eq!(token, Token::$variant);
 		};
 		($sample:literal $expected_size:literal $expected_token:expr) => {
-			let (token, line_comment_size) = line_comment($sample, 0, $sample.len());
+			let (token, line_comment_size) = line_comment($sample, 0);
 			assert_eq!(token, Token::LineComment(&$expected_token[..]),
 				"Expected token of {:?}", $sample);
 			assert_eq!(line_comment_size, $expected_size, "Expected length of {:?}", $sample);
