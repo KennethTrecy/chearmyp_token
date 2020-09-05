@@ -21,7 +21,7 @@ pub fn determine_othertongue_prefix(src: &[u8], offset: usize) -> Delimeter {
 	let equal = Some(&EQUAL);
 	let space = Some(&SPACE);
 	if (first_character == equal && second_character == space)
-	|| (first_character == space && second_character == equal && src.get(offset + 3) == space) {
+	|| (first_character == space && second_character == equal && src.get(offset + 2) == space) {
 		Delimeter::Pad
 	} else {
 		Delimeter::Invalid
