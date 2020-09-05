@@ -14,7 +14,7 @@ pub fn block(src: &[u8], i: usize, tab_count: usize, special_character: u8) -> T
 
 	while i < limit {
 		let start = i;
-		let end = find_line_ending(src, start, limit);
+		let end = find_line_ending(src, start);
 		let line = &src[start..end];
 
 		let mut indent_size = tab_count;

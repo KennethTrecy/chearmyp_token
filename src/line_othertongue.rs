@@ -7,8 +7,7 @@ pub fn line_othertongue(src: &[u8], i: usize) -> TokenInfo {
 	match determine_othertongue_prefix(src, i) {
 		Delimeter::Pad => {
 			let start = i + if src[i] == EQUAL { 2 } else { 3 };
-			let limit = src.len();
-			let end = find_line_ending(src, start, limit);
+			let end = find_line_ending(src, start);
 			(Token::LineOthertongue(&src[start..end]), end)
 		},
 		_ => (Token::Invalid, i)
