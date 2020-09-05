@@ -46,3 +46,26 @@ fn has_3_special_characters(src: &[u8], offset: usize, special_character: u8) ->
 		false
 	}
 }
+
+#[cfg(test)]
+mod t {
+	use super::has_3_special_characters;
+
+	macro_rules! has_3_special_characters {
+		($src:literal $offset:literal $special_character:literal) => {
+			has_3_special_characters(&$src[..], $offset, $special_character as u8)
+		};
+	}
+
+	#[test]
+	fn can_detect_special_characters() {
+		assert!(has_3_special_characters!(b"aaa" 0 'a'), "Normal string");
+	}
+
+	#[test]
+	fn cannot_detect_special_characters() {
+		assert!(!has_3_special_characters!(b"" 0 'a'), "Empty string");
+		assert!(!has_3_special_characters!(b"a" 0 'a'), "Single character string");
+		assert!(!has_3_special_characters!(b"aa" 0 'a'), "Double character string");
+	}
+}
