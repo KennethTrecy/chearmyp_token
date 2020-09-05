@@ -6,7 +6,8 @@ use crate::special_characters::{NEW_LINE, TAB};
 pub fn block(src: &[u8], offset: usize, tab_count: usize, special_character: u8) -> TokenInfo {
 	if has_3_special_characters(src, offset, special_character) {
 		let mut lines = Vec::new();
-		let mut offset = if let Some(&NEW_LINE) = src.get(offset + 3) { 4 } else { 3 };
+		let mut offset = offset + 3;
+		offset += if let Some(&NEW_LINE) = src.get(offset) { 1 } else { 0 };
 
 		loop {
 			let start = offset;
