@@ -31,6 +31,9 @@ pub mod line_othertongue;
 /// Contains `block()` lexer.
 pub mod block;
 
+/// Contains `block_othertongue()` lexer.
+mod block_othertongue;
+
 /// Contains types of delimeter that lexers search for.
 mod delimeter;
 
