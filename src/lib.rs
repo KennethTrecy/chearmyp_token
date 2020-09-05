@@ -29,7 +29,7 @@ mod attacher;
 mod line_othertongue;
 
 /// Contains `block()` lexer.
-pub mod block;
+mod block;
 
 /// Contains `block_othertongue()` lexer.
 mod block_othertongue;
@@ -37,6 +37,7 @@ mod block_othertongue;
 /// Contains types of delimeter that lexers search for.
 mod delimeter;
 
+pub use block::block;
 pub use find_line_ending::find_line_ending;
 pub use line_comment::line_comment;
 pub use block_comment::block_comment;
