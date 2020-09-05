@@ -50,11 +50,23 @@ fn has_3_special_characters(src: &[u8], offset: usize, special_character: u8) ->
 
 #[cfg(test)]
 mod t {
-	use super::has_3_special_characters;
+	use super::{has_3_special_characters, block, Token};
 
 	macro_rules! has_3_special_characters {
 		($src:literal $offset:literal $special_character:literal) => {
 			has_3_special_characters(&$src[..], $offset, $special_character as u8)
+		};
+	}
+
+	macro_rules! block {
+		($src:literal $offset:literal $tab_count:literal $special_character:literal) => {
+			block(&$src[..], $offset, $tab_count, $special_character as u8)
+		};
+	}
+
+	macro_rules! Block {
+		($($token:literal)*) => {
+			Token::Block(alloc::vec![$(&$token[..],)*])
 		};
 	}
 
@@ -68,5 +80,17 @@ mod t {
 		assert!(!has_3_special_characters!(b"" 0 'a'), "Empty string");
 		assert!(!has_3_special_characters!(b"a" 0 'a'), "Single character string");
 		assert!(!has_3_special_characters!(b"aa" 0 'a'), "Double character string");
+	}
+
+	#[test]
+	fn can_lex() {
+		assert_eq!(block!(b"bbb\nb\nbbb" 0 0 'b'), (Block![b"b"], 9));
+	}
+
+	#[test]
+	fn cannot_lex() {
+		assert_eq!(block!(b"" 0 0 'c'), (Token::Empty, 0));
+		assert_eq!(block!(b"c" 0 0 'c'), (Token::Invalid, 0));
+		assert_eq!(block!(b"cc" 0 0 'c'), (Token::Invalid, 0));
 	}
 }
