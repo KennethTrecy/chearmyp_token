@@ -1,7 +1,6 @@
 use crate::token::{Token, TokenInfo};
 use crate::special_characters::{COLON, NEW_LINE, TAB};
 use crate::delimeter::Delimeter;
-use crate::complex::determine_ending;
 
 pub fn attacher(src: &[u8], slice_offset: usize, mut search_offset: usize) -> TokenInfo {
 	let limit = src.len();
@@ -68,6 +67,14 @@ fn determine_separator(src: &[u8], offset: usize, limit: usize) -> Delimeter {
 	}
 }
 
+fn determine_ending(src: &[u8], offset: usize) -> Delimeter {
+	match src.get(offset) {
+		Some(&NEW_LINE) | Some(&TAB) => Delimeter::Pad,
+		Some(_) => Delimeter::Incorrect,
+		None => Delimeter::Limit
+	}
+}
+
 #[cfg(test)]
 mod tests {
 	use super::{Token, attacher};
@@ -93,7 +100,7 @@ mod tests {
 		}
 
 		test_attacher!(b"a:	b", Attacher!(b"a": b"b"), 4);
-		test_attacher!(b"cd:		e", Attacher!(b"cd": b"e"), 5);
+		test_attacher!(b"cd:		e", Attacher!(b"cd": b"e"), 6);
 		test_attacher!(b"f:		g\n", Attacher!(b"f": b"g"), 5);
 		test_attacher!(b"h:	i	j:	k", Attacher!(b"h": b"i"), 4);
 	}
