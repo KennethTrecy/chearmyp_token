@@ -3,6 +3,54 @@ use crate::special_characters::{NEW_LINE, SPACE, TAB};
 use crate::delimeter::Delimeter;
 use crate::line_othertongue::determine_othertongue_prefix;
 
+/// Returns the info of recognized complex and the last index that has been checked from the source.
+///
+/// It needs an array of bytes as the first argument (known as source), where to start slicing
+/// (known as slice offset) as the second argument, and where to start looking for the terminator
+/// (such as tab, new line, or equal sign of the inlined othertongue) as the third argument (known
+/// as the search offset).
+///
+/// ## Notes
+/// This lexer does not differentiate simplexes and attachers. Use [`simplex()`] and [`attacher()`]
+/// lexers first.
+///
+///
+/// ## Examples
+/// ```
+/// use chearmyp::complex;
+/// use chearmyp::token::Token;
+///
+/// let non_terminated = b"hello world";
+/// let (token, last_index) = complex(&non_terminated[..], 0, 0);
+/// if let Token::Complex(token) = token {
+/// 	assert_eq!(token, &b"hello world"[..]);
+/// } else {
+/// 	panic!("The returned token is not complex.");
+/// }
+/// assert_eq!(last_index, 11);
+///
+/// let terminated = b"hello world\n";
+/// let (token, last_index) = complex(&terminated[..], 0, 0);
+/// if let Token::Complex(token) = token {
+/// 	assert_eq!(token, &b"hello world"[..]);
+/// } else {
+/// 	panic!("The returned token is not complex.");
+/// }
+/// assert_eq!(last_index, 11);
+///
+/// // Does not differentiate simplexes and attachers.
+/// let simplex = b"hello world|";
+/// let (simplex, last_index) = complex(&simplex[..], 0, 0);
+/// if let Token::Complex(token) = simplex {
+/// 	assert_eq!(token, &b"hello world|"[..]);
+/// } else {
+/// 	panic!("The returned token is not complex.");
+/// }
+/// assert_eq!(last_index, 12);
+/// ```
+///
+/// [`simplex()`]: ./fn.simplex.html
+/// [`attacher()`]: ./fn.attacher.html
 pub fn complex(src: &[u8], slice_offset: usize, mut search_offset: usize) -> TokenInfo {
 	let slice_end;
 
