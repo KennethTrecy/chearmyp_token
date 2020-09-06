@@ -4,8 +4,9 @@ use crate::delimeter::Delimeter;
 
 /// Returns the info of recognized simplex and the last index that has been checked from the source.
 ///
-/// It needs an array of bytes as the first argument (known as source) and where to start looking
-/// for the vertical line as the second argument (known as the offset).
+/// It needs an array of bytes as the first argument (known as source), where to start slicing
+/// (known as slice offset) as the second argument, and where to start looking for the vertical line
+/// as the third argument (known as the search offset).
 ///
 /// ## Notes
 /// It will return invalid token if there is no vertical line from the specified offset in source.
@@ -18,7 +19,7 @@ use crate::delimeter::Delimeter;
 /// use chearmyp::token::Token;
 ///
 /// let terminated = b"hello world|";
-/// let (token, last_index) = simplex(&terminated[..], 0);
+/// let (token, last_index) = simplex(&terminated[..], 0, 0);
 /// if let Token::Simplex(token) = token {
 /// 	assert_eq!(token, &b"hello world"[..]);
 /// } else {
@@ -27,7 +28,7 @@ use crate::delimeter::Delimeter;
 /// assert_eq!(last_index, 12);
 ///
 /// let non_simplex = b"hello world";
-/// let (non_simplex, last_index) = simplex(&non_simplex[..], 0);
+/// let (non_simplex, last_index) = simplex(&non_simplex[..], 0, 0);
 /// if let Token::Invalid = non_simplex {
 /// 	assert!(true);
 /// } else {
@@ -37,24 +38,24 @@ use crate::delimeter::Delimeter;
 /// ```
 ///
 /// [`attacher()`]: ./fn.attacher.html
-pub fn simplex(src: &[u8], mut offset: usize) -> TokenInfo {
-	let start = offset;
+pub fn simplex(src: &[u8], slice_offset: usize, mut search_offset: usize) -> TokenInfo {
+	let start = slice_offset;
 	let end;
 
 	loop {
-		let ending = determine_ending(src, offset);
+		let ending = determine_ending(src, search_offset);
 		match ending {
-			Delimeter::Incorrect => offset += 1,
-			Delimeter::Invalid => { return (Token::Invalid, offset); },
+			Delimeter::Incorrect => search_offset += 1,
+			Delimeter::Invalid => { return (Token::Invalid, search_offset); },
 			Delimeter::Pad | Delimeter::Limit => {
-				end = offset;
-				offset += 1;
+				end = search_offset;
+				search_offset += 1;
 				break;
 			}
 		}
 	}
 
-	(Token::Simplex(&src[start..end]), offset)
+	(Token::Simplex(&src[start..end]), search_offset)
 }
 
 fn determine_ending(src: &[u8], offset: usize) -> Delimeter {
@@ -86,7 +87,7 @@ mod t {
 			$expected_token:expr,
 			$expected_consumption:literal
 		) => {
-			let (token, consumed_size) = simplex($sample, 0);
+			let (token, consumed_size) = simplex($sample, 0, 0);
 			assert_eq!(token, $expected_token);
 			assert_eq!(consumed_size, $expected_consumption);
 		};
