@@ -11,9 +11,8 @@ use crate::delimeter::Delimeter;
 /// as the search offset).
 ///
 /// ## Notes
-/// This lexer does not differentiate simplexes because there may be a case where the content of an
-/// attacher ends in vertical line. Use [`simplex()`] lexer first. If there is no valid
-/// token found, it will return invalid token along with the last index checked.
+/// If there is no valid token found, it will return invalid token along with the last index
+/// checked.
 ///
 /// ## Examples
 /// ```
@@ -106,8 +105,9 @@ fn determine_separator(src: &[u8], offset: usize) -> Delimeter {
 				Some(_) => Delimeter::Incorrect
 			}
 		},
+		Some(&NEW_LINE) | Some(&TAB) => Delimeter::Invalid,
 		Some(_) => Delimeter::Incorrect,
-		None => Delimeter::Invalid
+		None => Delimeter::Limit
 	}
 }
 
