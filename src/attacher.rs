@@ -2,6 +2,54 @@ use crate::token::{Token, TokenInfo};
 use crate::special_characters::{COLON, NEW_LINE, TAB};
 use crate::delimeter::Delimeter;
 
+/// Returns the info of recognized attacher and the last index that has been checked from the
+/// source.
+///
+/// It needs an array of bytes as the first argument (known as source), where to start slicing
+/// (known as slice offset) as the second argument, and where to start looking for the terminator
+/// (such as tab, new line, or equal sign of the inlined othertongue) as the third argument (known
+/// as the search offset).
+///
+/// ## Notes
+/// This lexer does not differentiate simplexes because there may be a case where the content of an
+/// attacher ends in vertical line. Use [`simplex()`] lexer first. If there is no valid
+/// token found, it will return invalid token along with the last index checked.
+///
+/// ## Examples
+/// ```
+/// use chearmyp::attacher;
+/// use chearmyp::token::Token;
+///
+/// let non_terminated = b"hello: world";
+/// let (token, last_index) = attacher(&non_terminated[..], 0, 0);
+/// if let Token::Attacher(label, content) = token {
+/// 	assert_eq!(label, &b"hello"[..]);
+/// 	assert_eq!(content, &b"world"[..]);
+/// } else {
+/// 	panic!("The returned token is not attacher.");
+/// }
+/// assert_eq!(last_index, 12);
+///
+/// let terminated = b"hello: world\n";
+/// let (token, last_index) = attacher(&terminated[..], 0, 0);
+/// if let Token::Attacher(label, content) = token {
+/// 	assert_eq!(label, &b"hello"[..]);
+/// 	assert_eq!(content, &b"world"[..]);
+/// } else {
+/// 	panic!("The returned token is not attacher.");
+/// }
+/// assert_eq!(last_index, 12);
+///
+/// let simplex = b"hello world";
+/// let (token, last_index) = attacher(&simplex[..], 0, 0);
+/// if let Token::Invalid = token {
+/// 	assert!(true);
+/// } else {
+/// 	panic!("The returned token is not invalid");
+/// }
+/// assert_eq!(last_index, 11);
+/// ```
+
 pub fn attacher(src: &[u8], slice_offset: usize, mut search_offset: usize) -> TokenInfo {
 	let label_start = slice_offset;
 	let label_end;
