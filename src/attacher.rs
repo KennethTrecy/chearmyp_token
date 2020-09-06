@@ -120,32 +120,39 @@ fn determine_ending(src: &[u8], offset: usize) -> Delimeter {
 }
 
 #[cfg(test)]
-mod tests {
+mod t {
 	use super::{Token, attacher};
 
+	macro_rules! test_attacher {
+		(
+			$sample:literal,
+			$expected_token:expr,
+			$expected_consumption:literal
+		) => {
+			let (token, consumed_size) = attacher($sample, 0, 0);
+			assert_eq!(token, $expected_token);
+			assert_eq!(consumed_size, $expected_consumption);
+		};
+	}
+
+	macro_rules! Attacher {
+		($label:literal : $content:literal) => {
+			Token::Attacher(&$label[..], &$content[..])
+		};
+	}
+
 	#[test]
-	fn can_lex_attacher() {
-		macro_rules! test_attacher {
-			(
-				$sample:literal,
-				$expected_token:expr,
-				$expected_consumption:literal
-			) => {
-				let (token, consumed_size) = attacher($sample, 0, 0);
-				assert_eq!(token, $expected_token);
-				assert_eq!(consumed_size, $expected_consumption);
-			};
-		}
-
-		macro_rules! Attacher {
-			($label:literal : $content:literal) => {
-				Token::Attacher(&$label[..], &$content[..])
-			};
-		}
-
+	fn can_lex() {
 		test_attacher!(b"a:	b", Attacher!(b"a": b"b"), 4);
 		test_attacher!(b"cd:		e", Attacher!(b"cd": b"e"), 6);
 		test_attacher!(b"f:		g\n", Attacher!(b"f": b"g"), 5);
 		test_attacher!(b"h:	i	j:	k", Attacher!(b"h": b"i"), 4);
+	}
+
+	#[test]
+	fn cannot_lex() {
+		test_attacher!(b"lm", Token::Invalid, 2);
+		test_attacher!(b"n|", Token::Invalid, 2);
+		test_attacher!(b"o:	", Token::Invalid, 3);
 	}
 }
