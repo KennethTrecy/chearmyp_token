@@ -9,6 +9,8 @@ use crate::delimeter::Delimeter;
 ///
 /// ## Notes
 /// It will return invalid token if there is no vertical line from the specified offset in source.
+/// Also, it does not differentiate attachers because there may be a case where the content of an
+/// attacher ends in vertical line. Use [`attacher()`] lexer first.
 ///
 /// ## Examples
 /// ```
@@ -33,6 +35,8 @@ use crate::delimeter::Delimeter;
 /// }
 /// assert_eq!(last_index, 11);
 /// ```
+///
+/// [`attacher()`]: ./fn.attacher.html
 pub fn simplex(src: &[u8], mut offset: usize) -> TokenInfo {
 	let start = offset;
 	let end;
