@@ -2,13 +2,13 @@ use crate::token::{Token, TokenInfo};
 use crate::special_characters::{NEW_LINE, TAB, VERTICAL_LINE};
 use crate::delimeter::Delimeter;
 
-/// Returns the info of recognized simplex and its last index seen in the source.
+/// Returns the info of recognized simplex and the last index that has been checked from the source.
 ///
 /// It needs an array of bytes as the first argument (known as source) and where to start looking
-/// for the pound signs as the second argument (known as the offset).
+/// for the vertical line as the second argument (known as the offset).
 ///
 /// ## Notes
-/// It will invalid token if there is no valid simplex from the specified offset in source.
+/// It will return invalid token if there is no vertical line from the specified offset in source.
 ///
 /// ## Examples
 /// ```
@@ -22,7 +22,7 @@ use crate::delimeter::Delimeter;
 /// } else {
 /// 	panic!("The returned token is not simplex.");
 /// }
-/// assert_eq!(last_index, 11);
+/// assert_eq!(last_index, 12);
 ///
 /// let non_simplex = b"hello world";
 /// let (non_simplex, last_index) = simplex(&non_simplex[..], 0);
@@ -31,7 +31,7 @@ use crate::delimeter::Delimeter;
 /// } else {
 /// 	panic!("The returned token is not invalid.");
 /// }
-/// assert_eq!(last_index, 10);
+/// assert_eq!(last_index, 11);
 /// ```
 pub fn simplex(src: &[u8], mut offset: usize) -> TokenInfo {
 	let start = offset;
