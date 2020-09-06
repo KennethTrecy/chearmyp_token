@@ -33,52 +33,42 @@ use crate::delimeter::Delimeter;
 /// }
 /// assert_eq!(last_index, 10);
 /// ```
-pub fn simplex(src: &[u8], mut i: usize) -> TokenInfo {
-	let limit = src.len();
-	let size;
+pub fn simplex(src: &[u8], mut offset: usize) -> TokenInfo {
+	let start = offset;
+	let end;
 
 	loop {
-		let ending = determine_ending(src, i, limit);
+		let ending = determine_ending(src, offset);
 		match ending {
-			Delimeter::Incorrect => i += 1,
-			Delimeter::Invalid => { return (Token::Invalid, i); },
-			Delimeter::Pad => {
-				size = i;
-				i += 1;
-				break;
-			},
-			Delimeter::Limit => {
-				size = i;
+			Delimeter::Incorrect => offset += 1,
+			Delimeter::Invalid => { return (Token::Invalid, offset); },
+			Delimeter::Pad | Delimeter::Limit => {
+				end = offset;
+				offset += 1;
 				break;
 			}
 		}
 	}
 
-	(Token::Simplex(&src[0..size]), i)
+	(Token::Simplex(&src[start..end]), offset)
 }
 
-fn determine_ending(src: &[u8], offset: usize, limit: usize) -> Delimeter {
-	match src[offset] {
-		VERTICAL_LINE => {
-			if offset + 1 == limit {
-				Delimeter::Limit
-			} else {
-				let ending = src[offset + 1];
-				if ending == NEW_LINE || ending == TAB {
+fn determine_ending(src: &[u8], offset: usize) -> Delimeter {
+	match src.get(offset) {
+		Some(&VERTICAL_LINE) => {
+			if let Some(&next_character) = src.get(offset + 1) {
+				if next_character == NEW_LINE || next_character == TAB {
 					Delimeter::Pad
 				} else {
 					Delimeter::Incorrect
 				}
+			} else {
+				Delimeter::Limit
 			}
 		},
-		NEW_LINE | TAB => Delimeter::Invalid,
-		_ => {
-			if offset + 1 == limit {
-				Delimeter::Invalid
-			} else {
-				Delimeter::Incorrect
-			}
-		}
+		Some(&NEW_LINE) | Some(&TAB) => Delimeter::Invalid,
+		Some(_) => Delimeter::Incorrect,
+		None => Delimeter::Invalid
 	}
 }
 
@@ -103,13 +93,13 @@ mod tests {
 		test_simplex!(b"a|	", Token::Simplex(&b"a"[..]), 2);
 		test_simplex!(b"bc|	#", Token::Simplex(&b"bc"[..]), 3);
 		test_simplex!(b"def|\n#", Token::Simplex(&b"def"[..]), 4);
-		test_simplex!(b"kl|", Token::Simplex(&b"kl"[..]), 2);
+		test_simplex!(b"kl|", Token::Simplex(&b"kl"[..]), 3);
 	}
 
 	#[test]
 	fn cannot_lex_invalid_source() {
 		test_simplex!(b"g\n", Token::Invalid, 1);
 		test_simplex!(b"hi\tj", Token::Invalid, 2);
-		test_simplex!(b"mn", Token::Invalid, 1);
+		test_simplex!(b"mn", Token::Invalid, 2);
 	}
 }
