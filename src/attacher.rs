@@ -3,12 +3,11 @@ use crate::special_characters::{COLON, NEW_LINE, TAB};
 use crate::delimeter::Delimeter;
 
 pub fn attacher(src: &[u8], slice_offset: usize, mut search_offset: usize) -> TokenInfo {
-	let limit = src.len();
 	let label_start = slice_offset;
 	let label_end;
 
 	loop {
-		let separator = determine_separator(src, search_offset, limit);
+		let separator = determine_separator(src, search_offset);
 		match separator {
 			Delimeter::Incorrect => search_offset += 1,
 			Delimeter::Pad => {
@@ -23,11 +22,11 @@ pub fn attacher(src: &[u8], slice_offset: usize, mut search_offset: usize) -> To
 	let label = &src[label_start..label_end];
 
 	loop {
-		match src[search_offset] {
-			TAB => search_offset += 1,
-			_ => break
+		match src.get(search_offset) {
+			Some(&TAB) => search_offset += 1,
+			Some(_) => break,
+			None => return (Token::Invalid, search_offset)
 		}
-		if search_offset == limit { return (Token::Invalid, search_offset); }
 	}
 
 	let content_start = search_offset;
@@ -49,18 +48,15 @@ pub fn attacher(src: &[u8], slice_offset: usize, mut search_offset: usize) -> To
 	(Token::Attacher(label, content), search_offset)
 }
 
-fn determine_separator(src: &[u8], offset: usize, limit: usize) -> Delimeter {
-	match src[offset] {
-		COLON => {
+fn determine_separator(src: &[u8], offset: usize) -> Delimeter {
+	match src.get(offset) {
+		Some(&COLON) => {
 			let next_offset = offset + 1;
-			let has_reached_limit = next_offset == limit;
-			let next_character = src[next_offset];
-			if !has_reached_limit && next_character == TAB {
-				Delimeter::Pad
-			} else if has_reached_limit || next_character == NEW_LINE {
-				Delimeter::Invalid
-			} else {
-				Delimeter::Incorrect
+			let next_character = src.get(next_offset);
+			match next_character {
+				Some(&TAB) => Delimeter::Pad,
+				Some(_) => Delimeter::Incorrect,
+				None => Delimeter::Invalid
 			}
 		},
 		_ => Delimeter::Incorrect
