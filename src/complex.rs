@@ -4,25 +4,21 @@ use crate::delimeter::Delimeter;
 use crate::line_othertongue::determine_othertongue_prefix;
 
 pub fn complex(src: &[u8], slice_offset: usize, mut search_offset: usize) -> TokenInfo {
-	let size;
+	let slice_end;
 
 	loop {
 		let ending = determine_ending(src, search_offset);
 		match ending {
 			Delimeter::Incorrect => search_offset += 1,
-			Delimeter::Pad => {
-				size = search_offset;
-				break;
-			},
-			Delimeter::Limit => {
-				size = search_offset + 1;
+			Delimeter::Pad | Delimeter::Limit => {
+				slice_end = search_offset;
 				break;
 			},
 			Delimeter::Invalid => return (Token::Invalid, search_offset)
 		}
 	}
 
-	(Token::Complex(&src[slice_offset..size]), search_offset)
+	(Token::Complex(&src[slice_offset..slice_end]), search_offset)
 }
 
 pub(crate) fn determine_ending(src: &[u8], offset: usize) -> Delimeter {
@@ -60,7 +56,7 @@ mod t {
 
 	#[test]
 	fn can_lex() {
-		test_complex!(b"a", Complex!(b"a"), 0);
+		test_complex!(b"a", Complex!(b"a"), 1);
 		test_complex!(b"bc	", Complex!(b"bc"), 2);
 		test_complex!(b"d\n", Complex!(b"d"), 1);
 		test_complex!(b"e = f\n", Complex!(b"e"), 1);

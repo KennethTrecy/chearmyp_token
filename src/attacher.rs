@@ -35,15 +35,11 @@ pub fn attacher(src: &[u8], slice_offset: usize, mut search_offset: usize) -> To
 	let content_end;
 
 	loop {
-		let ending = determine_ending(src, search_offset, limit);
+		let ending = determine_ending(src, search_offset);
 		match ending {
 			Delimeter::Incorrect => search_offset += 1,
-			Delimeter::Pad => {
+			Delimeter::Pad | Delimeter::Limit => {
 				content_end = search_offset;
-				break;
-			},
-			Delimeter::Limit => {
-				content_end = search_offset + 1;
 				break;
 			},
 			Delimeter::Invalid => return (Token::Invalid, search_offset)
@@ -96,7 +92,7 @@ mod tests {
 			};
 		}
 
-		test_attacher!(b"a:	b", Attacher!(b"a": b"b"), 3);
+		test_attacher!(b"a:	b", Attacher!(b"a": b"b"), 4);
 		test_attacher!(b"cd:		e", Attacher!(b"cd": b"e"), 5);
 		test_attacher!(b"f:		g\n", Attacher!(b"f": b"g"), 5);
 		test_attacher!(b"h:	i	j:	k", Attacher!(b"h": b"i"), 4);
