@@ -73,7 +73,7 @@ fn determine_ending(src: &[u8], offset: usize) -> Delimeter {
 }
 
 #[cfg(test)]
-mod tests {
+mod t {
 	use super::{Token, simplex};
 
 	macro_rules! test_simplex {
@@ -97,9 +97,10 @@ mod tests {
 	}
 
 	#[test]
-	fn cannot_lex_invalid_source() {
+	fn cannot_lex() {
 		test_simplex!(b"g\n", Token::Invalid, 1);
 		test_simplex!(b"hi\tj", Token::Invalid, 2);
 		test_simplex!(b"mn", Token::Invalid, 2);
+		test_simplex!(b"o: pq", Token::Invalid, 5);
 	}
 }
