@@ -43,3 +43,41 @@ pub fn block_othertongue(src: &[u8], offset: usize, tab_count: usize) -> TokenIn
 		block
 	}
 }
+
+#[cfg(test)]
+mod t {
+	use super::{Token, block_othertongue};
+
+	macro_rules! test_block_othertongue {
+		($sample:literal $tab_count:literal $expected_consumed_size:literal $expected_token:expr) => {
+			let (token, block_othertongue_size) = block_othertongue($sample, 0, $tab_count);
+			assert_eq!(block_othertongue_size, $expected_consumed_size,
+				"Consumed size of {:?}", $sample);
+			assert_eq!(token, $expected_token,
+				"Expected token of {:?}", $sample);
+		};
+	}
+
+	macro_rules! BlockOthertongue {
+		($($token:literal)*) => {
+			Token::BlockOthertongue(alloc::vec![$(
+				&$token[..],
+			)*])
+		};
+	}
+
+	#[test]
+	fn can_lex() {
+		test_block_othertongue!(b"===\n===" 0 7 BlockOthertongue![]);
+		test_block_othertongue!(b"===\na\n===" 0 9 BlockOthertongue![b"a"]);
+		test_block_othertongue!(b"===\n\tbc\n\t===" 1 12 BlockOthertongue![b"\tbc"]);
+		test_block_othertongue!(b"===\n\td\n\t\te\n\t\t===" 2 16 BlockOthertongue![b"\td" b"\t\te"]);
+	}
+
+	#[test]
+	fn cannot_lex() {
+		assert_eq!(block_othertongue(&b""[..], 0, 0).0, Token::Empty);
+		assert_eq!(block_othertongue(&b"="[..], 0, 0).0, Token::Invalid);
+		assert_eq!(block_othertongue(&b"=="[..], 0, 0).0, Token::Invalid);
+	}
+}
