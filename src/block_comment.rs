@@ -2,18 +2,15 @@ use crate::token::{Token, TokenInfo};
 use crate::block::block;
 use crate::special_characters::POUND_SIGN;
 
-/// Returns the info of recognized block comment and its last seen index in the source.
+/// Returns the info of recognized block comment and its probably last seen index in the source.
 ///
 /// It needs an array of bytes as the first argument (known as source), where to start looking for
 /// the pound signs as the second argument (known as the offset), and the number of tabs must the
-/// terminatng pound signs be indented.
+/// terminating pound signs be indented.
 ///
 /// ## Notes
 /// If the source has no 3 pound signs found at the offset, it will return an invalid token variant
 /// with the offset.
-///
-/// ## Panics
-/// It cannot lex a source that is less than 3 characters or if not terminated properly.
 ///
 /// ## Examples
 /// ```
