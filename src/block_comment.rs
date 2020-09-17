@@ -48,7 +48,7 @@ pub fn block_comment(src: &[u8], offset: usize, tab_count: usize) -> TokenInfo {
 }
 
 #[cfg(test)]
-mod tests {
+mod t {
 	use super::{Token, block_comment};
 
 	macro_rules! test_block_comment {
