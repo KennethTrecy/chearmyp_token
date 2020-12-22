@@ -40,6 +40,9 @@ mod delimeter;
 // Contains `any()` lexer.
 mod any;
 
+// Contains `count_tabs()` counter.
+mod count_tabs;
+
 pub use block::block;
 pub use find_line_ending::find_line_ending;
 pub use line_comment::line_comment;
