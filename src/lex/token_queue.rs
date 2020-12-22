@@ -3,11 +3,11 @@ use crate::lex::Token;
 
 /// Contains the tokens that have been lexed.
 #[cfg_attr(test, derive(Debug, PartialEq))]
-pub struct TokenStream<'a>(pub VecDeque<Token<'a>>);
+pub struct TokenQueue<'a>(pub VecDeque<Token<'a>>);
 
-impl<'a> TokenStream<'a> {
+impl<'a> TokenQueue<'a> {
 	pub fn new() -> Self {
-		TokenStream(VecDeque::new())
+		TokenQueue(VecDeque::new())
 	}
 }
 
@@ -15,7 +15,7 @@ impl<'a> TokenStream<'a> {
 use core::cmp::PartialEq;
 
 #[cfg(test)]
-impl<'a> PartialEq<VecDeque<Token<'a>>> for TokenStream<'a> {
+impl<'a> PartialEq<VecDeque<Token<'a>>> for TokenQueue<'a> {
 	fn eq(&self, other: &VecDeque<Token<'a>>) -> bool {
 		PartialEq::eq(&self.0, other)
 	}
@@ -24,12 +24,12 @@ impl<'a> PartialEq<VecDeque<Token<'a>>> for TokenStream<'a> {
 #[cfg(test)]
 mod t {
 	use super::VecDeque;
-	use super::TokenStream;
+	use super::TokenQueue;
 
 	#[test]
 	fn can_compare_to_itself() {
-		let stream = TokenStream(VecDeque::new());
-		let other_stream = TokenStream(VecDeque::new());
-		assert_eq!(stream, other_stream);
+		let queue = TokenQueue(VecDeque::new());
+		let other_queue = TokenQueue(VecDeque::new());
+		assert_eq!(queue, other_queue);
 	}
 }

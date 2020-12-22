@@ -1,5 +1,5 @@
 /// Contains the data structure returned by the main Lexer.
-mod token_stream;
+mod token_queue;
 
 /// Contains the data structures and type aliases used and/or returned by different lexers.
 mod token;
@@ -54,7 +54,7 @@ pub use line_othertongue::line_othertongue;
 pub use block_othertongue::block_othertongue;
 pub use any::any;
 pub use token::Token;
-pub use token_stream::TokenStream;
+pub use token_queue::TokenQueue;
 
 use alloc::collections::VecDeque;
 use special_characters::NEW_LINE;
@@ -68,7 +68,7 @@ use count_tabs::count_tabs;
 /// ```
 /// use std::collections::VecDeque;
 /// use chearmyp::lex::lex;
-/// use chearmyp::lex::{Token, TokenStream};
+/// use chearmyp::lex::{Token, TokenQueue};
 /// let source = b"
 /// a complex
 /// this:	is an attacher
@@ -76,18 +76,18 @@ use count_tabs::count_tabs;
 /// ## This is a line comment
 /// ";
 ///
-/// let stream: TokenStream = lex(&source[..]);
-/// let stream: VecDeque<Token> = stream.0;
+/// let queue: TokenQueue = lex(&source[..]);
+/// let queue: VecDeque<Token> = queue.0;
 ///
-/// assert_eq!(stream[0], Token::Complex(b"a complex"));
-/// assert_eq!(stream[1], Token::Attacher(b"this", b"is an attacher"));
-/// assert_eq!(stream[2], Token::ScopeLevel(1));
-/// assert_eq!(stream[3], Token::Simplex(b"a simplex"));
-/// assert_eq!(stream[4], Token::ScopeLevel(0));
-/// assert_eq!(stream[5], Token::LineComment(b" This is a line comment"));
+/// assert_eq!(queue[0], Token::Complex(b"a complex"));
+/// assert_eq!(queue[1], Token::Attacher(b"this", b"is an attacher"));
+/// assert_eq!(queue[2], Token::ScopeLevel(1));
+/// assert_eq!(queue[3], Token::Simplex(b"a simplex"));
+/// assert_eq!(queue[4], Token::ScopeLevel(0));
+/// assert_eq!(queue[5], Token::LineComment(b" This is a line comment"));
 /// ```
-pub fn lex(mut src: &[u8]) -> TokenStream {
-	let mut token_stream = VecDeque::new();
+pub fn lex(mut src: &[u8]) -> TokenQueue {
+	let mut token_queue = VecDeque::new();
 	let mut tab_count = 0;
 	let mut scanned_size = 0;
 	let limit = src.len();
@@ -106,16 +106,16 @@ pub fn lex(mut src: &[u8]) -> TokenStream {
 		src = &src[new_tab_count..];
 
 		if new_tab_count != tab_count {
-			token_stream.push_back(Token::ScopeLevel(new_tab_count));
+			token_queue.push_back(Token::ScopeLevel(new_tab_count));
 			tab_count = new_tab_count;
 		}
 
 		let (token, size) = any(src, 0, tab_count);
-		token_stream.push_back(token);
+		token_queue.push_back(token);
 
 		scanned_size += size;
 		src = &src[size..];
 	}
 
-	TokenStream(token_stream)
+	TokenQueue(token_queue)
 }
