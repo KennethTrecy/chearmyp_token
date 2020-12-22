@@ -55,3 +55,67 @@ pub use block_othertongue::block_othertongue;
 pub use any::any;
 pub use token::Token;
 pub use token_stream::TokenStream;
+
+use alloc::collections::VecDeque;
+use special_characters::NEW_LINE;
+use count_tabs::count_tabs;
+
+/// Returns a stream of tokens based from the source.
+///
+/// The source is the first argument which contain an array of bytes.
+///
+/// ## Examples
+/// ```
+/// use std::collections::VecDeque;
+/// use chearmyp::lex::lex;
+/// use chearmyp::lex::{Token, TokenStream};
+/// let source = b"
+/// a complex
+/// this:	is an attacher
+/// 	a simplex|
+/// ## This is a line comment
+/// ";
+///
+/// let stream: TokenStream = lex(&source[..]);
+/// let stream: VecDeque<Token> = stream.0;
+///
+/// assert_eq!(stream[0], Token::Complex(b"a complex"));
+/// assert_eq!(stream[1], Token::Attacher(b"this", b"is an attacher"));
+/// assert_eq!(stream[2], Token::ScopeLevel(1));
+/// assert_eq!(stream[3], Token::Simplex(b"a simplex"));
+/// assert_eq!(stream[4], Token::ScopeLevel(0));
+/// assert_eq!(stream[5], Token::LineComment(b" This is a line comment"));
+/// ```
+pub fn lex(mut src: &[u8]) -> TokenStream {
+	let mut token_stream = VecDeque::new();
+	let mut tab_count = 0;
+	let mut scanned_size = 0;
+	let limit = src.len();
+
+	while scanned_size < limit {
+		if src[0] == NEW_LINE {
+			scanned_size += 1;
+			src = &src[1..];
+			continue;
+		}
+
+		src = &src[0..];
+		let new_tab_count = count_tabs(src, tab_count);
+
+		scanned_size += new_tab_count;
+		src = &src[new_tab_count..];
+
+		if new_tab_count != tab_count {
+			token_stream.push_back(Token::ScopeLevel(new_tab_count));
+			tab_count = new_tab_count;
+		}
+
+		let (token, size) = any(src, 0, tab_count);
+		token_stream.push_back(token);
+
+		scanned_size += size;
+		src = &src[size..];
+	}
+
+	TokenStream(token_stream)
+}
