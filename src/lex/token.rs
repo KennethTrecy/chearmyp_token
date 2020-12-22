@@ -5,6 +5,7 @@ use alloc::vec::Vec;
 pub enum Token<'a> {
 	Empty,
 	Invalid,
+	ScopeLevel(usize),
 	Block(Vec<&'a [u8]>),
 	LineComment(&'a [u8]),
 	BlockComment(Vec<&'a [u8]>),
