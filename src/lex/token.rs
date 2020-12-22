@@ -1,6 +1,6 @@
 use alloc::vec::Vec;
 
-/// Contains the tokens used for lexing.
+/// Contains the tokens used for lexingtoken .
 #[cfg_attr(test, derive(Debug, PartialEq))]
 pub enum Token<'a> {
 	Empty,
