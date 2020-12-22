@@ -51,8 +51,8 @@ mod t {
 
 	#[test]
 	fn can_compare_to_itself() {
-		let queue = TokenQueue(VecDeque::new());
-		let other_queue = TokenQueue(VecDeque::new());
+		let queue = TokenQueue::new();
+		let other_queue = TokenQueue::new();
 		assert_eq!(queue, other_queue);
 	}
 

@@ -87,7 +87,7 @@ use count_tabs::count_tabs;
 /// assert_eq!(queue[5], Token::LineComment(b" This is a line comment"));
 /// ```
 pub fn lex(mut src: &[u8]) -> TokenQueue {
-	let mut token_queue = VecDeque::new();
+	let mut token_queue = TokenQueue::new();
 	let mut tab_count = 0;
 	let mut scanned_size = 0;
 	let limit = src.len();
@@ -106,16 +106,16 @@ pub fn lex(mut src: &[u8]) -> TokenQueue {
 		src = &src[new_tab_count..];
 
 		if new_tab_count != tab_count {
-			token_queue.push_back(Token::ScopeLevel(new_tab_count));
+			token_queue.push(Token::ScopeLevel(new_tab_count));
 			tab_count = new_tab_count;
 		}
 
 		let (token, size) = any(src, 0, tab_count);
-		token_queue.push_back(token);
+		token_queue.push(token);
 
 		scanned_size += size;
 		src = &src[size..];
 	}
 
-	TokenQueue(token_queue)
+	token_queue
 }
