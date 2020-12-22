@@ -37,6 +37,9 @@ mod block_othertongue;
 /// Contains types of delimeter that lexers search for.
 mod delimeter;
 
+// Contains `any()` lexer.
+mod any;
+
 pub use block::block;
 pub use find_line_ending::find_line_ending;
 pub use line_comment::line_comment;
@@ -46,5 +49,6 @@ pub use complex::complex;
 pub use attacher::attacher;
 pub use line_othertongue::line_othertongue;
 pub use block_othertongue::block_othertongue;
+pub use any::any;
 pub use token::Token;
 pub use token_stream::TokenStream;
