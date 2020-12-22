@@ -52,6 +52,7 @@ impl<'a> TokenQueue<'a> {
 	}
 }
 
+mod from;
 mod into_iterator;
 
 #[cfg(test)]
