@@ -6,10 +6,28 @@ use crate::lex::Token;
 pub struct TokenQueue<'a>(pub VecDeque<Token<'a>>);
 
 impl<'a> TokenQueue<'a> {
+	/// Creates the token queue.
+	///
+	/// ## Examples
+	/// ```
+	/// use chearmyp::lex::TokenQueue;
+	///
+	/// let token_queue = TokenQueue::new();
+	/// ```
 	pub fn new() -> Self {
 		TokenQueue(VecDeque::new())
 	}
 
+	/// Pushes a token to the token queue.
+	///
+	/// ## Examples
+	/// ```
+	/// use chearmyp::lex::Token;
+	/// use chearmyp::lex::TokenQueue;
+	///
+	/// let mut token_queue = TokenQueue::new();
+	/// token_queue.push(Token::Simplex(b"hi"));
+	/// ```
 	pub fn push(&mut self, token: Token<'a>) {
 		self.0.push_back(token);
 	}
