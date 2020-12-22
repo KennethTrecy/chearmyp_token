@@ -1,4 +1,4 @@
-use super::special_characters::NEW_LINE;
+use crate::lex::special_characters::NEW_LINE;
 
 /// Returns the index of the first line ending found in the source.
 ///
@@ -7,7 +7,7 @@ use super::special_characters::NEW_LINE;
 ///
 /// ## Examples
 /// ```
-/// use chearmyp::find_line_ending;
+/// use chearmyp::lex::find_line_ending;
 ///
 /// let a = b"hello world";
 /// assert_eq!(find_line_ending(&a[..], 0), 11, "Without line ending");

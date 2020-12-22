@@ -1,6 +1,6 @@
-use crate::token::{Token, TokenInfo};
-use crate::special_characters::{NEW_LINE, TAB, VERTICAL_LINE};
-use crate::delimeter::Delimeter;
+use crate::lex::token::{Token, TokenInfo};
+use crate::lex::special_characters::{NEW_LINE, TAB, VERTICAL_LINE};
+use crate::lex::delimeter::Delimeter;
 
 /// Returns the info of recognized simplex and the last index that has been checked from the source.
 ///
@@ -15,8 +15,8 @@ use crate::delimeter::Delimeter;
 ///
 /// ## Examples
 /// ```
-/// use chearmyp::simplex;
-/// use chearmyp::token::Token;
+/// use chearmyp::lex::simplex;
+/// use chearmyp::lex::Token;
 ///
 /// let terminated = b"hello world|";
 /// let (token, last_index) = simplex(&terminated[..], 0, 0);

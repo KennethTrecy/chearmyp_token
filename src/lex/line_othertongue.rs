@@ -1,7 +1,7 @@
-use crate::token::{Token, TokenInfo};
-use crate::special_characters::{EQUAL, SPACE};
-use crate::delimeter::Delimeter;
-use crate::find_line_ending;
+use crate::lex::token::{Token, TokenInfo};
+use crate::lex::special_characters::{EQUAL, SPACE};
+use crate::lex::delimeter::Delimeter;
+use crate::lex::find_line_ending;
 
 /// Returns the info of recognized line othertogue and the probably last index that has been checked
 /// from the source.
@@ -15,8 +15,8 @@ use crate::find_line_ending;
 ///
 /// ## Examples
 /// ```
-/// use chearmyp::line_othertongue;
-/// use chearmyp::token::Token;
+/// use chearmyp::lex::line_othertongue;
+/// use chearmyp::lex::Token;
 ///
 /// let non_terminated = b"= hello world";
 /// let (token, last_index) = line_othertongue(&non_terminated[..], 0);

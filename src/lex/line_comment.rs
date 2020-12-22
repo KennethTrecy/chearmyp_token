@@ -1,6 +1,6 @@
-use crate::token::{Token, TokenInfo};
-use crate::special_characters::POUND_SIGN;
-use crate::find_line_ending;
+use crate::lex::token::{Token, TokenInfo};
+use crate::lex::special_characters::POUND_SIGN;
+use crate::lex::find_line_ending;
 
 /// Returns the info of recognized line comment and its last index occupied in the source.
 ///
@@ -15,8 +15,8 @@ use crate::find_line_ending;
 ///
 /// ## Examples
 /// ```
-/// use chearmyp::line_comment;
-/// use chearmyp::token::Token;
+/// use chearmyp::lex::line_comment;
+/// use chearmyp::lex::Token;
 ///
 /// let non_terminated = b"# hello world";
 /// let (comment, last_index) = line_comment(&non_terminated[..], 0);
