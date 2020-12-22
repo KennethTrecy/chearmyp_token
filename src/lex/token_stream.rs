@@ -5,6 +5,12 @@ use crate::lex::Token;
 #[cfg_attr(test, derive(Debug, PartialEq))]
 pub struct TokenStream<'a>(pub VecDeque<Token<'a>>);
 
+impl<'a> TokenStream<'a> {
+	pub fn new() -> Self {
+		TokenStream(VecDeque::new())
+	}
+}
+
 #[cfg(test)]
 use core::cmp::PartialEq;
 
