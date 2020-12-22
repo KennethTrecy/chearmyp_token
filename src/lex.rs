@@ -1,3 +1,6 @@
+/// Contains the data structure returned by the main Lexer.
+mod token_stream;
+
 /// Contains the data structures and type aliases used and/or returned by different lexers.
 mod token;
 
@@ -44,3 +47,4 @@ pub use attacher::attacher;
 pub use line_othertongue::line_othertongue;
 pub use block_othertongue::block_othertongue;
 pub use token::Token;
+pub use token_stream::TokenStream;
