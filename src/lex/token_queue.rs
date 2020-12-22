@@ -9,6 +9,10 @@ impl<'a> TokenQueue<'a> {
 	pub fn new() -> Self {
 		TokenQueue(VecDeque::new())
 	}
+
+	pub fn push(&mut self, token: Token<'a>) {
+		self.0.push_back(token);
+	}
 }
 
 #[cfg(test)]
@@ -23,6 +27,7 @@ impl<'a> PartialEq<VecDeque<Token<'a>>> for TokenQueue<'a> {
 
 #[cfg(test)]
 mod t {
+	use super::Token;
 	use super::VecDeque;
 	use super::TokenQueue;
 
@@ -31,5 +36,18 @@ mod t {
 		let queue = TokenQueue(VecDeque::new());
 		let other_queue = TokenQueue(VecDeque::new());
 		assert_eq!(queue, other_queue);
+	}
+
+	#[test]
+	fn can_push() {
+		let token = Token::Empty;
+		let expected_token = Token::Empty;
+		let mut queue = TokenQueue::new();
+		let mut expected_queue = VecDeque::new();
+		expected_queue.push_back(expected_token);
+
+		queue.push(token);
+
+		assert_eq!(queue, expected_queue);
 	}
 }
