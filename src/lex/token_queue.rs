@@ -52,6 +52,8 @@ impl<'a> TokenQueue<'a> {
 	}
 }
 
+mod into_iterator;
+
 #[cfg(test)]
 use core::cmp::PartialEq;
 
