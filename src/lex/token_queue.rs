@@ -31,6 +31,25 @@ impl<'a> TokenQueue<'a> {
 	pub fn push(&mut self, token: Token<'a>) {
 		self.0.push_back(token);
 	}
+
+	/// Takes the oldest token in the token queue.
+	///
+	/// ## Examples
+	/// ```
+	/// use chearmyp::lex::Token;
+	/// use chearmyp::lex::TokenQueue;
+	///
+	/// let mut token_queue = TokenQueue::new();
+	/// token_queue.push(Token::Complex(b"universe"));
+	/// token_queue.push(Token::Simplex(b"!"));
+	///
+	/// let oldest_token = token_queue.shift().unwrap();
+	///
+	/// assert_eq!(oldest_token, Token::Complex(b"universe"));
+	/// ```
+	pub fn shift(&mut self) -> Option<Token<'a>> {
+		self.0.pop_front()
+	}
 }
 
 #[cfg(test)]
@@ -67,5 +86,27 @@ mod t {
 		queue.push(token);
 
 		assert_eq!(queue, expected_queue);
+	}
+
+	#[test]
+	fn can_pop_on_empty_queue() {
+		let mut queue = TokenQueue::new();
+		let expected_token = None;
+
+		let token = queue.shift();
+
+		assert_eq!(token, expected_token);
+	}
+
+	#[test]
+	fn can_pop_on_filled_queue() {
+		let token = Token::Empty;
+		let expected_token = Some(Token::Empty);
+		let mut queue = TokenQueue::new();
+		queue.push(token);
+
+		let token = queue.shift();
+
+		assert_eq!(token, expected_token);
 	}
 }
