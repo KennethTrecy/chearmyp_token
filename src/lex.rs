@@ -56,7 +56,6 @@ pub use any::any;
 pub use token::Token;
 pub use token_queue::TokenQueue;
 
-use alloc::collections::VecDeque;
 use special_characters::NEW_LINE;
 use count_tabs::count_tabs;
 
