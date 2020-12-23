@@ -37,3 +37,18 @@ Their attachment to *simplex* or *complex* can be expressed by one of the follow
 
 Attachers may also have other attachers separated by tabs. In addition, they may be duplicated even
 if they have the same label and/or same content.
+
+## Othertongue
+They are similar to comments but with additional features. They are denoted using equal sign (`=`).
+There must be a *complex* that contains them.
+
+### Line Othertongue
+Prefix: space then, `=` then, space (if inlined); `=` then, space (if the contained)
+These must be within one line only just like the *line* comments. For some purposes, being inlined
+still means "contained" here unlike the *attachers*.
+
+### Block Othertongue
+Prefix: zero to many tabs then, `===` then new line
+Suffix: zero to many tabs (must match number of tabs in prefix) then, `===` then, new line or
+				end-of-file.
+It is similar to *block* comments. Therefore, they may contain multiple lines.
