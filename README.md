@@ -82,19 +82,20 @@ have unstable syntax.
 		```
 
 5. *Othertongue*. These tokens contain a different language from the rest of the document. Their
-		syntax is similar to *comments*. Due to the variety of languages, there are concepts that have
-		no direct translation to the current concept. However, they must be contained to a *complex*.
+    syntax is similar to *comments*. Due to the variety of languages, there are concepts also, that
+    have no direct translation to the current concept. However, *othertongues* must be contained to
+    a *complex*.
 		- *Line* othertongue. These othertoungues are similar to *line* comments. Their containment must
 			be expressed by indention using tab(s) or in one line after the *complex*.
 			```
-			spelled_out_numbers
+			numbers
+				0|
 				= zero
+				1|
 				= one
-				= two
 				= ...
 
-			# Kilig is a Filipino word with no direct translation to English
-			excited butterflies = Kilig
+			attacher = a pair of concepts that attach to other complex or simplex
 			```
 		- *Block* othertongue. These othertongues are similar to *block* comments. Instead of pound
 			signs, they are identified using three equal signs(`===`).
