@@ -18,3 +18,8 @@ suffix.
 ## Simplex
 Suffix: `|` then, new line or tabs or end-of-file
 These basic concepts cannot include other concepts, yet they can attach them.
+
+## Complex
+Suffix: new line or tabs or end-of-file
+These can contain other kinds of concepts by placing them to the next line with indention using a
+tab.
