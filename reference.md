@@ -16,10 +16,10 @@ These comments can have multiple lines. There contents must be preserved excludi
 suffix.
 
 ## Simplex
-Suffix: `|` then, new line or tabs or end-of-file
+Suffix: `|` then, new line or one or many tabs or end-of-file
 These basic concepts cannot include other concepts, yet they can attach them.
 
 ## Complex
-Suffix: new line or tabs or end-of-file
+Suffix: new line or one to many tabs or end-of-file
 These can contain other kinds of concepts by placing them to the next line with indention using a
 tab.
