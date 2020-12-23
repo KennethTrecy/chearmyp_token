@@ -28,15 +28,13 @@ have unstable syntax.
 				###
 			```
 
-2. *Simplex*. These tokens can be thought of as basic concepts where other concepts can use. For
-	example, `letter`. Since these are simple, they cannot contain other concepts. Simplexes must end
-	using a vertical line (`|`). It means that a concept ends there. After the vertical line(`|`),
-	they must be followed by new line(s) or tab(s). Using tab(s) after the vertical line(`|`) allows
-	you to attach other tokens.
+2. *Simplex*. These tokens can be thought of as basic concepts that other concepts can use or
+	include. For example, `letter`. Since these are simple, they cannot contain other concepts.
+	Simplexes must end using a vertical line (`|`). It means that the concept "ends" there.
 	```
-	letter|	# This is an example of simplex
-	1|	# A simplex can be a number
-	?|	# A simplex can be anything as long it does not start a pound sign
+	letter|	# This is an example of simplex. Use tabs to comment.
+	1|	# A simplex can be a number.
+	?|	# A simplex can be anything as long it does not start a pound sign.
 	example city|	# And they may contain spaces too!
 	```
 

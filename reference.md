@@ -14,3 +14,7 @@ Suffix: zero to many tabs (must match number of tabs in prefix) then, `###` then
 				end-of-file.
 These comments can have multiple lines. There contents must be preserved excluding the prefix and
 suffix.
+
+## Simplex
+Suffix: `|` then, new line or tabs or end-of-file
+These basic concepts cannot include other concepts, yet they can attach them.
