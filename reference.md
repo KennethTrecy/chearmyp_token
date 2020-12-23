@@ -6,6 +6,7 @@ In general, comments must be denoted with a pound sign (`#`).
 
 ### Line comment
 Prefix: `#`
+Suffix: new line or end-of-file
 These comments must within one line only.
 
 ### Block comment
@@ -44,6 +45,7 @@ There must be a *complex* that contains them.
 
 ### Line Othertongue
 Prefix: space then, `=` then, space (if inlined); `=` then, space (if the contained)
+Suffix: new line or end-of-file
 These must be within one line only just like the *line* comments. For some purposes, being inlined
 still means "contained" here unlike the *attachers*.
 
