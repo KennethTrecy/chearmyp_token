@@ -61,25 +61,25 @@ have unstable syntax.
 	```
 
 4. *Attacher*. These tokens are pair of concepts attached to a *simplex* or *complex*. These
-	concepts may be a metadata, adjective, reference, and others. They are written below or right
-	side of the *simplex* or *complex* they are attaching to. *Attachers* must have a colon(`:`) and followed tab(s) or spaces(s) between the pairs namely label and content.
-	```
-	books
-		book_a|
-		price: $1					# Attaches book a's price.
-		title: Title A		# Attaches book a's title.
-		author: Author A	# Attaches book a's author.
+		concepts may be a metadata, adjective, reference, and others. They are written below or right
+		side of the *simplex* or *complex* they are attaching to. *Attachers* must have a colon (`:`) and followed tab(s) or spaces(s) between the pairs namely label and content.
+		```
+		books
+			book_a|
+			price: $1					# Attaches book a's price.
+			title: Title A		# Attaches book a's title.
+			author: Author A	# Attaches book a's author.
 
-		book_b|
-		price:	$2				# Attaches book b's price.
-		title:	Title B		# Attaches book b's title.
-		author:	Author B	# Attaches book b's author.
+			book_b|
+			price:	$2				# Attaches book b's price.
+			title:	Title B		# Attaches book b's title.
+			author:	Author B	# Attaches book b's author.
 
-		# Attachers can be written in one line.
-		book_c|
-		price: $3	title: Title C	author: Author C
-	name: Book set A	# Attaches book set's name.
-	```
+			# Attachers can be written in one line.
+			book_c|
+			price: $3	title: Title C	author: Author C
+		name: Book set A	# Attaches book set's name.
+		```
 
 5. *Othertongue*. These tokens contain a different language from the rest of the document. Their
 	syntax is similar to *comments*. Due to the variety of languages, there are concepts that have no
