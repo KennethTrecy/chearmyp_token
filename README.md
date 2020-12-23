@@ -3,7 +3,7 @@ This is an experimental general purpose language. In this context, general purpo
 be used as a markup, programming, command, and more.
 
 ## Syntax
-There are five general kinds of tokens that exist in Churmyprea. Take note that Churmyprea still
+There are five general kinds of tokens that exist in Chearmyp. Take note that Chearmyp still
 have unstable syntax.
 1. *Comment*. These tokens is used for documentation purposes. It has two subkinds: *line* comments
 	and *block* comments.
