@@ -1,6 +1,6 @@
 # Chearmyp
-This is an experimental general purpose language. In this context, general purpose means that it can
-be used as a markup, programming, command, and more.
+This is an experimental, general purpose, human-readable, language. In this context, general purpose
+means that it can be used as a markup, programming, command, and more.
 
 ## Syntax Overview
 There are five general kinds of tokens that exist in Chearmyp. Take note that Chearmyp still
