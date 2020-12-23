@@ -2,33 +2,31 @@
 This is an experimental general purpose language. In this context, general purpose means that it can
 be used as a markup, programming, command, and more.
 
-## Syntax
+## Syntax Overview
 There are five general kinds of tokens that exist in Chearmyp. Take note that Chearmyp still
 have unstable syntax.
-1. *Comment*. These tokens is used for documentation purposes. It has two subkinds: *line* comments
-	and *block* comments.
-	 - *Line* comment. These are comments that only exist in one line. They are denoted using a pound
-		sign (`#`).
+1. *Comment*. These tokens may be used for documentation purposes. It has two subkinds: *line*
+	comments and *block* comments.
+	- *Line* comment. These are comments that only exist in one line and have a pound sign (`#`)
+		prefix.
 		```
 		# This is a line comment.
 		```
-	 - *Block* comment. These comments may have one or more lines. It must have three pound signs
-		(`###`) before and after the comment content. If the starting three pound signs (`###`) have
-		indention before them, the ending three pound signs (`###`) must also have the matching
-		indention.
-		```
-		###
-		This is a block comment
-		###
+	- *Block* comment. These comments may have one or more lines. They have three pound signs (`###`)
+	as their prefix and suffix.
+			```
+			###
+			This is a block comment.
+			###
 
-		# Below is an indented block comment
-			###
-				This is an indented block comment
-		### These pound signs will not terminate the comment
-				### This one too
-			Only the pound signs below will end the block comment.
-			###
-		```
+			# Below is an indented block comment.
+				###
+					This is an indented block comment.
+			### These pound signs will not terminate the comment.
+					### This one too.
+				Only the pound signs below will end the block comment.
+				###
+			```
 
 2. *Simplex*. These tokens can be thought of as basic concepts where other concepts can use. For
 	example, `letter`. Since these are simple, they cannot contain other concepts. Simplexes must end
