@@ -1,5 +1,5 @@
 use crate::lex::token::{Token, TokenInfo};
-use crate::lex::special_characters::{EQUAL, POUND_SIGN};
+use crate::lex::special_characters::{EQUAL, POUND_SIGN, SPACE};
 use crate::lex::{
 	simplex,
 	complex,
@@ -67,7 +67,7 @@ pub fn any(src: &[u8], offset: usize, tab_count: usize) -> TokenInfo {
 				lex!{ line_comment which expects LineComment(_) }
 			}
 		}
-	} else if src[0] == EQUAL {
+	} else if src[0] == EQUAL || (src[0] == SPACE && src[1] == EQUAL) {
 		lex!{
 			block_othertongue(tab_count)
 			unless BlockOthertongue(_) => {
@@ -160,5 +160,10 @@ mod t {
 		expected_lines.push(&b"pqrs"[..]);
 
 		test_any!(b"===\npqrs\n===" (Token::BlockOthertongue(expected_lines), 12));
+	}
+
+	#[test]
+	fn can_lex_inlined_line_othertongue() {
+		test_any!(b" = tu" (Token::LineOthertongue(b"tu"), 5));
 	}
 }
