@@ -12,7 +12,7 @@ These comments must within one line only.
 ### Block comment
 Prefix: zero to many tabs then, `###` then new line
 Suffix: zero to many tabs (must match number of tabs in prefix) then, `###` then, new line or
-				end-of-file.
+			end-of-file.
 These comments can have multiple lines. There contents must be preserved excluding the prefix and
 suffix.
 
@@ -52,5 +52,5 @@ still means "contained" here unlike the *attachers*.
 ### Block Othertongue
 Prefix: zero to many tabs then, `===` then new line
 Suffix: zero to many tabs (must match number of tabs in prefix) then, `===` then, new line or
-				end-of-file.
+			end-of-file.
 It is similar to *block* comments. Therefore, they may contain multiple lines.
