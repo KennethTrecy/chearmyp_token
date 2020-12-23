@@ -2,5 +2,10 @@
 	"folders": [
 		// {"path": ".", "name": "root"},
 		{"path": "src", "name": "source"}
-	]
+	],
+	"settings": {
+		"[markdown]": {
+			"editor.tabSize": 3
+		},
+	}
 }
