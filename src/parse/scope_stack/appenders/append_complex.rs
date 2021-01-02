@@ -18,7 +18,7 @@ mod t {
 
 	#[test]
 	pub fn can_append() {
-		let concept = b"ab";
+		let concept = b"abc";
 		let mut scope_stack = ScopeStack::new();
 
 		let expected_fragments = {

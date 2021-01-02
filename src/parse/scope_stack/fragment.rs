@@ -27,8 +27,8 @@ mod t {
 	#[test]
 	fn can_attach() {
 		let concept_name = b"Attaching attachers to simplex fragments";
-		let label = b"ab";
-		let content = b"cd";
+		let label = b"a";
+		let content = b"bcd";
 		let mut fragment = Fragment::Simplex(&concept_name[..], Vec::new());
 		let attacher = Node::Attacher(&label[..], &content[..]);
 		let expected_fragment = Fragment::Simplex(&concept_name[..], {
