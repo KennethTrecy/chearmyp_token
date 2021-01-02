@@ -20,6 +20,7 @@ where T: 'a + Into<TokenQueue<'a>> {
 			Token::ScopeLevel(level) => scope_stack.minimize_scope_level_by(level),
 			Token::LineComment(comment) => scope_stack.append_line_comment(comment),
 			Token::BlockComment(comment_lines) => scope_stack.append_block_comment(comment_lines),
+			Token::LineOthertongue(othertongue) => scope_stack.append_line_othertongue(othertongue),
 			_ => unimplemented!()
 		}
 	}
