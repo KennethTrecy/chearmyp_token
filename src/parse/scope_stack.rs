@@ -1,3 +1,5 @@
+mod fragment;
+
 use alloc::vec::Vec;
 use crate::parse::Node;
 
