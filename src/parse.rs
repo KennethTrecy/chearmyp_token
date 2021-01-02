@@ -34,3 +34,47 @@ where T: 'a + Into<TokenQueue<'a>> {
 
 	scope_stack.finalize()
 }
+
+
+#[cfg(test)]
+mod t {
+	use alloc::collections::VecDeque;
+	use alloc::vec::Vec;
+	use super::{Node, Token, TokenQueue};
+	use super::parse;
+
+	#[test]
+	fn can_parse_short_stream() {
+		let mut sample = VecDeque::new();
+		sample.push_back(Token::Complex(b"a"));
+		let sample = TokenQueue(sample);
+		let nodes = parse(sample);
+		let mut expected_nodes = Vec::new();
+		expected_nodes.push(Node::Complex(b"a", Vec::new(), Vec::new()));
+		assert_eq!(nodes, expected_nodes)
+	}
+
+	#[test]
+	fn can_parse_long_stream() {
+		let mut sample = VecDeque::new();
+		sample.push_back(Token::Complex(b"b"));
+		sample.push_back(Token::ScopeLevel(1));
+		sample.push_back(Token::Complex(b"cd"));
+		sample.push_back(Token::Complex(b"ef"));
+		sample.push_back(Token::ScopeLevel(0));
+		sample.push_back(Token::Complex(b"g"));
+		let sample = TokenQueue(sample);
+		let nodes = parse(sample);
+
+		let mut expected_nodes = Vec::new();
+		expected_nodes.push(Node::Complex(b"b", Vec::new(), {
+			let mut content = Vec::new();
+			content.push(Node::Complex(b"cd", Vec::new(), Vec::new()));
+			content.push(Node::Complex(b"ef", Vec::new(), Vec::new()));
+			content
+		}));
+		expected_nodes.push(Node::Complex(b"g", Vec::new(), Vec::new()));
+
+		assert_eq!(nodes, expected_nodes)
+	}
+}
