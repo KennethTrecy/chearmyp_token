@@ -19,6 +19,7 @@ where T: 'a + Into<TokenQueue<'a>> {
 			Token::Simplex(concept) => scope_stack.append_simplex(concept),
 			Token::ScopeLevel(level) => scope_stack.minimize_scope_level_by(level),
 			Token::LineComment(comment) => scope_stack.append_line_comment(comment),
+			Token::BlockComment(comment_lines) => scope_stack.append_block_comment(comment_lines),
 			_ => unimplemented!()
 		}
 	}
