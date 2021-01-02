@@ -7,6 +7,30 @@ use alloc::vec::Vec;
 use crate::lex::{Token, TokenQueue};
 use scope_stack::ScopeStack;
 
+/// Returns a collection of nodes based from the source.
+///
+/// The source is the first argument which contain an array of bytes or a stream of tokens.
+///
+/// ## Examples
+/// ```
+/// use chearmyp::parse::{parse, Node};
+/// let source = b"
+/// ## A sample source
+/// hello
+/// 	world
+/// 	to: everyone
+/// hi universe|
+/// ";
+///
+/// let nodes = parse(&source[..]);
+/// assert_eq!(nodes, vec![
+/// 	Node::LineComment(b" A sample source"),
+/// 	Node::Complex(b"hello", Vec::new(), vec![
+/// 		Node::Complex(b"world", vec![Node::Attacher(b"to", b"everyone")], Vec::new())
+/// 	]),
+/// 	Node::Simplex(b"hi universe", Vec::new())
+/// ])
+/// ```
 pub fn parse<'a, T>(stream: T) -> Vec<Node<'a>>
 where T: 'a + Into<TokenQueue<'a>> {
 	let stream = stream.into();
