@@ -1,5 +1,5 @@
 use crate::lex::token::{Token, TokenInfo};
-use crate::lex::special_characters::{COLON, NEW_LINE, TAB};
+use crate::lex::special_characters::{COLON, NEW_LINE, SPACE, TAB};
 use crate::lex::delimeter::Delimeter;
 
 /// Returns the info of recognized attacher and the last index that has been checked from the
@@ -69,7 +69,7 @@ pub fn attacher(src: &[u8], slice_offset: usize, mut search_offset: usize) -> To
 
 	loop {
 		match src.get(search_offset) {
-			Some(&TAB) => search_offset += 1,
+			Some(&TAB) | Some(&SPACE) => search_offset += 1,
 			Some(_) => break,
 			None => return (Token::Invalid, search_offset)
 		}
@@ -100,7 +100,7 @@ fn determine_separator(src: &[u8], offset: usize) -> Delimeter {
 			let next_offset = offset + 1;
 			let next_character = src.get(next_offset);
 			match next_character {
-				Some(&TAB) => Delimeter::Pad,
+				Some(&TAB) | Some(&SPACE) => Delimeter::Pad,
 				Some(&NEW_LINE) | None => Delimeter::Invalid,
 				Some(_) => Delimeter::Incorrect
 			}
@@ -154,5 +154,10 @@ mod t {
 		test_attacher!(b"lm", Token::Invalid, 2);
 		test_attacher!(b"n|", Token::Invalid, 2);
 		test_attacher!(b"o:	", Token::Invalid, 3);
+	}
+
+	#[test]
+	fn can_lex_separated_by_colon_then_space() {
+		test_attacher!(b"p: q", Attacher!(b"p": b"q"), 4);
 	}
 }
