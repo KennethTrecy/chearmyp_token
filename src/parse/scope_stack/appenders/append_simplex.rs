@@ -41,4 +41,41 @@ mod t {
 			scopes
 		});
 	}
+
+	use crate::parse::Node;
+
+	#[test]
+	pub fn can_promote_preceding_concepts_first() {
+		let first_concept = b"cdef";
+		let second_concept = b"gh";
+		let mut scope_stack = ScopeStack::new();
+
+		let expected_fragments = {
+			let mut fragments = Vec::with_capacity(1);
+			let fragment = Fragment::Simplex(&second_concept[..], Vec::new());
+			fragments.push(fragment);
+			fragments
+		};
+
+		let expected_first_scope = {
+			let mut scope = Vec::with_capacity(1);
+			let node = Node::Simplex(&first_concept[..], Vec::new());
+			scope.push(node);
+			scope
+		};
+
+		let expected_scopes = {
+			let mut scopes = Vec::with_capacity(1);
+			scopes.push(expected_first_scope);
+			scopes
+		};
+
+		scope_stack.append_simplex(&first_concept[..]);
+		scope_stack.append_simplex(&second_concept[..]);
+
+		assert_eq!(scope_stack.level, 0);
+		assert_eq!(scope_stack.last_relationship, Relationship::Contained);
+		assert_eq!(scope_stack.fragments, expected_fragments);
+		assert_eq!(scope_stack.scopes, expected_scopes);
+	}
 }
