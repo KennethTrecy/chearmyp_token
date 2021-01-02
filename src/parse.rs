@@ -14,6 +14,8 @@ where T: 'a + Into<TokenQueue<'a>> {
 
 	for token in stream {
 		match token {
+			Token::Simplex(concept) => scope_stack.append_simplex(concept),
+			_ => unimplemented!()
 		}
 	}
 

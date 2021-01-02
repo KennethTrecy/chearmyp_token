@@ -22,6 +22,8 @@ pub struct ScopeStack<'a> {
 	pub scopes: Vec<Vec<Node<'a>>>
 }
 
+mod appenders;
+
 impl<'a> ScopeStack<'a> {
 	/// Creates a scope stack that serves as the memory for the main parser.
 	pub fn new() -> Self {
