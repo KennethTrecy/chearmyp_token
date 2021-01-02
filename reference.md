@@ -13,7 +13,7 @@ These comments must within one line only.
 Prefix: zero to many tabs then, `###` then new line
 Suffix: zero to many tabs (must match number of tabs in prefix) then, `###` then, new line or
 			end-of-file.
-These comments can have multiple lines. There contents must be preserved excluding the prefix and
+These comments can have multiple lines. Their contents must be preserved excluding the prefix and
 suffix.
 
 ## Simplex
