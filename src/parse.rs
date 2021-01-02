@@ -15,6 +15,7 @@ where T: 'a + Into<TokenQueue<'a>> {
 	for token in stream {
 		match token {
 			Token::Complex(concept) => scope_stack.append_complex(concept),
+			Token::Attacher(label, content) => scope_stack.append_attacher(label, content),
 			Token::Simplex(concept) => scope_stack.append_simplex(concept),
 			Token::ScopeLevel(level) => scope_stack.minimize_scope_level_by(level),
 			_ => unimplemented!()
