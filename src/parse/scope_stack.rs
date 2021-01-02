@@ -26,6 +26,7 @@ mod appenders;
 mod push_to_last_scope;
 mod promote_last_fragment;
 mod push_to_preferred_relationship;
+mod necessarily_promote_last_fragments;
 
 impl<'a> ScopeStack<'a> {
 	/// Creates a scope stack that serves as the memory for the main parser.

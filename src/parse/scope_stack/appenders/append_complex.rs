@@ -5,6 +5,8 @@ use super::ScopeStack;
 impl<'a> ScopeStack<'a> {
 	/// Appends a complex fragment to the collection of fragments.
 	pub fn append_complex(&mut self, concept: &'a [u8]) {
+		self.necessarily_promote_last_fragments();
+
 		let complex_fragment = Fragment::Complex(concept, Vec::new());
 		self.fragments.push(complex_fragment);
 		self.scopes.push(Vec::new());

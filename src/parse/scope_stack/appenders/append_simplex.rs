@@ -5,6 +5,8 @@ use super::ScopeStack;
 impl<'a> ScopeStack<'a> {
 	/// Appends a simplex fragment to the collection of fragments.
 	pub fn append_simplex(&mut self, concept: &'a [u8]) {
+		self.necessarily_promote_last_fragments();
+
 		let simplex_fragment = Fragment::Simplex(concept, Vec::new());
 		self.fragments.push(simplex_fragment);
 	}
