@@ -25,6 +25,7 @@ pub struct ScopeStack<'a> {
 mod appenders;
 mod push_to_last_scope;
 mod promote_last_fragment;
+mod minimize_scope_level_by;
 mod push_to_preferred_relationship;
 mod necessarily_promote_last_fragments;
 

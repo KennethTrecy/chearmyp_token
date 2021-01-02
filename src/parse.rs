@@ -16,6 +16,7 @@ where T: 'a + Into<TokenQueue<'a>> {
 		match token {
 			Token::Complex(concept) => scope_stack.append_complex(concept),
 			Token::Simplex(concept) => scope_stack.append_simplex(concept),
+			Token::ScopeLevel(level) => scope_stack.minimize_scope_level_by(level),
 			_ => unimplemented!()
 		}
 	}
