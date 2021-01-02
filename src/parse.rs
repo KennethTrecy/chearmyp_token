@@ -21,6 +21,9 @@ where T: 'a + Into<TokenQueue<'a>> {
 			Token::LineComment(comment) => scope_stack.append_line_comment(comment),
 			Token::BlockComment(comment_lines) => scope_stack.append_block_comment(comment_lines),
 			Token::LineOthertongue(othertongue) => scope_stack.append_line_othertongue(othertongue),
+			Token::BlockOthertongue(othertongue_lines) => {
+				scope_stack.append_block_othertongue(othertongue_lines);
+			},
 			_ => unimplemented!()
 		}
 	}
