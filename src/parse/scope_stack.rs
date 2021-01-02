@@ -22,6 +22,7 @@ pub struct ScopeStack<'a> {
 	pub scopes: Vec<Vec<Node<'a>>>
 }
 
+mod finalize;
 mod appenders;
 mod push_to_last_scope;
 mod promote_last_fragment;

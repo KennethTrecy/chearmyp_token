@@ -28,5 +28,5 @@ where T: 'a + Into<TokenQueue<'a>> {
 		}
 	}
 
-	unimplemented!()
+	scope_stack.finalize()
 }
