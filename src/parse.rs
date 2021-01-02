@@ -24,7 +24,11 @@ where T: 'a + Into<TokenQueue<'a>> {
 			Token::BlockOthertongue(othertongue_lines) => {
 				scope_stack.append_block_othertongue(othertongue_lines);
 			},
-			_ => unimplemented!()
+			Token::Block(_) | Token::Empty | Token::Invalid => {
+				let reason = "The main parser does not accept block, empty, or invalid tokens.";
+				let probable_cause = "The token queue may not be generated properly by the lexer.";
+				panic!("{} {}", reason, probable_cause);
+			}
 		}
 	}
 
