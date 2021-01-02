@@ -24,6 +24,7 @@ pub struct ScopeStack<'a> {
 
 mod appenders;
 mod push_to_last_scope;
+mod push_to_preferred_relationship;
 
 impl<'a> ScopeStack<'a> {
 	/// Creates a scope stack that serves as the memory for the main parser.
