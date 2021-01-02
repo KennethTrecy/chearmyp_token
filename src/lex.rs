@@ -1,4 +1,4 @@
-/// Contains the data structure returned by the main Lexer.
+/// Contains the data structure returned by the main lexer.
 mod token_queue;
 
 /// Contains the data structures and type aliases used and/or returned by different lexers.
@@ -37,10 +37,10 @@ mod block_othertongue;
 /// Contains types of delimeter that lexers search for.
 mod delimeter;
 
-// Contains `any()` lexer.
+/// Contains `any()` lexer.
 mod any;
 
-// Contains `count_tabs()` counter.
+/// Contains `count_tabs()` counter.
 mod count_tabs;
 
 pub use block::block;
@@ -61,7 +61,7 @@ use count_tabs::count_tabs;
 
 /// Returns a stream of tokens based from the source.
 ///
-/// The source is the first argument which contain an array of bytes.
+/// The source is the first argument which contain an array of bytes. This is the main lexer.
 ///
 /// ## Examples
 /// ```
