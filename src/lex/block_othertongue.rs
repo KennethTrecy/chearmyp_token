@@ -87,6 +87,21 @@ mod t {
 	}
 
 	#[test]
+	fn can_lex_othertongue_with_empty_line() {
+		test_block_othertongue!(b"===\nf\n\n===" 0 10 BlockOthertongue![b"f" b""]);
+	}
+
+	#[test]
+	fn can_lex_othertongue_with_empty_lines() {
+		test_block_othertongue!(b"===\n\n\n\n\n\t===" 1 12 BlockOthertongue![b"" b"" b"" b""]);
+	}
+
+	#[test]
+	fn can_lex_othertongue_with_empty_line_and_indented_line() {
+		test_block_othertongue!(b"===\n\tg\n\nh\n\t===" 1 14 BlockOthertongue![b"\tg" b"" b"h"]);
+	}
+
+	#[test]
 	fn cannot_lex_on_empty_line() {
 		assert_eq!(block_othertongue(&b""[..], 0, 0).0, Token::Empty);
 	}
