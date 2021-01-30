@@ -116,6 +116,33 @@ mod t {
 	}
 
 	#[test]
+	fn can_lex_comment_with_empty_line() {
+		test_block_comment!(
+			sample: b"###\n\n\thello world\n\t###",
+			tab_count: 1,
+			consumed_size: 22,
+			token: BlockComment![b"" b"\thello world"]);
+	}
+
+	#[test]
+	fn can_lex_comment_with_empty_lines() {
+		test_block_comment!(
+			sample: b"###\n\n\n\n###",
+			tab_count: 0,
+			consumed_size: 10,
+			token: BlockComment![b"" b"" b""]);
+	}
+
+	#[test]
+	fn can_lex_comment_with_empty_line_and_indented_line() {
+		test_block_comment!(
+			sample: b"###\n\t\thello world!\n\nhi universe\n\t###",
+			tab_count: 1,
+			consumed_size: 36,
+			token: BlockComment![b"\t\thello world!" b"" b"hi universe"]);
+	}
+
+	#[test]
 	fn cannot_lex_empty_string() {
 		assert_eq!(block_comment(&b""[..], 0, 0).0, Token::Empty);
 	}
