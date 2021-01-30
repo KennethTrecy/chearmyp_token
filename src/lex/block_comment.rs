@@ -84,21 +84,30 @@ mod t {
 	}
 
 	#[test]
-	fn can_lex() {
+	fn can_lex_empty_comment() {
 		test_block_comment!(b"###\n###" 7 BlockComment![]);
+	}
 
+	#[test]
+	fn can_lex_comment_with_unindented_line() {
 		test_block_comment!(
 			sample: b"###\nhello world!\n###",
 			tab_count: 0,
 			consumed_size: 20,
 			token: BlockComment![b"hello world!"]);
+	}
 
+	#[test]
+	fn can_lex_comment_with_indented_line() {
 		test_block_comment!(
 			sample: b"###\n\thello world!\n\t###",
 			tab_count: 1,
 			consumed_size: 22,
 			token: BlockComment![b"\thello world!"]);
+	}
 
+	#[test]
+	fn can_lex_comment_with_indented_lines() {
 		test_block_comment!(
 			sample: "###\n\thello world!\n\t\thi universe\n\t\t###".as_bytes(),
 			tab_count: 2,
@@ -107,9 +116,17 @@ mod t {
 	}
 
 	#[test]
-	fn cannot_lex() {
+	fn cannot_lex_empty_string() {
 		assert_eq!(block_comment(&b""[..], 0, 0).0, Token::Empty);
+	}
+
+	#[test]
+	fn cannot_lex_single_pound_sign() {
 		assert_eq!(block_comment(&b"#"[..], 0, 0).0, Token::Invalid);
+	}
+
+	#[test]
+	fn cannot_lex_double_pound_sign() {
 		assert_eq!(block_comment(&b"##"[..], 0, 0).0, Token::Invalid);
 	}
 }
