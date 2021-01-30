@@ -1,6 +1,6 @@
 [package]
 name = "chearmyp"
-version = "0.3.1"
+version = "0.3.2-dev"
 authors = ["Kenneth Trecy Tobias <33564322+KennethTrecy@users.noreply.github.com>"]
 edition = "2018"
 
