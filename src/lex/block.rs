@@ -111,6 +111,7 @@ mod t {
 	fn can_lex() {
 		assert_eq!(block!(b"bbb\nb\nbbb" 0 0 'b'), (Block![b"b"], 9));
 		assert_eq!(block!(b"ddd\nd\n\ndd\nddd" 0 0 'd'), (Block![b"d" b"" b"dd"], 13));
+		assert_eq!(block!(b"eee\n\n\neee\n" 0 0 'e'), (Block![b"" b""], 10));
 	}
 
 	#[test]
