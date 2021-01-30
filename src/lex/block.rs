@@ -36,7 +36,7 @@ pub fn block(src: &[u8], offset: usize, tab_count: usize, special_character: u8)
 		loop {
 			let start = offset;
 			let end = find_line_ending(src, start);
-			if start == end { break; }
+			if start == end && src.get(end) == None { break; }
 			let line = &src[start..end];
 
 			let mut indent_size = tab_count;
@@ -110,6 +110,7 @@ mod t {
 	#[test]
 	fn can_lex() {
 		assert_eq!(block!(b"bbb\nb\nbbb" 0 0 'b'), (Block![b"b"], 9));
+		assert_eq!(block!(b"ddd\nd\n\ndd\nddd" 0 0 'd'), (Block![b"d" b"" b"dd"], 13));
 	}
 
 	#[test]
