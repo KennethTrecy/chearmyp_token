@@ -1,3 +1,8 @@
+/// Contains macros useful in tests
+#[cfg(test)]
+#[macro_use]
+mod test_macros;
+
 /// Contains the data structure returned by the main lexer.
 mod token_queue;
 

@@ -77,9 +77,7 @@ mod t {
 
 	macro_rules! BlockComment {
 		($($token:literal)*) => {
-			Token::BlockComment(alloc::vec![$(
-				&$token[..],
-			)*])
+			create_block!(BlockComment $($token)*)
 		};
 	}
 

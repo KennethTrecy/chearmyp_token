@@ -60,9 +60,7 @@ mod t {
 
 	macro_rules! BlockOthertongue {
 		($($token:literal)*) => {
-			Token::BlockOthertongue(alloc::vec![$(
-				&$token[..],
-			)*])
+			create_block!(BlockOthertongue $($token)*)
 		};
 	}
 

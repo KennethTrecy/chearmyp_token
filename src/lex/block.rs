@@ -91,7 +91,7 @@ mod t {
 
 	macro_rules! Block {
 		($($token:literal)*) => {
-			Token::Block(alloc::vec![$(&$token[..],)*])
+			create_block!(Block $($token)*)
 		};
 	}
 
