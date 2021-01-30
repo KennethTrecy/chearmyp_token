@@ -48,110 +48,49 @@ pub fn block_comment(src: &[u8], offset: usize, tab_count: usize) -> TokenInfo {
 mod t {
 	use super::{Token, block_comment};
 
-	macro_rules! test_block_comment {
-		($sample:literal $expected_last_seen_index:literal $expected_token:expr) => {
-			test_block_comment!{
-				sample: $sample,
-				tab_count: 0,
-				consumed_size: $expected_last_seen_index,
-				token: $expected_token
-			}
-		};
-		(
-			sample: $sample:expr,
-			tab_count: $tab_count:literal,
-			consumed_size: $expected_consumed_size:literal,
-			token: $expected_token:expr
-		) => {
-			let (token, block_comment_size) = block_comment(
-				$sample,
-				0,
-				$tab_count
-			);
-			assert_eq!(block_comment_size, $expected_consumed_size,
-				"Consumed size of {:?}", $sample);
-			assert_eq!(token, $expected_token,
-				"Expected token of {:?}", $sample);
-		};
-	}
-
 	macro_rules! BlockComment {
 		($($token:literal)*) => {
 			create_block!(BlockComment $($token)*)
 		};
 	}
 
-	#[test]
-	fn can_lex_empty_comment() {
-		test_block_comment!(b"###\n###" 7 BlockComment![]);
-	}
+	test_block_cases!{
+		lexer: block_comment
+		token creator: BlockComment
 
-	#[test]
-	fn can_lex_comment_with_unindented_line() {
-		test_block_comment!(
-			sample: b"###\nhello world!\n###",
-			tab_count: 0,
-			consumed_size: 20,
-			token: BlockComment![b"hello world!"]);
-	}
+		valid cases: [
+			can_lex_empty_comment with sample b"###\n###" and tab count 0
+			expecting [] with consumed size of 7 bytes.
 
-	#[test]
-	fn can_lex_comment_with_indented_line() {
-		test_block_comment!(
-			sample: b"###\n\thello world!\n\t###",
-			tab_count: 1,
-			consumed_size: 22,
-			token: BlockComment![b"\thello world!"]);
-	}
+			can_lex_comment_with_unindented_line
+			with sample b"###\nhello world!\n###" and tab count 0
+			expecting [b"hello world!"] with consumed size of 20 bytes.
 
-	#[test]
-	fn can_lex_comment_with_indented_lines() {
-		test_block_comment!(
-			sample: "###\n\thello world!\n\t\thi universe\n\t\t###".as_bytes(),
-			tab_count: 2,
-			consumed_size: 37,
-			token: BlockComment![b"\thello world!" b"\t\thi universe"]);
-	}
+			can_lex_comment_with_indented_line
+			with sample b"###\n\thello world!\n\t###" and tab count 1
+			expecting [b"\thello world!"] with consumed size of 22 bytes.
 
-	#[test]
-	fn can_lex_comment_with_empty_line() {
-		test_block_comment!(
-			sample: b"###\n\n\thello world\n\t###",
-			tab_count: 1,
-			consumed_size: 22,
-			token: BlockComment![b"" b"\thello world"]);
-	}
+			can_lex_comment_with_indented_lines
+			with sample b"###\n\thello world!\n\t\thi universe\n\t\t###" and tab count 2
+			expecting [b"\thello world!" b"\t\thi universe"] with consumed size of 37 bytes.
 
-	#[test]
-	fn can_lex_comment_with_empty_lines() {
-		test_block_comment!(
-			sample: b"###\n\n\n\n###",
-			tab_count: 0,
-			consumed_size: 10,
-			token: BlockComment![b"" b"" b""]);
-	}
+			can_lex_comment_with_empty_line
+			with sample b"###\n\n\thello world\n\t###" and tab count 1
+			expecting [b"" b"\thello world"] with consumed size of 22 bytes.
 
-	#[test]
-	fn can_lex_comment_with_empty_line_and_indented_line() {
-		test_block_comment!(
-			sample: b"###\n\t\thello world!\n\nhi universe\n\t###",
-			tab_count: 1,
-			consumed_size: 36,
-			token: BlockComment![b"\t\thello world!" b"" b"hi universe"]);
-	}
+			can_lex_comment_with_empty_lines
+			with sample b"###\n\n\n\n###" and tab count 0
+			expecting [b"" b"" b""] with consumed size of 10 bytes.
 
-	#[test]
-	fn cannot_lex_empty_string() {
-		assert_eq!(block_comment(&b""[..], 0, 0).0, Token::Empty);
-	}
+			can_lex_comment_with_empty_line_and_indented_line
+			with sample b"###\n\t\thello world!\n\nhi universe\n\t###" and tab count 1
+			expecting [b"\t\thello world!" b"" b"hi universe"] with consumed size of 36 bytes.
+		]
 
-	#[test]
-	fn cannot_lex_single_pound_sign() {
-		assert_eq!(block_comment(&b"#"[..], 0, 0).0, Token::Invalid);
-	}
-
-	#[test]
-	fn cannot_lex_double_pound_sign() {
-		assert_eq!(block_comment(&b"##"[..], 0, 0).0, Token::Invalid);
+		invalid cases: [
+			cannot_lex_empty_string with sample b"" expecting Empty.
+			cannot_lex_single_pound_sign with sample b"#" expecting Invalid.
+			cannot_lex_double_pound_sign with sample b"##" expecting Invalid.
+		]
 	}
 }
