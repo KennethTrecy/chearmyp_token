@@ -48,69 +48,50 @@ pub fn block_othertongue(src: &[u8], offset: usize, tab_count: usize) -> TokenIn
 mod t {
 	use super::{Token, block_othertongue};
 
-	macro_rules! test_block_othertongue {
-		($sample:literal $tab_count:literal $expected_consumed_size:literal $expected_token:expr) => {
-			let (token, block_othertongue_size) = block_othertongue($sample, 0, $tab_count);
-			assert_eq!(block_othertongue_size, $expected_consumed_size,
-				"Consumed size of {:?}", $sample);
-			assert_eq!(token, $expected_token,
-				"Expected token of {:?}", $sample);
-		};
-	}
-
 	macro_rules! BlockOthertongue {
 		($($token:literal)*) => {
 			create_block!(BlockOthertongue $($token)*)
 		};
 	}
 
-	#[test]
-	fn can_lex_empty_othertongue() {
-		test_block_othertongue!(b"===\n===" 0 7 BlockOthertongue![]);
-	}
+	test_block_cases!{
+		lexer: block_othertongue
+		token creator: BlockOthertongue
 
-	#[test]
-	fn can_lex_othertongue_with_single_line() {
-		test_block_othertongue!(b"===\na\n===" 0 9 BlockOthertongue![b"a"]);
-	}
+		valid cases: [
+			can_lex_empty_othertongue
+			with sample b"===\n===" and tab count 0
+			expecting [] with consumed size of 7 bytes.
 
-	#[test]
-	fn can_lex_othertongue_with_indented_and_single_line() {
-		test_block_othertongue!(b"===\n\tbc\n\t===" 1 12 BlockOthertongue![b"\tbc"]);
-	}
+			can_lex_othertongue_with_single_line
+			with sample b"===\na\n===" and tab count 0
+			expecting [b"a"] with consumed size of 9 bytes.
 
-	#[test]
-	fn can_lex_othertongue_with_multiple_indented_lines() {
-		test_block_othertongue!(b"===\n\td\n\t\te\n\t\t===" 2 16 BlockOthertongue![b"\td" b"\t\te"]);
-	}
+			can_lex_othertongue_with_indented_and_single_line
+			with sample b"===\n\tbc\n\t===" and tab count 1
+			expecting [b"\tbc"] with consumed size of 12 bytes.
 
-	#[test]
-	fn can_lex_othertongue_with_empty_line() {
-		test_block_othertongue!(b"===\nf\n\n===" 0 10 BlockOthertongue![b"f" b""]);
-	}
+			can_lex_othertongue_with_multiple_indented_lines
+			with sample b"===\n\td\n\t\te\n\t\t===" and tab count 2
+			expecting [b"\td" b"\t\te"] with consumed size of 16 bytes.
 
-	#[test]
-	fn can_lex_othertongue_with_empty_lines() {
-		test_block_othertongue!(b"===\n\n\n\n\n\t===" 1 12 BlockOthertongue![b"" b"" b"" b""]);
-	}
+			can_lex_othertongue_with_empty_line
+			with sample b"===\nf\n\n===" and tab count 0
+			expecting [b"f" b""] with consumed size of 10 bytes.
 
-	#[test]
-	fn can_lex_othertongue_with_empty_line_and_indented_line() {
-		test_block_othertongue!(b"===\n\tg\n\nh\n\t===" 1 14 BlockOthertongue![b"\tg" b"" b"h"]);
-	}
+			can_lex_othertongue_with_empty_lines
+			with sample b"===\n\n\n\n\n\t===" and tab count 1
+			expecting [b"" b"" b"" b""] with consumed size of 12 bytes.
 
-	#[test]
-	fn cannot_lex_on_empty_line() {
-		assert_eq!(block_othertongue(&b""[..], 0, 0).0, Token::Empty);
-	}
+			can_lex_othertongue_with_empty_line_and_indented_line
+			with sample b"===\n\tg\n\nh\n\t===" and tab count 1
+			 expecting [b"\tg" b"" b"h"] with consumed size of 14 bytes.
+		]
 
-	#[test]
-	fn cannot_lex_on_single_character_line() {
-		assert_eq!(block_othertongue(&b"="[..], 0, 0).0, Token::Invalid);
-	}
-
-	#[test]
-	fn cannot_lex_on_double_character_line() {
-			assert_eq!(block_othertongue(&b"=="[..], 0, 0).0, Token::Invalid);
+		invalid cases: [
+			cannot_lex_on_empty_line with sample b"" expecting Empty.
+			cannot_lex_on_single_character_line with sample b"=" expecting Invalid.
+			cannot_lex_on_double_character_line with sample b"==" expecting Invalid.
+		]
 	}
 }
