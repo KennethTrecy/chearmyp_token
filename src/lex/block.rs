@@ -101,23 +101,47 @@ mod t {
 	}
 
 	#[test]
-	fn cannot_detect_special_characters() {
+	fn cannot_detect_special_characters_on_empty_line() {
 		assert!(!has_3_special_characters!(b"" 0 'a'), "Empty string");
-		assert!(!has_3_special_characters!(b"a" 0 'a'), "Single character string");
-		assert!(!has_3_special_characters!(b"aa" 0 'a'), "Double character string");
 	}
 
 	#[test]
-	fn can_lex() {
+	fn cannot_detect_special_characters_on_single_character_line() {
+		assert!(!has_3_special_characters!(b"a" 0 'a'), "Single-character string");
+	}
+
+	#[test]
+	fn cannot_detect_special_characters_on_double_character_line() {
+		assert!(!has_3_special_characters!(b"aa" 0 'a'), "Double-character string");
+	}
+
+	#[test]
+	fn can_lex_with_proper_content() {
 		assert_eq!(block!(b"bbb\nb\nbbb" 0 0 'b'), (Block![b"b"], 9));
+	}
+
+	#[test]
+	fn can_lex_with_an_empty_line() {
 		assert_eq!(block!(b"ddd\nd\n\ndd\nddd" 0 0 'd'), (Block![b"d" b"" b"dd"], 13));
+	}
+
+	#[test]
+	fn can_lex_with_empty_lines() {
 		assert_eq!(block!(b"eee\n\n\neee\n" 0 0 'e'), (Block![b"" b""], 10));
 	}
 
 	#[test]
-	fn cannot_lex() {
+	fn cannot_lex_on_empty_line() {
 		assert_eq!(block!(b"" 0 0 'c'), (Token::Empty, 0));
+	}
+
+	#[test]
+	fn cannot_lex_on_single_character_line() {
 		assert_eq!(block!(b"c" 0 0 'c'), (Token::Invalid, 0));
+	}
+
+	#[test]
+	fn cannot_lex_on_double_character_line() {
 		assert_eq!(block!(b"cc" 0 0 'c'), (Token::Invalid, 0));
 	}
 }
