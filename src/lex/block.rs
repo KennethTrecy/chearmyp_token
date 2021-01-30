@@ -42,7 +42,7 @@ pub fn block(src: &[u8], offset: usize, tab_count: usize, special_character: u8)
 			let mut indent_size = tab_count;
 			while indent_size > 0 {
 				indent_size -= 1;
-				if line[indent_size] != TAB { break; }
+				if line.get(indent_size) != Some(&TAB) { break; }
 			}
 
 			offset = end;
@@ -128,6 +128,11 @@ mod t {
 	#[test]
 	fn can_lex_with_empty_lines() {
 		assert_eq!(block!(b"eee\n\n\neee\n" 0 0 'e'), (Block![b"" b""], 10));
+	}
+
+	#[test]
+	fn can_lex_with_empty_line_and_tabbed_line() {
+		assert_eq!(block!(b"fff\nf\n\tf\n\nf\n\tfff" 0 1 'f'), (Block![b"f" b"\tf" b"" b"f"], 16));
 	}
 
 	#[test]
