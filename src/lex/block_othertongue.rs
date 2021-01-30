@@ -67,17 +67,37 @@ mod t {
 	}
 
 	#[test]
-	fn can_lex() {
+	fn can_lex_empty_othertongue() {
 		test_block_othertongue!(b"===\n===" 0 7 BlockOthertongue![]);
+	}
+
+	#[test]
+	fn can_lex_othertongue_with_single_line() {
 		test_block_othertongue!(b"===\na\n===" 0 9 BlockOthertongue![b"a"]);
+	}
+
+	#[test]
+	fn can_lex_othertongue_with_indented_and_single_line() {
 		test_block_othertongue!(b"===\n\tbc\n\t===" 1 12 BlockOthertongue![b"\tbc"]);
+	}
+
+	#[test]
+	fn can_lex_othertongue_with_multiple_indented_lines() {
 		test_block_othertongue!(b"===\n\td\n\t\te\n\t\t===" 2 16 BlockOthertongue![b"\td" b"\t\te"]);
 	}
 
 	#[test]
-	fn cannot_lex() {
+	fn cannot_lex_on_empty_line() {
 		assert_eq!(block_othertongue(&b""[..], 0, 0).0, Token::Empty);
+	}
+
+	#[test]
+	fn cannot_lex_on_single_character_line() {
 		assert_eq!(block_othertongue(&b"="[..], 0, 0).0, Token::Invalid);
-		assert_eq!(block_othertongue(&b"=="[..], 0, 0).0, Token::Invalid);
+	}
+
+	#[test]
+	fn cannot_lex_on_double_character_line() {
+			assert_eq!(block_othertongue(&b"=="[..], 0, 0).0, Token::Invalid);
 	}
 }
