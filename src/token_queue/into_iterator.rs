@@ -1,6 +1,6 @@
 use alloc::collections::vec_deque::IntoIter;
 use core::iter::IntoIterator;
-use crate::lex::Token;
+use crate::Token;
 use super::TokenQueue;
 
 impl<'a> IntoIterator for TokenQueue<'a> {

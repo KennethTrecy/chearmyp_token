@@ -1,6 +1,6 @@
 use core::convert::From;
 use super::TokenQueue;
-use crate::lex::lex;
+use crate::lex;
 
 impl<'a> From<&'a [u8]> for TokenQueue<'a> {
 	fn from(src: &'a [u8]) -> Self {
@@ -10,7 +10,7 @@ impl<'a> From<&'a [u8]> for TokenQueue<'a> {
 
 #[cfg(test)]
 mod t {
-	use crate::lex::Token;
+	use crate::Token;
 	use super::TokenQueue;
 
 	#[test]

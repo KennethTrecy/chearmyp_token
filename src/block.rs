@@ -1,7 +1,7 @@
 use alloc::vec::Vec;
-use crate::lex::find_line_ending;
-use crate::lex::token::{Token, TokenInfo};
-use crate::lex::special_characters::{NEW_LINE, TAB};
+use crate::find_line_ending;
+use crate::token::{Token, TokenInfo};
+use crate::special_characters::{NEW_LINE, TAB};
 
 /// Returns the recognized block and the last seen index.
 ///
@@ -10,8 +10,8 @@ use crate::lex::special_characters::{NEW_LINE, TAB};
 ///
 /// ## Example
 /// ```
-/// use chearmyp::lex::Token;
-/// use chearmyp::lex::block;
+/// use chearmyp_lexer::Token;
+/// use chearmyp_lexer::block;
 ///
 /// let special_character = '@' as u8;
 /// let sample_block = b"

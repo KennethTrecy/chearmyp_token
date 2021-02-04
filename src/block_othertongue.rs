@@ -1,6 +1,6 @@
-use crate::lex::block::block;
-use crate::lex::token::{Token, TokenInfo};
-use crate::lex::special_characters::EQUAL;
+use crate::block::block;
+use crate::token::{Token, TokenInfo};
+use crate::special_characters::EQUAL;
 
 /// Returns the info of recognized block othertongue and its probably last seen index in the source.
 ///
@@ -14,8 +14,8 @@ use crate::lex::special_characters::EQUAL;
 ///
 /// ## Examples
 /// ```
-/// use chearmyp::lex::block_othertongue;
-/// use chearmyp::lex::Token;
+/// use chearmyp_lexer::block_othertongue;
+/// use chearmyp_lexer::Token;
 ///
 /// let terminated = b"===\n\thello world\n===\n";
 /// let (block, last_index) = block_othertongue(&terminated[..], 0, 0);

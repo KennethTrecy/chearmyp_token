@@ -1,6 +1,6 @@
-use crate::lex::token::{Token, TokenInfo};
-use crate::lex::special_characters::{COLON, NEW_LINE, SPACE, TAB};
-use crate::lex::delimeter::Delimeter;
+use crate::token::{Token, TokenInfo};
+use crate::special_characters::{COLON, NEW_LINE, SPACE, TAB};
+use crate::delimeter::Delimeter;
 
 /// Returns the info of recognized attacher and the last index that has been checked from the
 /// source.
@@ -16,8 +16,8 @@ use crate::lex::delimeter::Delimeter;
 ///
 /// ## Examples
 /// ```
-/// use chearmyp::lex::attacher;
-/// use chearmyp::lex::Token;
+/// use chearmyp_lexer::attacher;
+/// use chearmyp_lexer::Token;
 ///
 /// let non_terminated = b"hello:	world";
 /// let (token, last_index) = attacher(&non_terminated[..], 0, 0);

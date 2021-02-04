@@ -1,5 +1,5 @@
 use alloc::collections::VecDeque;
-use crate::lex::Token;
+use crate::Token;
 
 /// Contains the tokens that have been lexed.
 #[cfg_attr(test, derive(Debug, PartialEq))]
@@ -10,7 +10,7 @@ impl<'a> TokenQueue<'a> {
 	///
 	/// ## Examples
 	/// ```
-	/// use chearmyp::lex::TokenQueue;
+	/// use chearmyp_lexer::TokenQueue;
 	///
 	/// let token_queue = TokenQueue::new();
 	/// ```
@@ -22,8 +22,8 @@ impl<'a> TokenQueue<'a> {
 	///
 	/// ## Examples
 	/// ```
-	/// use chearmyp::lex::Token;
-	/// use chearmyp::lex::TokenQueue;
+	/// use chearmyp_lexer::Token;
+	/// use chearmyp_lexer::TokenQueue;
 	///
 	/// let mut token_queue = TokenQueue::new();
 	/// token_queue.push(Token::Simplex(b"hi"));
@@ -36,8 +36,8 @@ impl<'a> TokenQueue<'a> {
 	///
 	/// ## Examples
 	/// ```
-	/// use chearmyp::lex::Token;
-	/// use chearmyp::lex::TokenQueue;
+	/// use chearmyp_lexer::Token;
+	/// use chearmyp_lexer::TokenQueue;
 	///
 	/// let mut token_queue = TokenQueue::new();
 	/// token_queue.push(Token::Complex(b"universe"));

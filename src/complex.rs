@@ -1,7 +1,7 @@
-use crate::lex::token::{Token, TokenInfo};
-use crate::lex::special_characters::{NEW_LINE, SPACE, TAB};
-use crate::lex::delimeter::Delimeter;
-use crate::lex::line_othertongue::determine_othertongue_prefix;
+use crate::token::{Token, TokenInfo};
+use crate::special_characters::{NEW_LINE, SPACE, TAB};
+use crate::delimeter::Delimeter;
+use crate::line_othertongue::determine_othertongue_prefix;
 
 /// Returns the info of recognized complex and the last index that has been checked from the source.
 ///
@@ -17,8 +17,8 @@ use crate::lex::line_othertongue::determine_othertongue_prefix;
 ///
 /// ## Examples
 /// ```
-/// use chearmyp::lex::complex;
-/// use chearmyp::lex::Token;
+/// use chearmyp_lexer::complex;
+/// use chearmyp_lexer::Token;
 ///
 /// let non_terminated = b"hello world";
 /// let (token, last_index) = complex(&non_terminated[..], 0, 0);

@@ -1,4 +1,4 @@
-use crate::lex::special_characters::TAB;
+use crate::special_characters::TAB;
 
 /// Returns the number of initial tabs in the source.
 ///

@@ -1,6 +1,6 @@
-use crate::lex::token::{Token, TokenInfo};
-use crate::lex::block::block;
-use crate::lex::special_characters::POUND_SIGN;
+use crate::token::{Token, TokenInfo};
+use crate::block::block;
+use crate::special_characters::POUND_SIGN;
 
 /// Returns the info of recognized block comment and its probably last seen index in the source.
 ///
@@ -14,8 +14,8 @@ use crate::lex::special_characters::POUND_SIGN;
 ///
 /// ## Examples
 /// ```
-/// use chearmyp::lex::block_comment;
-/// use chearmyp::lex::Token;
+/// use chearmyp_lexer::block_comment;
+/// use chearmyp_lexer::Token;
 ///
 /// let terminated = b"###\n\thello world\n###";
 /// let (comment, last_index) = block_comment(&terminated[..], 0, 0);

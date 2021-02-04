@@ -1,6 +1,6 @@
-use crate::lex::token::{Token, TokenInfo};
-use crate::lex::special_characters::{EQUAL, POUND_SIGN, SPACE};
-use crate::lex::{
+use crate::token::{Token, TokenInfo};
+use crate::special_characters::{EQUAL, POUND_SIGN, SPACE};
+use crate::{
 	simplex,
 	complex,
 	attacher,
@@ -20,8 +20,8 @@ use crate::lex::{
 ///
 /// ## Examples
 /// ```
-/// use chearmyp::lex::any;
-/// use chearmyp::lex::Token;
+/// use chearmyp_lexer::any;
+/// use chearmyp_lexer::Token;
 ///
 /// let (any, last_index) = any(&b"hello"[..], 0, 0);
 /// if let Token::Complex(content) = any {
