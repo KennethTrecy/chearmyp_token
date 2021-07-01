@@ -1,10 +1,8 @@
 use alloc::vec::Vec;
 
-/// Contains the tokens used for lexing and parsing.
+/// Contains the valid tokens used for lexing and parsing.
 #[derive(Debug, PartialEq)]
 pub enum Token<'a> {
-	Empty,
-	Invalid,
 	ScopeLevel(usize),
 	Block(Vec<&'a [u8]>),
 	LineComment(&'a [u8]),
@@ -17,5 +15,5 @@ pub enum Token<'a> {
 }
 
 /// Contains the extracted token and its last index occupied in the source.
-/// This token is used as return value for lexers.
+/// This token is used as return value for some lexers.
 pub type TokenInfo<'a> = (Token<'a>, usize);

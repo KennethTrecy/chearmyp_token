@@ -1,6 +1,6 @@
 use alloc::vec::Vec;
 
-/// Contains the raw tokens used for lexing and parsing.
+/// Contains the raw tokens used for lexing only.
 #[derive(Debug, PartialEq)]
 pub enum RawToken<'a> {
 	Empty,
@@ -17,5 +17,5 @@ pub enum RawToken<'a> {
 }
 
 /// Contains the extracted raw token and its last index occupied in the source.
-/// This raw token is used as return value for lexers.
+/// This raw token is used as return value for most lexers.
 pub type RawTokenInfo<'a> = (RawToken<'a>, usize);
