@@ -13,7 +13,7 @@ use crate::special_characters::NEW_LINE;
 /// use chearmyp_lexer::{Token, TokenQueue};
 /// let source = b"
 /// a complex
-/// this:	is an attacher
+/// 	this:	is an attacher
 /// 	a simplex|
 /// ## This is a line comment
 /// ";
@@ -22,8 +22,8 @@ use crate::special_characters::NEW_LINE;
 /// let queue: VecDeque<Token> = queue.0;
 ///
 /// assert_eq!(queue[0], Token::Complex(b"a complex"));
-/// assert_eq!(queue[1], Token::Attacher(b"this", b"is an attacher"));
-/// assert_eq!(queue[2], Token::ScopeLevel(1));
+/// assert_eq!(queue[1], Token::ScopeLevel(1));
+/// assert_eq!(queue[2], Token::Attacher(b"this", b"is an attacher"));
 /// assert_eq!(queue[3], Token::Simplex(b"a simplex"));
 /// assert_eq!(queue[4], Token::ScopeLevel(0));
 /// assert_eq!(queue[5], Token::LineComment(b" This is a line comment"));
