@@ -4,7 +4,6 @@ use alloc::vec::Vec;
 #[derive(Debug, PartialEq)]
 pub enum Token<'a> {
 	ScopeLevel(usize),
-	Block(Vec<&'a [u8]>),
 	LineComment(&'a [u8]),
 	BlockComment(Vec<&'a [u8]>),
 	Simplex(&'a [u8]),
