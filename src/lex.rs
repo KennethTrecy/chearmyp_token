@@ -1,4 +1,4 @@
-use crate::{any, RawToken, Token, TokenQueue};
+use crate::{any, Token, TokenQueue};
 use crate::count_tabs::count_tabs;
 use crate::special_characters::NEW_LINE;
 
@@ -53,19 +53,7 @@ pub fn lex(mut src: &[u8]) -> TokenQueue {
 		}
 
 		let (token, size) = any(src, 0, tab_count);
-		token_queue.push({
-			match token {
-				RawToken::ScopeLevel(level) => Token::ScopeLevel(level),
-				RawToken::LineComment(comment) => Token::LineComment(comment),
-				RawToken::BlockComment(comment) => Token::BlockComment(comment),
-				RawToken::Simplex(concept) => Token::Simplex(concept),
-				RawToken::Complex(concept) => Token::Complex(concept),
-				RawToken::Attacher(label, content) => Token::Attacher(label, content),
-				RawToken::LineOthertongue(othertongue) => Token::LineOthertongue(othertongue),
-				RawToken::BlockOthertongue(othertongue) => Token::BlockOthertongue(othertongue),
-				_ => panic!("There is an unexpected token not suitable for parsing.")
-			}
-		});
+		token_queue.push(token);
 
 		scanned_size += size;
 		src = &src[size..];
