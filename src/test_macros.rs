@@ -1,6 +1,6 @@
 macro_rules! create_block {
-	($variant:ident $($token:literal)*) => {
-		Token::$variant(alloc::vec![$(&$token[..],)*])
+	($variant:ident $($raw_token:literal)*) => {
+		RawToken::$variant(alloc::vec![$(&$raw_token[..],)*])
 	};
 }
 
@@ -10,18 +10,18 @@ macro_rules! test_block_lexer {
 		sample: $sample:expr,
 		tab count: $tab_count:literal,
 		expected consumed size: $expected_consumed_size:expr,
-		expected token: $expected_token:expr
+		expected raw_token: $expected_token:expr
 	) => {
-		let (token, block_size) = $lexer($sample, 0, $tab_count);
+		let (raw_token, block_size) = $lexer($sample, 0, $tab_count);
 		assert_eq!(block_size, $expected_consumed_size, "Consumed size of {:?}", $sample);
-		assert_eq!(token, $expected_token, "Expected token of {:?}", $sample);
+		assert_eq!(raw_token, $expected_token, "Expected raw_token of {:?}", $sample);
 	};
 }
 
 macro_rules! test_block_cases {
 	(
 		lexer: $lexer:ident
-		token creator: $token_creator:ident
+		raw_token creator: $token_creator:ident
 
 		valid cases: [
 			$(
@@ -46,7 +46,7 @@ macro_rules! test_block_cases {
 					sample: $test_sample,
 					tab count: $tab_count,
 					expected consumed size: $expected_consumed_size,
-					expected token: $token_creator![$($expected_token_contents)*]
+					expected raw_token: $token_creator![$($expected_token_contents)*]
 				}
 			}
 		)+
@@ -54,7 +54,7 @@ macro_rules! test_block_cases {
 		$(
 			#[test]
 			fn $cannot_test_name() {
-				assert_eq!($lexer(&$cannot_test_sample[..], 0, 0).0, Token::$expected_token_variant);
+				assert_eq!($lexer(&$cannot_test_sample[..], 0, 0).0, RawToken::$expected_token_variant);
 			}
 		)+
 	}

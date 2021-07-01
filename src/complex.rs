@@ -1,4 +1,4 @@
-use crate::token::{Token, TokenInfo};
+use crate::raw_token::{RawToken, RawTokenInfo};
 use crate::special_characters::{NEW_LINE, SPACE, TAB};
 use crate::delimeter::Delimeter;
 use crate::line_othertongue::determine_othertongue_prefix;
@@ -18,40 +18,40 @@ use crate::line_othertongue::determine_othertongue_prefix;
 /// ## Examples
 /// ```
 /// use chearmyp_lexer::complex;
-/// use chearmyp_lexer::Token;
+/// use chearmyp_lexer::RawToken;
 ///
 /// let non_terminated = b"hello world";
-/// let (token, last_index) = complex(&non_terminated[..], 0, 0);
-/// if let Token::Complex(token) = token {
-/// 	assert_eq!(token, &b"hello world"[..]);
+/// let (raw_token, last_index) = complex(&non_terminated[..], 0, 0);
+/// if let RawToken::Complex(raw_token) = raw_token {
+/// 	assert_eq!(raw_token, &b"hello world"[..]);
 /// } else {
-/// 	panic!("The returned token is not complex.");
+/// 	panic!("The returned raw_token is not complex.");
 /// }
 /// assert_eq!(last_index, 11);
 ///
 /// let terminated = b"hello world\n";
-/// let (token, last_index) = complex(&terminated[..], 0, 0);
-/// if let Token::Complex(token) = token {
-/// 	assert_eq!(token, &b"hello world"[..]);
+/// let (raw_token, last_index) = complex(&terminated[..], 0, 0);
+/// if let RawToken::Complex(raw_token) = raw_token {
+/// 	assert_eq!(raw_token, &b"hello world"[..]);
 /// } else {
-/// 	panic!("The returned token is not complex.");
+/// 	panic!("The returned raw_token is not complex.");
 /// }
 /// assert_eq!(last_index, 11);
 ///
 /// // Does not differentiate simplexes and attachers.
 /// let simplex = b"hello world|";
 /// let (simplex, last_index) = complex(&simplex[..], 0, 0);
-/// if let Token::Complex(token) = simplex {
-/// 	assert_eq!(token, &b"hello world|"[..]);
+/// if let RawToken::Complex(raw_token) = simplex {
+/// 	assert_eq!(raw_token, &b"hello world|"[..]);
 /// } else {
-/// 	panic!("The returned token is not complex.");
+/// 	panic!("The returned raw_token is not complex.");
 /// }
 /// assert_eq!(last_index, 12);
 /// ```
 ///
 /// [`simplex()`]: ./fn.simplex.html
 /// [`attacher()`]: ./fn.attacher.html
-pub fn complex(src: &[u8], slice_offset: usize, mut search_offset: usize) -> TokenInfo {
+pub fn complex(src: &[u8], slice_offset: usize, mut search_offset: usize) -> RawTokenInfo {
 	let slice_end;
 
 	loop {
@@ -62,11 +62,11 @@ pub fn complex(src: &[u8], slice_offset: usize, mut search_offset: usize) -> Tok
 				slice_end = search_offset;
 				break;
 			},
-			Delimeter::Invalid => return (Token::Invalid, search_offset)
+			Delimeter::Invalid => return (RawToken::Invalid, search_offset)
 		}
 	}
 
-	(Token::Complex(&src[slice_offset..slice_end]), search_offset)
+	(RawToken::Complex(&src[slice_offset..slice_end]), search_offset)
 }
 
 fn determine_ending(src: &[u8], offset: usize) -> Delimeter {
@@ -86,19 +86,19 @@ fn determine_ending(src: &[u8], offset: usize) -> Delimeter {
 
 #[cfg(test)]
 mod t {
-	use super::{Token, complex};
+	use super::{RawToken, complex};
 
 	macro_rules! test_complex {
 		($sample:literal, $expected_token:expr, $expected_consumption:literal) => {
-			let (token, consumed_size) = complex($sample, 0, 0);
-			assert_eq!(token, $expected_token);
+			let (raw_token, consumed_size) = complex($sample, 0, 0);
+			assert_eq!(raw_token, $expected_token);
 			assert_eq!(consumed_size, $expected_consumption);
 		};
 	}
 
 	macro_rules! Complex {
-		($token:literal) => {
-			Token::Complex(&$token[..])
+		($raw_token:literal) => {
+			RawToken::Complex(&$raw_token[..])
 		};
 	}
 

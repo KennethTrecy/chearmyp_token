@@ -1,4 +1,4 @@
-use crate::token::{Token, TokenInfo};
+use crate::raw_token::{RawToken, RawTokenInfo};
 use crate::block::block;
 use crate::special_characters::POUND_SIGN;
 
@@ -9,36 +9,36 @@ use crate::special_characters::POUND_SIGN;
 /// terminating pound signs be indented.
 ///
 /// ## Notes
-/// If the source has no 3 pound signs found at the offset, it will return an invalid token variant
+/// If the source has no 3 pound signs found at the offset, it will return an invalid raw_token variant
 /// with the offset.
 ///
 /// ## Examples
 /// ```
 /// use chearmyp_lexer::block_comment;
-/// use chearmyp_lexer::Token;
+/// use chearmyp_lexer::RawToken;
 ///
 /// let terminated = b"###\n\thello world\n###";
 /// let (comment, last_index) = block_comment(&terminated[..], 0, 0);
-/// if let Token::BlockComment(comment) = comment {
+/// if let RawToken::BlockComment(comment) = comment {
 /// 	assert_eq!(comment, vec![&b"\thello world"[..]]);
 /// } else {
-/// 	panic!("The returned token is not block comment.");
+/// 	panic!("The returned raw_token is not block comment.");
 /// }
 /// assert_eq!(last_index, 20);
 ///
 /// let non_comment = b"hello world";
 /// let (comment, last_index) = block_comment(&non_comment[..], 0, 0);
-/// if let Token::Invalid = comment {
+/// if let RawToken::Invalid = comment {
 /// 	assert!(true);
 /// } else {
-/// 	panic!("The returned token is not invalid.");
+/// 	panic!("The returned raw_token is not invalid.");
 /// }
 /// assert_eq!(last_index, 0);
 /// ```
-pub fn block_comment(src: &[u8], offset: usize, tab_count: usize) -> TokenInfo {
+pub fn block_comment(src: &[u8], offset: usize, tab_count: usize) -> RawTokenInfo {
 	let block = block(src, offset, tab_count, POUND_SIGN);
-	if let (Token::Block(lines), last_seen_index) = block {
-		(Token::BlockComment(lines), last_seen_index)
+	if let (RawToken::Block(lines), last_seen_index) = block {
+		(RawToken::BlockComment(lines), last_seen_index)
 	} else {
 		block
 	}
@@ -46,17 +46,17 @@ pub fn block_comment(src: &[u8], offset: usize, tab_count: usize) -> TokenInfo {
 
 #[cfg(test)]
 mod t {
-	use super::{Token, block_comment};
+	use super::{RawToken, block_comment};
 
 	macro_rules! BlockComment {
-		($($token:literal)*) => {
-			create_block!(BlockComment $($token)*)
+		($($raw_token:literal)*) => {
+			create_block!(BlockComment $($raw_token)*)
 		};
 	}
 
 	test_block_cases!{
 		lexer: block_comment
-		token creator: BlockComment
+		raw_token creator: BlockComment
 
 		valid cases: [
 			can_lex_empty_comment with sample b"###\n###" and tab count 0

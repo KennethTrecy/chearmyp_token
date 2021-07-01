@@ -1,4 +1,4 @@
-use crate::token::{Token, TokenInfo};
+use crate::raw_token::{RawToken, RawTokenInfo};
 use crate::special_characters::{NEW_LINE, TAB, VERTICAL_LINE};
 use crate::delimeter::Delimeter;
 
@@ -9,36 +9,36 @@ use crate::delimeter::Delimeter;
 /// as the third argument (known as the search offset).
 ///
 /// ## Notes
-/// It will return invalid token if there is no vertical line from the specified offset in source.
+/// It will return invalid raw_token if there is no vertical line from the specified offset in source.
 /// Also, it does not differentiate attachers because there may be a case where the content of an
 /// attacher ends in vertical line. Use [`attacher()`] lexer first.
 ///
 /// ## Examples
 /// ```
 /// use chearmyp_lexer::simplex;
-/// use chearmyp_lexer::Token;
+/// use chearmyp_lexer::RawToken;
 ///
 /// let terminated = b"hello world|";
-/// let (token, last_index) = simplex(&terminated[..], 0, 0);
-/// if let Token::Simplex(token) = token {
-/// 	assert_eq!(token, &b"hello world"[..]);
+/// let (raw_token, last_index) = simplex(&terminated[..], 0, 0);
+/// if let RawToken::Simplex(raw_token) = raw_token {
+/// 	assert_eq!(raw_token, &b"hello world"[..]);
 /// } else {
-/// 	panic!("The returned token is not simplex.");
+/// 	panic!("The returned raw_token is not simplex.");
 /// }
 /// assert_eq!(last_index, 12);
 ///
 /// let non_simplex = b"hello world";
 /// let (non_simplex, last_index) = simplex(&non_simplex[..], 0, 0);
-/// if let Token::Invalid = non_simplex {
+/// if let RawToken::Invalid = non_simplex {
 /// 	assert!(true);
 /// } else {
-/// 	panic!("The returned token is not invalid.");
+/// 	panic!("The returned raw_token is not invalid.");
 /// }
 /// assert_eq!(last_index, 11);
 /// ```
 ///
 /// [`attacher()`]: ./fn.attacher.html
-pub fn simplex(src: &[u8], slice_offset: usize, mut search_offset: usize) -> TokenInfo {
+pub fn simplex(src: &[u8], slice_offset: usize, mut search_offset: usize) -> RawTokenInfo {
 	let start = slice_offset;
 	let end;
 
@@ -46,7 +46,7 @@ pub fn simplex(src: &[u8], slice_offset: usize, mut search_offset: usize) -> Tok
 		let ending = determine_ending(src, search_offset);
 		match ending {
 			Delimeter::Incorrect => search_offset += 1,
-			Delimeter::Invalid => { return (Token::Invalid, search_offset); },
+			Delimeter::Invalid => { return (RawToken::Invalid, search_offset); },
 			Delimeter::Pad | Delimeter::Limit => {
 				end = search_offset;
 				search_offset += 1;
@@ -55,7 +55,7 @@ pub fn simplex(src: &[u8], slice_offset: usize, mut search_offset: usize) -> Tok
 		}
 	}
 
-	(Token::Simplex(&src[start..end]), search_offset)
+	(RawToken::Simplex(&src[start..end]), search_offset)
 }
 
 fn determine_ending(src: &[u8], offset: usize) -> Delimeter {
@@ -79,7 +79,7 @@ fn determine_ending(src: &[u8], offset: usize) -> Delimeter {
 
 #[cfg(test)]
 mod t {
-	use super::{Token, simplex};
+	use super::{RawToken, simplex};
 
 	macro_rules! test_simplex {
 		(
@@ -87,25 +87,25 @@ mod t {
 			$expected_token:expr,
 			$expected_consumption:literal
 		) => {
-			let (token, consumed_size) = simplex($sample, 0, 0);
-			assert_eq!(token, $expected_token);
+			let (raw_token, consumed_size) = simplex($sample, 0, 0);
+			assert_eq!(raw_token, $expected_token);
 			assert_eq!(consumed_size, $expected_consumption);
 		};
 	}
 
 	#[test]
 	fn can_lex() {
-		test_simplex!(b"a|	", Token::Simplex(&b"a"[..]), 2);
-		test_simplex!(b"bc|	#", Token::Simplex(&b"bc"[..]), 3);
-		test_simplex!(b"def|\n#", Token::Simplex(&b"def"[..]), 4);
-		test_simplex!(b"kl|", Token::Simplex(&b"kl"[..]), 3);
+		test_simplex!(b"a|	", RawToken::Simplex(&b"a"[..]), 2);
+		test_simplex!(b"bc|	#", RawToken::Simplex(&b"bc"[..]), 3);
+		test_simplex!(b"def|\n#", RawToken::Simplex(&b"def"[..]), 4);
+		test_simplex!(b"kl|", RawToken::Simplex(&b"kl"[..]), 3);
 	}
 
 	#[test]
 	fn cannot_lex() {
-		test_simplex!(b"g\n", Token::Invalid, 1);
-		test_simplex!(b"hi\tj", Token::Invalid, 2);
-		test_simplex!(b"mn", Token::Invalid, 2);
-		test_simplex!(b"o: pq", Token::Invalid, 5);
+		test_simplex!(b"g\n", RawToken::Invalid, 1);
+		test_simplex!(b"hi\tj", RawToken::Invalid, 2);
+		test_simplex!(b"mn", RawToken::Invalid, 2);
+		test_simplex!(b"o: pq", RawToken::Invalid, 5);
 	}
 }

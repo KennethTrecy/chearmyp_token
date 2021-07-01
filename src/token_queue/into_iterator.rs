@@ -1,10 +1,10 @@
 use alloc::collections::vec_deque::IntoIter;
 use core::iter::IntoIterator;
-use crate::Token;
+use crate::RawToken;
 use super::TokenQueue;
 
 impl<'a> IntoIterator for TokenQueue<'a> {
-	type Item = Token<'a>;
+	type Item = RawToken<'a>;
 	type IntoIter = IntoIter<Self::Item>;
 
 	fn into_iter(self) -> Self::IntoIter {
@@ -14,14 +14,14 @@ impl<'a> IntoIterator for TokenQueue<'a> {
 
 #[cfg(test)]
 mod t {
-	use super::{Token, TokenQueue};
+	use super::{RawToken, TokenQueue};
 
 	#[test]
 	fn can_convert_into_iterator() {
-		let token = Token::Empty;
-		let expected_token = Token::Empty;
+		let raw_token = RawToken::Empty;
+		let expected_token = RawToken::Empty;
 		let mut token_queue = TokenQueue::new();
-		token_queue.push(token);
+		token_queue.push(raw_token);
 
 		let mut iterator = token_queue.into_iter();
 		assert_eq!(iterator.next(), Some(expected_token));

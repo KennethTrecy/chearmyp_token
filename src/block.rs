@@ -1,6 +1,6 @@
 use alloc::vec::Vec;
 use crate::find_line_ending;
-use crate::token::{Token, TokenInfo};
+use crate::raw_token::{RawToken, RawTokenInfo};
 use crate::special_characters::{NEW_LINE, TAB};
 
 /// Returns the recognized block and the last seen index.
@@ -10,7 +10,7 @@ use crate::special_characters::{NEW_LINE, TAB};
 ///
 /// ## Example
 /// ```
-/// use chearmyp_lexer::Token;
+/// use chearmyp_lexer::RawToken;
 /// use chearmyp_lexer::block;
 ///
 /// let special_character = '@' as u8;
@@ -19,7 +19,7 @@ use crate::special_characters::{NEW_LINE, TAB};
 /// hello world
 /// @@@";
 /// let (block, last_seen_index) = block(sample_block, 1, 0, special_character);
-/// if let Token::Block(lines) = block {
+/// if let RawToken::Block(lines) = block {
 /// 	assert_eq!(lines.len(), 1, "Expected lines of {:?}", &sample_block[..]);
 ///	assert_eq!(vec![&b"hello world"[..]], lines);
 /// } else {
@@ -27,7 +27,7 @@ use crate::special_characters::{NEW_LINE, TAB};
 /// }
 /// assert_eq!(last_seen_index, 20);
 /// ```
-pub fn block(src: &[u8], offset: usize, tab_count: usize, special_character: u8) -> TokenInfo {
+pub fn block(src: &[u8], offset: usize, tab_count: usize, special_character: u8) -> RawTokenInfo {
 	if has_3_special_characters(src, offset, special_character) {
 		let mut lines = Vec::new();
 		let mut offset = offset + 3;
@@ -56,10 +56,10 @@ pub fn block(src: &[u8], offset: usize, tab_count: usize, special_character: u8)
 			lines.push(line);
 		}
 
-		(Token::Block(lines), offset)
+		(RawToken::Block(lines), offset)
 	} else {
-		let token = if let Some(_) = src.get(offset) { Token::Invalid } else { Token::Empty };
-		(token, offset)
+		let raw_token = if let Some(_) = src.get(offset) { RawToken::Invalid } else { RawToken::Empty };
+		(raw_token, offset)
 	}
 }
 
@@ -75,7 +75,7 @@ fn has_3_special_characters(src: &[u8], offset: usize, special_character: u8) ->
 
 #[cfg(test)]
 mod t {
-	use super::{has_3_special_characters, block, Token};
+	use super::{has_3_special_characters, block, RawToken};
 
 	macro_rules! has_3_special_characters {
 		($src:literal $offset:literal $special_character:literal) => {
@@ -90,8 +90,8 @@ mod t {
 	}
 
 	macro_rules! Block {
-		($($token:literal)*) => {
-			create_block!(Block $($token)*)
+		($($raw_token:literal)*) => {
+			create_block!(Block $($raw_token)*)
 		};
 	}
 
@@ -137,16 +137,16 @@ mod t {
 
 	#[test]
 	fn cannot_lex_on_empty_line() {
-		assert_eq!(block!(b"" 0 0 'c'), (Token::Empty, 0));
+		assert_eq!(block!(b"" 0 0 'c'), (RawToken::Empty, 0));
 	}
 
 	#[test]
 	fn cannot_lex_on_single_character_line() {
-		assert_eq!(block!(b"c" 0 0 'c'), (Token::Invalid, 0));
+		assert_eq!(block!(b"c" 0 0 'c'), (RawToken::Invalid, 0));
 	}
 
 	#[test]
 	fn cannot_lex_on_double_character_line() {
-		assert_eq!(block!(b"cc" 0 0 'c'), (Token::Invalid, 0));
+		assert_eq!(block!(b"cc" 0 0 'c'), (RawToken::Invalid, 0));
 	}
 }

@@ -1,4 +1,4 @@
-use crate::token::{Token, TokenInfo};
+use crate::raw_token::{RawToken, RawTokenInfo};
 use crate::special_characters::{COLON, NEW_LINE, SPACE, TAB};
 use crate::delimeter::Delimeter;
 
@@ -11,44 +11,44 @@ use crate::delimeter::Delimeter;
 /// as the search offset).
 ///
 /// ## Notes
-/// If there is no valid token found, it will return invalid token along with the last index
+/// If there is no valid raw_token found, it will return invalid raw_token along with the last index
 /// checked.
 ///
 /// ## Examples
 /// ```
 /// use chearmyp_lexer::attacher;
-/// use chearmyp_lexer::Token;
+/// use chearmyp_lexer::RawToken;
 ///
 /// let non_terminated = b"hello:	world";
-/// let (token, last_index) = attacher(&non_terminated[..], 0, 0);
-/// if let Token::Attacher(label, content) = token {
+/// let (raw_token, last_index) = attacher(&non_terminated[..], 0, 0);
+/// if let RawToken::Attacher(label, content) = raw_token {
 /// 	assert_eq!(label, &b"hello"[..]);
 /// 	assert_eq!(content, &b"world"[..]);
 /// } else {
-/// 	panic!("The returned token is not attacher.");
+/// 	panic!("The returned raw_token is not attacher.");
 /// }
 /// assert_eq!(last_index, 12);
 ///
 /// let terminated = b"hello:	world\n";
-/// let (token, last_index) = attacher(&terminated[..], 0, 0);
-/// if let Token::Attacher(label, content) = token {
+/// let (raw_token, last_index) = attacher(&terminated[..], 0, 0);
+/// if let RawToken::Attacher(label, content) = raw_token {
 /// 	assert_eq!(label, &b"hello"[..]);
 /// 	assert_eq!(content, &b"world"[..]);
 /// } else {
-/// 	panic!("The returned token is not attacher.");
+/// 	panic!("The returned raw_token is not attacher.");
 /// }
 /// assert_eq!(last_index, 12);
 ///
 /// let simplex = b"hello world";
-/// let (token, last_index) = attacher(&simplex[..], 0, 0);
-/// if let Token::Invalid = token {
+/// let (raw_token, last_index) = attacher(&simplex[..], 0, 0);
+/// if let RawToken::Invalid = raw_token {
 /// 	assert!(true);
 /// } else {
-/// 	panic!("The returned token is not invalid");
+/// 	panic!("The returned raw_token is not invalid");
 /// }
 /// assert_eq!(last_index, 11);
 /// ```
-pub fn attacher(src: &[u8], slice_offset: usize, mut search_offset: usize) -> TokenInfo {
+pub fn attacher(src: &[u8], slice_offset: usize, mut search_offset: usize) -> RawTokenInfo {
 	let label_start = slice_offset;
 	let label_end;
 
@@ -61,7 +61,7 @@ pub fn attacher(src: &[u8], slice_offset: usize, mut search_offset: usize) -> To
 				search_offset += 1;
 				break;
 			},
-			_ => return (Token::Invalid, search_offset)
+			_ => return (RawToken::Invalid, search_offset)
 		}
 	}
 
@@ -71,7 +71,7 @@ pub fn attacher(src: &[u8], slice_offset: usize, mut search_offset: usize) -> To
 		match src.get(search_offset) {
 			Some(&TAB) | Some(&SPACE) => search_offset += 1,
 			Some(_) => break,
-			None => return (Token::Invalid, search_offset)
+			None => return (RawToken::Invalid, search_offset)
 		}
 	}
 
@@ -86,12 +86,12 @@ pub fn attacher(src: &[u8], slice_offset: usize, mut search_offset: usize) -> To
 				content_end = search_offset;
 				break;
 			},
-			Delimeter::Invalid => return (Token::Invalid, search_offset)
+			Delimeter::Invalid => return (RawToken::Invalid, search_offset)
 		}
 	}
 
 	let content = &src[content_start..content_end];
-	(Token::Attacher(label, content), search_offset)
+	(RawToken::Attacher(label, content), search_offset)
 }
 
 fn determine_separator(src: &[u8], offset: usize) -> Delimeter {
@@ -121,7 +121,7 @@ fn determine_ending(src: &[u8], offset: usize) -> Delimeter {
 
 #[cfg(test)]
 mod t {
-	use super::{Token, attacher};
+	use super::{RawToken, attacher};
 
 	macro_rules! test_attacher {
 		(
@@ -129,15 +129,15 @@ mod t {
 			$expected_token:expr,
 			$expected_consumption:literal
 		) => {
-			let (token, consumed_size) = attacher($sample, 0, 0);
-			assert_eq!(token, $expected_token);
+			let (raw_token, consumed_size) = attacher($sample, 0, 0);
+			assert_eq!(raw_token, $expected_token);
 			assert_eq!(consumed_size, $expected_consumption);
 		};
 	}
 
 	macro_rules! Attacher {
 		($label:literal : $content:literal) => {
-			Token::Attacher(&$label[..], &$content[..])
+			RawToken::Attacher(&$label[..], &$content[..])
 		};
 	}
 
@@ -151,9 +151,9 @@ mod t {
 
 	#[test]
 	fn cannot_lex() {
-		test_attacher!(b"lm", Token::Invalid, 2);
-		test_attacher!(b"n|", Token::Invalid, 2);
-		test_attacher!(b"o:	", Token::Invalid, 3);
+		test_attacher!(b"lm", RawToken::Invalid, 2);
+		test_attacher!(b"n|", RawToken::Invalid, 2);
+		test_attacher!(b"o:	", RawToken::Invalid, 3);
 	}
 
 	#[test]

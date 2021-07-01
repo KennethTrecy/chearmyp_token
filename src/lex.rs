@@ -1,4 +1,4 @@
-use crate::{any, Token, TokenQueue};
+use crate::{any, RawToken, TokenQueue};
 use crate::count_tabs::count_tabs;
 use crate::special_characters::NEW_LINE;
 
@@ -10,7 +10,7 @@ use crate::special_characters::NEW_LINE;
 /// ```
 /// use std::collections::VecDeque;
 /// use chearmyp_lexer::lex;
-/// use chearmyp_lexer::{Token, TokenQueue};
+/// use chearmyp_lexer::{RawToken, TokenQueue};
 /// let source = b"
 /// a complex
 /// 	this:	is an attacher
@@ -19,14 +19,14 @@ use crate::special_characters::NEW_LINE;
 /// ";
 ///
 /// let queue: TokenQueue = lex(&source[..]);
-/// let queue: VecDeque<Token> = queue.0;
+/// let queue: VecDeque<RawToken> = queue.0;
 ///
-/// assert_eq!(queue[0], Token::Complex(b"a complex"));
-/// assert_eq!(queue[1], Token::ScopeLevel(1));
-/// assert_eq!(queue[2], Token::Attacher(b"this", b"is an attacher"));
-/// assert_eq!(queue[3], Token::Simplex(b"a simplex"));
-/// assert_eq!(queue[4], Token::ScopeLevel(0));
-/// assert_eq!(queue[5], Token::LineComment(b" This is a line comment"));
+/// assert_eq!(queue[0], RawToken::Complex(b"a complex"));
+/// assert_eq!(queue[1], RawToken::ScopeLevel(1));
+/// assert_eq!(queue[2], RawToken::Attacher(b"this", b"is an attacher"));
+/// assert_eq!(queue[3], RawToken::Simplex(b"a simplex"));
+/// assert_eq!(queue[4], RawToken::ScopeLevel(0));
+/// assert_eq!(queue[5], RawToken::LineComment(b" This is a line comment"));
 /// ```
 pub fn lex(mut src: &[u8]) -> TokenQueue {
 	let mut token_queue = TokenQueue::new();
@@ -48,7 +48,7 @@ pub fn lex(mut src: &[u8]) -> TokenQueue {
 		src = &src[new_tab_count..];
 
 		if new_tab_count != tab_count {
-			token_queue.push(Token::ScopeLevel(new_tab_count));
+			token_queue.push(RawToken::ScopeLevel(new_tab_count));
 			tab_count = new_tab_count;
 		}
 
@@ -67,13 +67,13 @@ pub fn lex(mut src: &[u8]) -> TokenQueue {
 mod t {
 	use alloc::vec;
 	use super::lex;
-	use super::{Token, TokenQueue};
+	use super::{RawToken, TokenQueue};
 
 	#[test]
 	fn can_lex_line_comment() {
 		let source = b"# Hello World";
 		let mut expected_token_queue = TokenQueue::new();
-		expected_token_queue.push(Token::LineComment(&source[1..]));
+		expected_token_queue.push(RawToken::LineComment(&source[1..]));
 
 		let token_queue = lex(&source[..]);
 
@@ -87,7 +87,7 @@ mod t {
 		let last_index_of_hello_world = source.len() - 4;
 		let expected_lines = vec![&source[first_index_of_hello_world..last_index_of_hello_world]];
 		let mut expected_token_queue = TokenQueue::new();
-		expected_token_queue.push(Token::BlockComment(expected_lines));
+		expected_token_queue.push(RawToken::BlockComment(expected_lines));
 
 		let token_queue = lex(&source[..]);
 
@@ -99,7 +99,7 @@ mod t {
 		let source = b"hello_world|";
 		let last_index = source.len() - 1;
 		let mut expected_token_queue = TokenQueue::new();
-		expected_token_queue.push(Token::Simplex(&source[0..last_index]));
+		expected_token_queue.push(RawToken::Simplex(&source[0..last_index]));
 
 		let token_queue = lex(&source[..]);
 
@@ -110,7 +110,7 @@ mod t {
 	fn can_lex_complex() {
 		let source = b"HelloWorld";
 		let mut expected_token_queue = TokenQueue::new();
-		expected_token_queue.push(Token::Complex(&source[..]));
+		expected_token_queue.push(RawToken::Complex(&source[..]));
 
 		let token_queue = lex(&source[..]);
 
@@ -123,7 +123,7 @@ mod t {
 		let expected_label = b"hello";
 		let expected_content = b"world";
 		let mut expected_token_queue = TokenQueue::new();
-		expected_token_queue.push(Token::Attacher(&expected_label[..], &expected_content[..]));
+		expected_token_queue.push(RawToken::Attacher(&expected_label[..], &expected_content[..]));
 
 		let token_queue = lex(&source[..]);
 
@@ -135,7 +135,7 @@ mod t {
 		let source = b" = hello-world";
 		let first_index_of_hello_world = 3;
 		let mut expected_token_queue = TokenQueue::new();
-		expected_token_queue.push(Token::LineOthertongue(&source[first_index_of_hello_world..]));
+		expected_token_queue.push(RawToken::LineOthertongue(&source[first_index_of_hello_world..]));
 
 		let token_queue = lex(&source[..]);
 
@@ -149,7 +149,7 @@ mod t {
 		let last_index_of_hello_world = source.len() - 4;
 		let expected_lines = vec![&source[first_index_of_hello_world..last_index_of_hello_world]];
 		let mut expected_token_queue = TokenQueue::new();
-		expected_token_queue.push(Token::BlockOthertongue(expected_lines));
+		expected_token_queue.push(RawToken::BlockOthertongue(expected_lines));
 
 		let token_queue = lex(&source[..]);
 

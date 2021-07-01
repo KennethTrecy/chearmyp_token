@@ -1,12 +1,12 @@
 use alloc::collections::VecDeque;
-use crate::Token;
+use crate::RawToken;
 
 /// Contains the tokens that have been lexed.
 #[cfg_attr(test, derive(Debug, PartialEq))]
-pub struct TokenQueue<'a>(pub VecDeque<Token<'a>>);
+pub struct TokenQueue<'a>(pub VecDeque<RawToken<'a>>);
 
 impl<'a> TokenQueue<'a> {
-	/// Creates the token queue.
+	/// Creates the raw_token queue.
 	///
 	/// ## Examples
 	/// ```
@@ -18,36 +18,36 @@ impl<'a> TokenQueue<'a> {
 		TokenQueue(VecDeque::new())
 	}
 
-	/// Pushes a token to the token queue.
+	/// Pushes a raw_token to the raw_token queue.
 	///
 	/// ## Examples
 	/// ```
-	/// use chearmyp_lexer::Token;
+	/// use chearmyp_lexer::RawToken;
 	/// use chearmyp_lexer::TokenQueue;
 	///
 	/// let mut token_queue = TokenQueue::new();
-	/// token_queue.push(Token::Simplex(b"hi"));
+	/// token_queue.push(RawToken::Simplex(b"hi"));
 	/// ```
-	pub fn push(&mut self, token: Token<'a>) {
-		self.0.push_back(token);
+	pub fn push(&mut self, raw_token: RawToken<'a>) {
+		self.0.push_back(raw_token);
 	}
 
-	/// Takes the oldest token in the token queue.
+	/// Takes the oldest raw_token in the raw_token queue.
 	///
 	/// ## Examples
 	/// ```
-	/// use chearmyp_lexer::Token;
+	/// use chearmyp_lexer::RawToken;
 	/// use chearmyp_lexer::TokenQueue;
 	///
 	/// let mut token_queue = TokenQueue::new();
-	/// token_queue.push(Token::Complex(b"universe"));
-	/// token_queue.push(Token::Simplex(b"!"));
+	/// token_queue.push(RawToken::Complex(b"universe"));
+	/// token_queue.push(RawToken::Simplex(b"!"));
 	///
 	/// let oldest_token = token_queue.shift().unwrap();
 	///
-	/// assert_eq!(oldest_token, Token::Complex(b"universe"));
+	/// assert_eq!(oldest_token, RawToken::Complex(b"universe"));
 	/// ```
-	pub fn shift(&mut self) -> Option<Token<'a>> {
+	pub fn shift(&mut self) -> Option<RawToken<'a>> {
 		self.0.pop_front()
 	}
 }
@@ -59,15 +59,15 @@ mod into_iterator;
 use core::cmp::PartialEq;
 
 #[cfg(test)]
-impl<'a> PartialEq<VecDeque<Token<'a>>> for TokenQueue<'a> {
-	fn eq(&self, other: &VecDeque<Token<'a>>) -> bool {
+impl<'a> PartialEq<VecDeque<RawToken<'a>>> for TokenQueue<'a> {
+	fn eq(&self, other: &VecDeque<RawToken<'a>>) -> bool {
 		PartialEq::eq(&self.0, other)
 	}
 }
 
 #[cfg(test)]
 mod t {
-	use super::Token;
+	use super::RawToken;
 	use super::VecDeque;
 	use super::TokenQueue;
 
@@ -80,13 +80,13 @@ mod t {
 
 	#[test]
 	fn can_push() {
-		let token = Token::Empty;
-		let expected_token = Token::Empty;
+		let raw_token = RawToken::Empty;
+		let expected_token = RawToken::Empty;
 		let mut queue = TokenQueue::new();
 		let mut expected_queue = VecDeque::new();
 		expected_queue.push_back(expected_token);
 
-		queue.push(token);
+		queue.push(raw_token);
 
 		assert_eq!(queue, expected_queue);
 	}
@@ -96,20 +96,20 @@ mod t {
 		let mut queue = TokenQueue::new();
 		let expected_token = None;
 
-		let token = queue.shift();
+		let raw_token = queue.shift();
 
-		assert_eq!(token, expected_token);
+		assert_eq!(raw_token, expected_token);
 	}
 
 	#[test]
 	fn can_pop_on_filled_queue() {
-		let token = Token::Empty;
-		let expected_token = Some(Token::Empty);
+		let raw_token = RawToken::Empty;
+		let expected_token = Some(RawToken::Empty);
 		let mut queue = TokenQueue::new();
-		queue.push(token);
+		queue.push(raw_token);
 
-		let token = queue.shift();
+		let raw_token = queue.shift();
 
-		assert_eq!(token, expected_token);
+		assert_eq!(raw_token, expected_token);
 	}
 }

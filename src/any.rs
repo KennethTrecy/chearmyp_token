@@ -1,4 +1,4 @@
-use crate::token::{Token, TokenInfo};
+use crate::raw_token::{RawToken, RawTokenInfo};
 use crate::special_characters::{EQUAL, POUND_SIGN, SPACE};
 use crate::{
 	simplex,
@@ -9,52 +9,52 @@ use crate::{
 	line_othertongue,
 	block_othertongue};
 
-/// Returns the info of first recognized token and its probably last seen index in the source.
+/// Returns the info of first recognized raw_token and its probably last seen index in the source.
 ///
 /// It needs an array of bytes as the first argument (known as source), where to start looking for
-/// the token as the second argument (known as the offset), and the number of tabs to work in case
-/// it found a block token of any kind.
+/// the raw_token as the second argument (known as the offset), and the number of tabs to work in case
+/// it found a block raw_token of any kind.
 ///
 /// ## Notes
-/// May panic if the last possible lexer has returned an unexpected token.
+/// May panic if the last possible lexer has returned an unexpected raw_token.
 ///
 /// ## Examples
 /// ```
 /// use chearmyp_lexer::any;
-/// use chearmyp_lexer::Token;
+/// use chearmyp_lexer::RawToken;
 ///
 /// let (any, last_index) = any(&b"hello"[..], 0, 0);
-/// if let Token::Complex(content) = any {
+/// if let RawToken::Complex(content) = any {
 /// 	assert_eq!(content, &b"hello"[..]);
 /// } else {
-/// 	panic!("The returned token is not complex.");
+/// 	panic!("The returned raw_token is not complex.");
 /// }
 /// assert_eq!(last_index, 5);
 /// ```
-pub fn any(src: &[u8], offset: usize, tab_count: usize) -> TokenInfo {
+pub fn any(src: &[u8], offset: usize, tab_count: usize) -> RawTokenInfo {
 	let original_offset = offset;
-	let mut token;
+	let mut raw_token;
 	let mut offset = offset;
 
 	macro_rules! lex {
 		(
 			$parser:ident$(($($other_argument:tt),+))?
-			$(unless $token:ident($($content:tt),+) => $block:block)?
+			$(unless $raw_token:ident($($content:tt),+) => $block:block)?
 			$(which expects $expected_token:ident($($expected_content:tt),+))?
 		) => {
 			let info = $parser(src, offset, $($($other_argument,)*)?);
-			token = info.0;
+			raw_token = info.0;
 			offset = info.1;
 			$(
-				if let Token::$token($($content,)+) = token {
-					(token, offset)
+				if let RawToken::$raw_token($($content,)+) = raw_token {
+					(raw_token, offset)
 				} else $block
 			)?
 			$(
-				if let Token::$expected_token($($expected_content,)+) = token {
-					(token, offset)
+				if let RawToken::$expected_token($($expected_content,)+) = raw_token {
+					(raw_token, offset)
 				} else {
-					panic!("There is an unxpected token in lexing the source.");
+					panic!("There is an unxpected raw_token in lexing the source.");
 				}
 			)?
 		};
@@ -97,7 +97,7 @@ pub fn any(src: &[u8], offset: usize, tab_count: usize) -> TokenInfo {
 #[cfg(test)]
 mod t {
 	use alloc::vec::Vec;
-	use super::{Token, any};
+	use super::{RawToken, any};
 
 	macro_rules! test_any {
 		($sample:literal $expected_info:expr) => {
@@ -123,7 +123,7 @@ mod t {
 
 	#[test]
 	fn can_lex_line_comment() {
-		test_any!(b"#abc" (Token::LineComment(b"abc"), 4));
+		test_any!(b"#abc" (RawToken::LineComment(b"abc"), 4));
 	}
 
 	#[test]
@@ -131,27 +131,27 @@ mod t {
 		let mut expected_lines = Vec::new();
 		expected_lines.push(&b"\tde"[..]);
 
-		test_any!(b"###\n\tde\n###" (Token::BlockComment(expected_lines), 11));
+		test_any!(b"###\n\tde\n###" (RawToken::BlockComment(expected_lines), 11));
 	}
 
 	#[test]
 	fn can_lex_simplex() {
-		test_any!(b"efg|" (Token::Simplex(b"efg"), 4));
+		test_any!(b"efg|" (RawToken::Simplex(b"efg"), 4));
 	}
 
 	#[test]
 	fn can_lex_complex() {
-		test_any!(b"hi" (Token::Complex(b"hi"), 2));
+		test_any!(b"hi" (RawToken::Complex(b"hi"), 2));
 	}
 
 	#[test]
 	fn can_lex_attacher() {
-		test_any!(b"jklm:\tn" (Token::Attacher(b"jklm", b"n"), 7));
+		test_any!(b"jklm:\tn" (RawToken::Attacher(b"jklm", b"n"), 7));
 	}
 
 	#[test]
 	fn can_lex_line_othertongue() {
-		test_any!(b"= o" (Token::LineOthertongue(b"o"), 3));
+		test_any!(b"= o" (RawToken::LineOthertongue(b"o"), 3));
 	}
 
 	#[test]
@@ -159,11 +159,11 @@ mod t {
 		let mut expected_lines = Vec::new();
 		expected_lines.push(&b"pqrs"[..]);
 
-		test_any!(b"===\npqrs\n===" (Token::BlockOthertongue(expected_lines), 12));
+		test_any!(b"===\npqrs\n===" (RawToken::BlockOthertongue(expected_lines), 12));
 	}
 
 	#[test]
 	fn can_lex_inlined_line_othertongue() {
-		test_any!(b" = tu" (Token::LineOthertongue(b"tu"), 5));
+		test_any!(b" = tu" (RawToken::LineOthertongue(b"tu"), 5));
 	}
 }

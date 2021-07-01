@@ -1,5 +1,5 @@
 use crate::block::block;
-use crate::token::{Token, TokenInfo};
+use crate::raw_token::{RawToken, RawTokenInfo};
 use crate::special_characters::EQUAL;
 
 /// Returns the info of recognized block othertongue and its probably last seen index in the source.
@@ -9,36 +9,36 @@ use crate::special_characters::EQUAL;
 /// terminating equal signs be indented.
 ///
 /// ## Notes
-/// If the source has no 3 equal signs found at the offset, it will return an invalid token variant
+/// If the source has no 3 equal signs found at the offset, it will return an invalid raw_token variant
 /// with the offset.
 ///
 /// ## Examples
 /// ```
 /// use chearmyp_lexer::block_othertongue;
-/// use chearmyp_lexer::Token;
+/// use chearmyp_lexer::RawToken;
 ///
 /// let terminated = b"===\n\thello world\n===\n";
 /// let (block, last_index) = block_othertongue(&terminated[..], 0, 0);
-/// if let Token::BlockOthertongue(othertongue) = block {
+/// if let RawToken::BlockOthertongue(othertongue) = block {
 /// 	assert_eq!(othertongue, vec![&b"\thello world"[..]]);
 /// } else {
-/// 	panic!("The returned token is not block othertongue.");
+/// 	panic!("The returned raw_token is not block othertongue.");
 /// }
 /// assert_eq!(last_index, 21);
 ///
 /// let non_othertongue = b"hello world";
-/// let (token, last_index) = block_othertongue(&non_othertongue[..], 0, 0);
-/// if let Token::Invalid = token {
+/// let (raw_token, last_index) = block_othertongue(&non_othertongue[..], 0, 0);
+/// if let RawToken::Invalid = raw_token {
 /// 	assert!(true);
 /// } else {
-/// 	panic!("The returned token is not invalid.");
+/// 	panic!("The returned raw_token is not invalid.");
 /// }
 /// assert_eq!(last_index, 0);
 /// ```
-pub fn block_othertongue(src: &[u8], offset: usize, tab_count: usize) -> TokenInfo {
+pub fn block_othertongue(src: &[u8], offset: usize, tab_count: usize) -> RawTokenInfo {
 	let block = block(src, offset, tab_count, EQUAL);
-	if let (Token::Block(lines), last_seen_index) = block {
-		(Token::BlockOthertongue(lines), last_seen_index)
+	if let (RawToken::Block(lines), last_seen_index) = block {
+		(RawToken::BlockOthertongue(lines), last_seen_index)
 	} else {
 		block
 	}
@@ -46,17 +46,17 @@ pub fn block_othertongue(src: &[u8], offset: usize, tab_count: usize) -> TokenIn
 
 #[cfg(test)]
 mod t {
-	use super::{Token, block_othertongue};
+	use super::{RawToken, block_othertongue};
 
 	macro_rules! BlockOthertongue {
-		($($token:literal)*) => {
-			create_block!(BlockOthertongue $($token)*)
+		($($raw_token:literal)*) => {
+			create_block!(BlockOthertongue $($raw_token)*)
 		};
 	}
 
 	test_block_cases!{
 		lexer: block_othertongue
-		token creator: BlockOthertongue
+		raw_token creator: BlockOthertongue
 
 		valid cases: [
 			can_lex_empty_othertongue

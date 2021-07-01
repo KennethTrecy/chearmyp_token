@@ -9,8 +9,11 @@ mod test_macros;
 /// Contains the data structure returned by the main lexer.
 mod token_queue;
 
-/// Contains the data structures and type aliases used and/or returned by different lexers.
+/// Contains the data structures and type aliases used and/or returned by some lexers.
 mod token;
+
+/// Contains the data structures and type aliases used and/or returned by most lexers.
+mod raw_token;
 
 /// Contains different characters needed to be recognized by the different lexers.
 pub mod special_characters;
@@ -65,5 +68,6 @@ pub use line_othertongue::line_othertongue;
 pub use block_othertongue::block_othertongue;
 pub use any::any;
 pub use token::Token;
+pub use raw_token::RawToken;
 pub use token_queue::TokenQueue;
 pub use lex::lex;
