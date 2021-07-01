@@ -9,8 +9,8 @@ use crate::special_characters::EQUAL;
 /// terminating equal signs be indented.
 ///
 /// ## Notes
-/// If the source has no 3 equal signs found at the offset, it will return an invalid raw_token variant
-/// with the offset.
+/// If the source has no 3 equal signs found at the offset, it will return an invalid raw token
+/// variant with the offset.
 ///
 /// ## Examples
 /// ```
@@ -22,7 +22,7 @@ use crate::special_characters::EQUAL;
 /// if let RawToken::BlockOthertongue(othertongue) = block {
 /// 	assert_eq!(othertongue, vec![&b"\thello world"[..]]);
 /// } else {
-/// 	panic!("The returned raw_token is not block othertongue.");
+/// 	panic!("The returned raw token is not block othertongue.");
 /// }
 /// assert_eq!(last_index, 21);
 ///
@@ -31,7 +31,7 @@ use crate::special_characters::EQUAL;
 /// if let RawToken::Invalid = raw_token {
 /// 	assert!(true);
 /// } else {
-/// 	panic!("The returned raw_token is not invalid.");
+/// 	panic!("The returned raw token is not invalid.");
 /// }
 /// assert_eq!(last_index, 0);
 /// ```

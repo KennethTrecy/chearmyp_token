@@ -9,9 +9,9 @@ use crate::delimeter::Delimeter;
 /// as the third argument (known as the search offset).
 ///
 /// ## Notes
-/// It will return invalid raw_token if there is no vertical line from the specified offset in source.
-/// Also, it does not differentiate attachers because there may be a case where the content of an
-/// attacher ends in vertical line. Use [`attacher()`] lexer first.
+/// It will return invalid raw token if there is no vertical line from the specified offset in
+/// source. Also, it does not differentiate attachers because there may be a case where the content
+/// of an attacher ends in vertical line. Use [`attacher()`] lexer first.
 ///
 /// ## Examples
 /// ```
@@ -23,7 +23,7 @@ use crate::delimeter::Delimeter;
 /// if let RawToken::Simplex(raw_token) = raw_token {
 /// 	assert_eq!(raw_token, &b"hello world"[..]);
 /// } else {
-/// 	panic!("The returned raw_token is not simplex.");
+/// 	panic!("The returned raw token is not simplex.");
 /// }
 /// assert_eq!(last_index, 12);
 ///
@@ -32,7 +32,7 @@ use crate::delimeter::Delimeter;
 /// if let RawToken::Invalid = non_simplex {
 /// 	assert!(true);
 /// } else {
-/// 	panic!("The returned raw_token is not invalid.");
+/// 	panic!("The returned raw token is not invalid.");
 /// }
 /// assert_eq!(last_index, 11);
 /// ```

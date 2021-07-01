@@ -10,8 +10,8 @@ use crate::find_line_ending;
 /// for the line othertongue (inlined or not) as the second argument (known as the offset).
 ///
 /// ## Notes
-/// If there is no valid raw_token found, it will return invalid raw_token along with the probably last
-/// index checked.
+/// If there is no valid raw token found, it will return invalid raw token along with the probably
+/// last index checked.
 ///
 /// ## Examples
 /// ```
@@ -23,7 +23,7 @@ use crate::find_line_ending;
 /// if let RawToken::LineOthertongue(raw_token) = raw_token {
 /// 	assert_eq!(raw_token, &b"hello world"[..]);
 /// } else {
-/// 	panic!("The returned raw_token is not line othertongue.");
+/// 	panic!("The returned raw token is not line othertongue.");
 /// }
 /// assert_eq!(last_index, 13);
 ///
@@ -32,7 +32,7 @@ use crate::find_line_ending;
 /// if let RawToken::LineOthertongue(raw_token) = raw_token {
 /// 	assert_eq!(raw_token, &b"hello world"[..]);
 /// } else {
-/// 	panic!("The returned raw_token is not line othertongue.");
+/// 	panic!("The returned raw token is not line othertongue.");
 /// }
 /// assert_eq!(last_index, 14);
 /// ```

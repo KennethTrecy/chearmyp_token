@@ -5,13 +5,13 @@ use crate::find_line_ending;
 /// Returns the info of recognized line comment and its last index occupied in the source.
 ///
 /// It needs an array of bytes as the first argument (known as source) and where to start looking
-/// for the pound sign as the second argument (known as the offset). The raw_token will not have a line
-/// ending but it will be counted as the last index.
+/// for the pound sign as the second argument (known as the offset). The raw token will not have a
+/// line ending but it will be counted as the last index.
 ///
 /// ## Notes
-/// If there is no character at the offset from the source, it will return an empty raw_token variant.
-/// If the source has no pound sign found at the offset, it will return an invalid raw_token variant
-/// with the offset.
+/// If there is no character at the offset from the source, it will return an empty raw token
+/// variant. If the source has no pound sign found at the offset, it will return an invalid raw
+/// token variant with the offset.
 ///
 /// ## Examples
 /// ```
@@ -23,7 +23,7 @@ use crate::find_line_ending;
 /// if let RawToken::LineComment(comment) = comment {
 /// 	assert_eq!(comment, &non_terminated[1..]);
 /// } else {
-/// 	panic!("The returned raw_token is not line comment.");
+/// 	panic!("The returned raw token is not line comment.");
 /// }
 /// assert_eq!(last_index, 13);
 ///
@@ -32,7 +32,7 @@ use crate::find_line_ending;
 /// if let RawToken::LineComment(comment) = comment {
 /// 	assert_eq!(comment, &terminated[1..13]);
 /// } else {
-/// 	panic!("The returned raw_token is not line comment.");
+/// 	panic!("The returned raw token is not line comment.");
 /// }
 /// assert_eq!(last_index, 13);
 ///
@@ -41,7 +41,7 @@ use crate::find_line_ending;
 /// if let RawToken::Invalid = non_comment {
 /// 	assert!(true);
 /// } else {
-/// 	panic!("The returned raw_token is not invalid.");
+/// 	panic!("The returned raw token is not invalid.");
 /// }
 /// assert_eq!(last_index, 0);
 /// ```

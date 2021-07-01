@@ -9,8 +9,8 @@ use crate::special_characters::POUND_SIGN;
 /// terminating pound signs be indented.
 ///
 /// ## Notes
-/// If the source has no 3 pound signs found at the offset, it will return an invalid raw_token variant
-/// with the offset.
+/// If the source has no 3 pound signs found at the offset, it will return an invalid raw token
+/// variant with the offset.
 ///
 /// ## Examples
 /// ```
@@ -22,7 +22,7 @@ use crate::special_characters::POUND_SIGN;
 /// if let RawToken::BlockComment(comment) = comment {
 /// 	assert_eq!(comment, vec![&b"\thello world"[..]]);
 /// } else {
-/// 	panic!("The returned raw_token is not block comment.");
+/// 	panic!("The returned raw token is not block comment.");
 /// }
 /// assert_eq!(last_index, 20);
 ///
@@ -31,7 +31,7 @@ use crate::special_characters::POUND_SIGN;
 /// if let RawToken::Invalid = comment {
 /// 	assert!(true);
 /// } else {
-/// 	panic!("The returned raw_token is not invalid.");
+/// 	panic!("The returned raw token is not invalid.");
 /// }
 /// assert_eq!(last_index, 0);
 /// ```

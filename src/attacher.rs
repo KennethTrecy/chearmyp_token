@@ -11,7 +11,7 @@ use crate::delimeter::Delimeter;
 /// as the search offset).
 ///
 /// ## Notes
-/// If there is no valid raw_token found, it will return invalid raw_token along with the last index
+/// If there is no valid raw token found, it will return invalid raw token along with the last index
 /// checked.
 ///
 /// ## Examples
@@ -25,7 +25,7 @@ use crate::delimeter::Delimeter;
 /// 	assert_eq!(label, &b"hello"[..]);
 /// 	assert_eq!(content, &b"world"[..]);
 /// } else {
-/// 	panic!("The returned raw_token is not attacher.");
+/// 	panic!("The returned raw token is not attacher.");
 /// }
 /// assert_eq!(last_index, 12);
 ///
@@ -35,7 +35,7 @@ use crate::delimeter::Delimeter;
 /// 	assert_eq!(label, &b"hello"[..]);
 /// 	assert_eq!(content, &b"world"[..]);
 /// } else {
-/// 	panic!("The returned raw_token is not attacher.");
+/// 	panic!("The returned raw token is not attacher.");
 /// }
 /// assert_eq!(last_index, 12);
 ///
@@ -44,7 +44,7 @@ use crate::delimeter::Delimeter;
 /// if let RawToken::Invalid = raw_token {
 /// 	assert!(true);
 /// } else {
-/// 	panic!("The returned raw_token is not invalid");
+/// 	panic!("The returned raw token is not invalid");
 /// }
 /// assert_eq!(last_index, 11);
 /// ```

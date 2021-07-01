@@ -14,7 +14,6 @@ use crate::line_othertongue::determine_othertongue_prefix;
 /// This lexer does not differentiate simplexes and attachers. Use [`simplex()`] and [`attacher()`]
 /// lexers first.
 ///
-///
 /// ## Examples
 /// ```
 /// use chearmyp_lexer::complex;
@@ -25,7 +24,7 @@ use crate::line_othertongue::determine_othertongue_prefix;
 /// if let RawToken::Complex(raw_token) = raw_token {
 /// 	assert_eq!(raw_token, &b"hello world"[..]);
 /// } else {
-/// 	panic!("The returned raw_token is not complex.");
+/// 	panic!("The returned raw token is not complex.");
 /// }
 /// assert_eq!(last_index, 11);
 ///
@@ -34,7 +33,7 @@ use crate::line_othertongue::determine_othertongue_prefix;
 /// if let RawToken::Complex(raw_token) = raw_token {
 /// 	assert_eq!(raw_token, &b"hello world"[..]);
 /// } else {
-/// 	panic!("The returned raw_token is not complex.");
+/// 	panic!("The returned raw token is not complex.");
 /// }
 /// assert_eq!(last_index, 11);
 ///
@@ -44,7 +43,7 @@ use crate::line_othertongue::determine_othertongue_prefix;
 /// if let RawToken::Complex(raw_token) = simplex {
 /// 	assert_eq!(raw_token, &b"hello world|"[..]);
 /// } else {
-/// 	panic!("The returned raw_token is not complex.");
+/// 	panic!("The returned raw token is not complex.");
 /// }
 /// assert_eq!(last_index, 12);
 /// ```
