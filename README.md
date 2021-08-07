@@ -1,11 +1,10 @@
-# Chearmyp Lexer
-A lexer for Chearmyp language.
+# Chearmyp Token
+A concrete implementation of tokens for Chearmyp language.
 
 This library represents the source as a queue of tokens.
 
 ## Origin
-It was in a repository with the parser library. Yet it has been forked as some possible use cases
-may not need as parser.
+It was in a repository with the lexer library. Yet, it has been forked for better development of future libraries.
 
 ## Tokens
 The tokens only contain the most important data of a Chearmyp node. For example, a simplex node can
