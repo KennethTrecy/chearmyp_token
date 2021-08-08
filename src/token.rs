@@ -1,5 +1,5 @@
 /// Contains the valid tokens used for lexing and parsing.
-#[derive(Debug, PartialEq)]
+#[cfg_attr(feature = "assertable_token", derive(Debug, PartialEq))]
 pub enum Token<T, U> {
 	ScopeLevel(usize),
 	LineComment(T),
