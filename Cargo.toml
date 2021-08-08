@@ -12,3 +12,7 @@ abstract_chearmyp_token = { git = "http://chearmyp.local/abstract_chearmyp_token
 git = "http://chearmyp.local/abstract_chearmyp_source"
 tag = "v0.3.0"
 features = ["str_source", "vec_source_collection"]
+
+[features]
+default = []
+no_std = ["abstract_chearmyp_source/no_std", "abstract_chearmyp_token/no_std"]
