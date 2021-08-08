@@ -54,3 +54,80 @@ where
 		Token::BlockOthertongue(collection)
 	}
 }
+
+#[cfg(test)]
+mod t {
+	use super::{ AbstractToken, Token, TokenKind };
+
+	#[test]
+	fn can_create_scope_level_and_confirm() {
+		let scope_level = Token::<&str, Vec<&str>>::new_scope_level(0);
+
+		let kind = scope_level.kind();
+
+		assert_eq!(kind, TokenKind::ScopeLevel);
+	}
+
+	#[test]
+	fn can_create_simplex_and_confirm() {
+		let simplex = Token::<&str, Vec<&str>>::new_simplex("a");
+
+		let kind = simplex.kind();
+
+		assert_eq!(kind, TokenKind::Simplex);
+	}
+
+	#[test]
+	fn can_create_complex_and_confirm() {
+		let complex = Token::<&str, Vec<&str>>::new_complex("b");
+
+		let kind = complex.kind();
+
+		assert_eq!(kind, TokenKind::Complex);
+	}
+
+	#[test]
+	fn can_create_attacher_and_confirm() {
+		let attacher = Token::<&str, Vec<&str>>::new_attacher("c", "d");
+
+		let kind = attacher.kind();
+
+		assert_eq!(kind, TokenKind::Attacher);
+	}
+
+	#[test]
+	fn can_create_line_comment_and_confirm() {
+		let line_comment = Token::<&str, Vec<&str>>::new_line_comment("e");
+
+		let kind = line_comment.kind();
+
+		assert_eq!(kind, TokenKind::LineComment);
+	}
+
+	#[test]
+	fn can_create_block_comment_and_confirm() {
+		let block_comment = Token::<&str, Vec<&str>>::new_block_comment(Vec::new());
+
+		let kind = block_comment.kind();
+
+		assert_eq!(kind, TokenKind::BlockComment);
+	}
+
+	#[test]
+	fn can_create_line_othertongue_and_confirm() {
+		let line_othertongue = Token::<&str, Vec<&str>>::new_line_othertongue("e");
+
+		let kind = line_othertongue.kind();
+
+		assert_eq!(kind, TokenKind::LineOthertongue);
+	}
+
+	#[test]
+	fn can_create_block_othertongue_and_confirm() {
+		let block_othertongue = Token::<&str, Vec<&str>>::new_block_othertongue(Vec::new());
+
+		let kind = block_othertongue.kind();
+
+		assert_eq!(kind, TokenKind::BlockOthertongue);
+	}
+}
