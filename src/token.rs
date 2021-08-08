@@ -10,3 +10,5 @@ pub enum Token<T, U> {
 	LineOthertongue(T),
 	BlockOthertongue(U)
 }
+
+mod abstract_token;
