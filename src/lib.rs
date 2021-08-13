@@ -6,7 +6,6 @@ extern crate alloc;
 mod abstracts {
 	pub use abstract_chearmyp_source::{ AbstractSource, AbstractSourceCollection };
 	pub use abstract_chearmyp_token::{
-		FromToken,
 		AbstractToken,
 		AbstractComplexToken,
 		AbstractSimplexToken,
