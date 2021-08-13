@@ -57,6 +57,9 @@ where
 
 #[cfg(test)]
 mod t {
+	#[cfg(feature = "no_std")]
+	use alloc::vec::Vec;
+
 	use super::{ AbstractToken, Token, TokenKind };
 
 	#[test]
