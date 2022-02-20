@@ -1,12 +1,39 @@
 #![cfg_attr(feature = "no_std", no_std)]
 
+//! # Chearmyp Token
+//! Please read the README.md for more information.
+//!
+//! ## Features available
+//! - `no_std`: Uses the `core` crate instead of `std` crate.
+//! - `assertable_token`. Allows token to be used in tests.
+
 #[cfg(feature = "no_std")]
+#[cfg_attr(test, macro_use)]
 extern crate alloc;
 
+mod native {
+	#[cfg(feature = "no_std")]
+	pub use core::{
+		ops::Range,
+		marker::PhantomData
+	};
+
+	#[cfg(feature = "no_std")]
+	pub use alloc::vec::Vec;
+
+	#[cfg(not(feature = "no_std"))]
+	pub use std::{
+		vec::Vec,
+		ops::Range,
+		marker::PhantomData
+	};
+}
+
 mod abstracts {
-	pub use abstract_chearmyp_source::{ AbstractSource, AbstractSourceCollection };
+	pub use abstract_chearmyp_boundary::{AbstractBoundary, AbstractBoundaryCollection};
 	pub use abstract_chearmyp_token::{
-		AbstractToken,
+		SimpleAbstractToken,
+		DynamicAbstractToken,
 		AbstractComplexToken,
 		AbstractSimplexToken,
 		AbstractAttacherToken,
