@@ -20,5 +20,5 @@ features = ["assertable_token_kind"]
 
 [features]
 default = []
-no_std = ["abstract_chearmyp_source/no_std", "abstract_chearmyp_token/no_std"]
+no_std = ["abstract_chearmyp_boundary/no_std", "abstract_chearmyp_token/no_std"]
 assertable_token = ["abstract_chearmyp_token/assertable_token_kind"]
