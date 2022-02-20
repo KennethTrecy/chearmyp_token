@@ -1,11 +1,33 @@
 # Chearmyp Token
 A concrete implementation of tokens for Chearmyp language.
 
+## Installation
+Add it to the dependencies:
+```
+[dependencies.chearmyp_token]
+git = "https://github.com/KennethTrecy/chearmyp_token"
+tag = "v0.6.0"
+```
+
+You may also activate all the features:
+```
+[dependencies.chearmyp_token]
+git = "https://github.com/KennethTrecy/chearmyp_token"
+tag = "v0.6.0"
+features = ["no_std", "assertable_token"]
+```
+
 ## Origin
 It was in a repository with the lexer library of Chearmyp parser. Yet, it has been forked for better
 development of future libraries.
 
 The repository was based from [`filled_bare_metal`] branch of [Feo Template].
+
+### Documentation
+Run the following on the console:
+```
+cargo doc --all-features --open
+```
 
 ## Tokens
 The tokens only contain the most important data of a Chearmyp node. For example, a simplex node can
