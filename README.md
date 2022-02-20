@@ -5,6 +5,8 @@ A concrete implementation of tokens for Chearmyp language.
 It was in a repository with the lexer library of Chearmyp parser. Yet, it has been forked for better
 development of future libraries.
 
+The repository was based from [`filled_bare_metal`] branch of [Feo Template].
+
 ## Tokens
 The tokens only contain the most important data of a Chearmyp node. For example, a simplex node can
 have no attachers but it cannot exist without the concept name. The list below gives specific
@@ -23,3 +25,9 @@ details about each tokens.
   is that they are intended to represent a foreign concept.
   - *Line othertongue*
   - *Block othertongue*
+
+### Author
+Coded by Kenneth Trecy Tobias.
+
+[`filled_bare_metal`]: https://github.com/KennethTrecy/feo_template/tree/filled_bare_metal
+[Feo Template]: https://github.com/KennethTrecy/feo_template
