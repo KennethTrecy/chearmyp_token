@@ -11,5 +11,5 @@ pub enum Token<T, U> {
 	BlockOthertongue(U)
 }
 
-mod abstract_token;
-mod abstract_line_comment_token;
+mod simple_abstract_token;
+mod dynamic_abstract_token;
