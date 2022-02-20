@@ -2,7 +2,7 @@
 name = "chearmyp_token"
 version = "0.6.0-dev"
 authors = ["Kenneth Trecy Tobias <33564322+KennethTrecy@users.noreply.github.com>"]
-edition = "2018"
+edition = "2021"
 
 [dependencies]
 abstract_chearmyp_source = { git = "http://chearmyp.local/abstract_chearmyp_source", tag = "v0.4.0" }
