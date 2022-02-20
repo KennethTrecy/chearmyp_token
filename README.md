@@ -1,10 +1,9 @@
 # Chearmyp Token
 A concrete implementation of tokens for Chearmyp language.
 
-This library represents the source as a queue of tokens.
-
 ## Origin
-It was in a repository with the lexer library. Yet, it has been forked for better development of future libraries.
+It was in a repository with the lexer library of Chearmyp parser. Yet, it has been forked for better
+development of future libraries.
 
 ## Tokens
 The tokens only contain the most important data of a Chearmyp node. For example, a simplex node can
@@ -24,14 +23,3 @@ details about each tokens.
   is that they are intended to represent a foreign concept.
   - *Line othertongue*
   - *Block othertongue*
-
-## Token Queue Representation
-Consider the following Chearmyp text:
-```
-hello
-   name: ABC
-   # DEF
-```
-The token queue will represent the text as series of tokens. It will have a complex token (`hello`),
-scope level token (with a value of 1), an attacher token (with `name` label and `ABC` content), and
-a line comment token (with a content of ` DEF`) in that order.
