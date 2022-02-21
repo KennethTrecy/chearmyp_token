@@ -48,6 +48,18 @@ details about each tokens.
   - *Line othertongue*
   - *Block othertongue*
 
+## Token Queue Representation
+Consider the following Chearmyp text:
+```
+hello
+	name: ABC
+	# DEF
+```
+
+The token queue will represent the text as series of tokens. It will have a complex token (`hello`),
+scope level token (with a value of 1), an attacher token (with `name` label and `ABC` content), and
+a line comment token (with a content of ` DEF`) in that order.
+
 ### Author
 Coded by Kenneth Trecy Tobias.
 
