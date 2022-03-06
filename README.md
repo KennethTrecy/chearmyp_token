@@ -18,7 +18,7 @@ features = ["no_std", "assertable_token"]
 ```
 
 ## Origin
-It was in a repository with the lexer library of Chearmyp. Yet, it has been forked for better
+It was in a repository with the [lexer library] of Chearmyp. Yet, it has been forked for better
 development of future libraries.
 
 Some parts of the repository were based from [`filled_bare_metal`] branch of [Feo Template].
@@ -65,3 +65,4 @@ Chearmyp Token was created by Kenneth Trecy Tobias.
 
 [`filled_bare_metal`]: https://github.com/KennethTrecy/feo_template/tree/filled_bare_metal
 [Feo Template]: https://github.com/KennethTrecy/feo_template
+[lexer library]: https://github.com/KennethTrecy/chearmyp_lexer
