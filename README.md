@@ -21,7 +21,7 @@ features = ["no_std", "assertable_token"]
 It was in a repository with the lexer library of Chearmyp. Yet, it has been forked for better
 development of future libraries.
 
-The repository was based from [`filled_bare_metal`] branch of [Feo Template].
+Some parts of the repository were based from [`filled_bare_metal`] branch of [Feo Template].
 
 ### Documentation
 Run the following on the console:
