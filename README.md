@@ -61,7 +61,7 @@ scope level token (with a value of 1), an attacher token (with `name` label and 
 a line comment token (with a content of ` DEF`) in that order.
 
 ### Author
-Coded by Kenneth Trecy Tobias.
+Chearmyp Token was created by Kenneth Trecy Tobias.
 
 [`filled_bare_metal`]: https://github.com/KennethTrecy/feo_template/tree/filled_bare_metal
 [Feo Template]: https://github.com/KennethTrecy/feo_template
