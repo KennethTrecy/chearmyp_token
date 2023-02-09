@@ -6,20 +6,20 @@ edition = "2021"
 
 [dependencies.abstract_chearmyp_boundary]
 git = "https://github.com/KennethTrecy/abstract_chearmyp_boundary"
-tag = "v0.2.0"
+tag = "v1.0.0"
 
 [dependencies.abstract_chearmyp_token]
 git = "https://github.com/KennethTrecy/abstract_chearmyp_token"
-tag = "v0.4.1"
+tag = "v1.0.0"
 
 [dev-dependencies.abstract_chearmyp_boundary]
 git = "https://github.com/KennethTrecy/abstract_chearmyp_boundary"
-tag = "v0.2.0"
+tag = "v1.0.0"
 features = ["range_boundary", "vec_boundary_collection"]
 
 [dev-dependencies.abstract_chearmyp_token]
 git = "https://github.com/KennethTrecy/abstract_chearmyp_token"
-tag = "v0.4.1"
+tag = "v1.0.0"
 features = ["vecdeque_token_queue", "assertable_token_kind"]
 
 [features]
